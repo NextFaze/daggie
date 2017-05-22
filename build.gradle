@@ -1,0 +1,68 @@
+buildscript {
+    apply from: rootProject.file('configuration.gradle')
+
+    repositories {
+        maven {
+            url 'http://maven.nextfaze.com/libs-release'
+            credentials {
+                username nextfazeArtifactoryUser
+                password nextfazeArtifactoryPassword
+            }
+        }
+    }
+
+    dependencies {
+        classpath rootProject.ext.kotlinPlugin
+        classpath rootProject.ext.androidPlugin
+        classpath rootProject.ext.androidMavenGradlePlugin
+    }
+}
+
+apply from: rootProject.file('configuration.gradle')
+
+allprojects {
+    repositories {
+        maven {
+            url 'http://maven.nextfaze.com/libs-release'
+            credentials {
+                username nextfazeArtifactoryUser
+                password nextfazeArtifactoryPassword
+            }
+        }
+    }
+
+    group = GROUP
+    version = VERSION_NAME
+}
+
+ext.configureLibrary = { project ->
+    delegate = project
+
+    android {
+        compileSdkVersion project.compileSdkVersion
+        buildToolsVersion project.buildToolsVersion
+
+        defaultConfig {
+            minSdkVersion project.minSdkVersion
+
+//            javaCompileOptions {
+//                annotationProcessorOptions {
+//                    // We're using KAPT so ignore annotationProcessor configuration dependencies
+//                    includeCompileClasspath false
+//                }
+//            }
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
+
+        sourceSets {
+            main.java.srcDirs += 'src/main/kotlin'
+            test.java.srcDirs += 'src/test/kotlin'
+        }
+
+        // resourcePrefix "df_${project.name}_"
+    }
+}

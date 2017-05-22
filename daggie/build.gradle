@@ -1,0 +1,11 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+project.configureLibrary(this)
+
+dependencies {
+    compile rootProject.ext.supportAnnotations
+    compile rootProject.ext.kotlinStdlib
+    testCompile rootProject.ext.mockito
+    testCompile rootProject.ext.mockitoKotlin
+}

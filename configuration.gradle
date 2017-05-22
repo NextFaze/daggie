@@ -1,0 +1,41 @@
+ext {
+    androidPlugin = 'com.android.tools.build:gradle:2.3.0'
+    androidMavenGradlePlugin = 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    minSdkVersion = 12
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.3'
+    supportVersion = '25.3.1'
+
+    kotlinVersion = '1.1.2-3'
+    kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+    supportAnnotations = "com.android.support:support-annotations:$supportVersion"
+    supportRecyclerView = "com.android.support:recyclerview-v7:$supportVersion"
+    supportAppCompat = "com.android.support:appcompat-v7:$supportVersion"
+    supportV4 = "com.android.support:support-v4:$supportVersion"
+    supportCoreUtils = "com.android.support:support-core-utils:$supportVersion"
+    supportCoreUi = "com.android.support:support-core-ui:$supportVersion"
+    supportDesign = "com.android.support:design:$supportVersion"
+    supportCardview = "com.android.support:cardview-v7:$supportVersion"
+    supportVectorDrawable = "com.android.support:support-vector-drawable:$supportVersion"
+
+    supportTestRunner = 'com.android.support.test:runner:0.4.1'
+    supportTestRules = 'com.android.support.test:rules:0.4.1'
+    supportTestEspresso = 'com.android.support.test.espresso:espresso-core:2.2.1'
+    supportTestEspressoContrib = 'com.android.support.test.espresso:espresso-contrib:2.2.1'
+
+    daggerVersion = '2.11-rc2'
+    daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+    dagger = "com.google.dagger:dagger:$daggerVersion"
+    daggerAnnotations = 'org.glassfish:javax.annotation:10.0-b28'
+
+    robolectric = 'org.robolectric:robolectric:3.3.2'
+    mockito = 'org.mockito:mockito-core:2.7.22'
+    mockitoKotlin = 'com.nhaarman:mockito-kotlin:1.4.0'
+    rxJava = 'io.reactivex:rxjava:1.2.9'
+    rxAndroid = 'io.reactivex:rxandroid:1.2.1'
+    junit = 'junit:junit:4.12'
+    truth = 'com.google.truth:truth:0.32'
+}
