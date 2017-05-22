@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 project.configureLibrary(this)
 
 dependencies {
+    compile rootProject.ext.dagger
     compile rootProject.ext.supportAnnotations
     compile rootProject.ext.kotlinStdlib
     testCompile rootProject.ext.mockito
