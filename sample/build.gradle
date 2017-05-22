@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -40,5 +41,18 @@ android {
 dependencies {
     compile project(':daggie')
     compile rootProject.ext.supportAppCompat
+
+    // Dagger
+    kapt rootProject.ext.daggerCompiler
+    compile rootProject.ext.dagger
+    compile rootProject.ext.daggerAnnotations
+
+    // RxLifecycle
+    def rxLifecycleVersion = '1.0'
+    compile "com.trello:rxlifecycle:$rxLifecycleVersion"
+    compile "com.trello:rxlifecycle-kotlin:$rxLifecycleVersion"
+    compile "com.trello:rxlifecycle-components:$rxLifecycleVersion"
+
+    // JUnit
     testCompile rootProject.ext.junit
 }
