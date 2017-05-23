@@ -1,5 +1,6 @@
 rootProject.name = 'daggie-root'
 include ':daggie'
+include ':dev-proxy'
 
 if (!"true".equals(System.getenv("TRAVIS")) && !"true".equals(System.getenv("JITPACK"))) {
     include ':sample'
