@@ -27,8 +27,6 @@ import java.security.cert.CertificateException
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HttpsURLConnection
-import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
@@ -44,70 +42,31 @@ internal class DevProxy(private val host: String, private val port: Int) {
 
     private val okHttpClient = OkHttpClient.Builder().build()!!
 
-    private val alias: String = "Charles on " + host
+    private val alias = "Charles on $host"
 
     private val handler = Handler(getMainLooper())
 
-    fun asSocketAddress(): SocketAddress = InetSocketAddress(host, port)
-
-    fun asProxy() = Proxy(HTTP, asSocketAddress())
-
-    fun install() {
+    internal fun install(context: Context) {
         if (installToSystemProperties()) {
             loadCharlesCert()
-                    .filterNotNull()
-                    .switchMap { certBytes -> installX509Cert(certBytes) }
-                    .subscribe(
-                            { log.info("Successfully installed SSL certificate") },
-                            { error -> log.error("Failed to install SSL certificate", error) }
-                    )
+                    .filter { it == null || !isCertificateTrusted(it) }
+                    .subscribe({ onCertLoaded(context, it) }, { onCertError(context) })
         }
     }
 
-    fun install(context: Context) {
-        if (installToSystemProperties()) {
-            loadCharlesCert()
-                    .filter { certBytes -> certBytes == null || !isCertificateTrusted(certBytes) }
-                    .subscribe(
-                            { certBytes ->
-                                if (certBytes != null) {
-                                    installCertWithKeyChainIntent(context, certBytes, "Charles on " + host)
-                                } else {
-                                    showToast(context, "Proxy doesn't appear to be Charles Proxy")
-                                }
-                            },
-                            { showToast(context, "Failed to install certificate") }
-                    )
+    private fun onCertLoaded(context: Context, certBytes: ByteArray?) {
+        if (certBytes != null) {
+            installCertWithKeyChainIntent(context, certBytes, alias)
+        } else {
+            showToast(context, "Proxy doesn't appear to be Charles Proxy")
         }
     }
 
-    fun install(builder: OkHttpClient.Builder) {
-        if (!host.isNullOrEmpty() && port > 0) {
-            installToSystemProperties()
+    private fun onCertError(context: Context) = showToast(context, "Failed to install certificate")
 
-            val alias = "Charles on " + host
-            val certBytes = loadCharlesCert().toBlocking().first() ?: return
-            val certificateFactory = CertificateFactory.getInstance("X.509")
-            val certificate = certificateFactory.generateCertificate(ByteArrayInputStream(certBytes))
+    internal fun asSocketAddress(): SocketAddress = InetSocketAddress(host, port)
 
-            val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())!!
-            keyStore.load(null, null)
-            keyStore.setCertificateEntry(alias, certificate)
-
-            val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())!!
-            trustManagerFactory.init(keyStore)
-
-            val context = SSLContext.getInstance("TLS")
-            val trustManagers = trustManagerFactory.trustManagers
-            context.init(null, trustManagers, null)
-
-            val socketFactory = context.socketFactory
-            builder.sslSocketFactory(socketFactory, trustManagers[0] as X509TrustManager)
-        }
-    }
-
-    private fun showToast(context: Context, message: String, vararg args: Any) =
-            handler.post { Toast.makeText(context, String.format(message, args), LENGTH_SHORT).show() }
+    internal fun asProxy() = Proxy(HTTP, asSocketAddress())
 
     private fun installToSystemProperties(): Boolean {
         if (host.isNullOrEmpty() || port <= 0) {
@@ -123,7 +82,6 @@ internal class DevProxy(private val host: String, private val port: Int) {
     private fun loadCharlesCert(): Observable<ByteArray?> = readCertBytes().retryWhen { it.delayedRetry() }
 
     private fun readCertBytes(): Observable<ByteArray?> = fromCallable {
-        log.debug("Reading Charles certificate...")
         val body = charlesCertBody() ?: return@fromCallable null
         body.bytes()
     }.subscribeOn(io())
@@ -140,23 +98,6 @@ internal class DevProxy(private val host: String, private val port: Int) {
             return null
         }
         return body
-    }
-
-    private fun installX509Cert(certBytes: ByteArray) = Observable.fromCallable {
-        val certificate = getX509CertificateFromBytes(certBytes)
-
-        val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())!!
-        keyStore.load(null, null)
-        keyStore.setCertificateEntry(alias, certificate)
-
-        val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())!!
-        trustManagerFactory.init(keyStore)
-
-        val context = SSLContext.getInstance("TLS")
-        context.init(null, trustManagerFactory.trustManagers, null)
-
-        val socketFactory = context.socketFactory!!
-        HttpsURLConnection.setDefaultSSLSocketFactory(socketFactory)
     }
 
     private fun isCertificateTrusted(certBytes: ByteArray): Boolean {
@@ -181,6 +122,10 @@ internal class DevProxy(private val host: String, private val port: Int) {
 
     private fun getX509CertificateFromBytes(certBytes: ByteArray) =
             CertificateFactory.getInstance("X.509").generateCertificate(ByteArrayInputStream(certBytes)) as X509Certificate
+
+    private fun showToast(context: Context, message: String, vararg args: Any) {
+        handler.post { Toast.makeText(context, String.format(message, args), LENGTH_SHORT).show() }
+    }
 }
 
 private fun installCertWithKeyChainIntent(context: Context,
@@ -198,6 +143,3 @@ private fun <T : Throwable> Observable<T>.delayedRetry(): Observable<Long> =
                     if (it is IOException) Observable.timer(3, TimeUnit.SECONDS)
                     else Observable.error(it.first)
                 }
-
-@Suppress("CAST_NEVER_SUCCEEDS", "UNCHECKED_CAST")
-private fun <T : Any> Observable<T?>.filterNotNull(): Observable<T> = filter { it != null } as Observable<T>
