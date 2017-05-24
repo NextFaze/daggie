@@ -2,6 +2,9 @@ rootProject.name = 'daggie-root'
 include ':daggie'
 include ':daggie-dev-proxy'
 include ':daggie-manup'
+include ':daggie-rxjava'
+include ':daggie-slf4j'
+include ':daggie-logback'
 
 if (System.getenv('TRAVIS') != 'true' && System.getenv('JITPACK') != 'true') {
     include ':daggie-sample'
