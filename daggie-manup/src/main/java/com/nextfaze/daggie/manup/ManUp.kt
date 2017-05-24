@@ -4,16 +4,11 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.os.Parcel
 import android.support.v4.app.FragmentActivity
 import com.f2prateek.rx.preferences.Preference
 import com.f2prateek.rx.preferences.RxSharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.TypeAdapterFactory
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonWriter
-import com.ryanharter.auto.value.gson.GsonTypeAdapterFactory
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -113,14 +108,6 @@ internal interface ManUpApi {
     fun config(@Url url: HttpUrl): Single<Config>
 }
 
-/** Compares the specified version code again this configuration, returning what to do next. */
-internal fun Config?.check(versionCode: Int) = when {
-    this == null -> Result.OK
-    versionCode in minimumVersion..(currentVersion - 1) -> Result.UPDATE_RECOMMENDED
-    versionCode < minimumVersion -> Result.UPDATE_REQUIRED
-    else -> Result.OK
-}
-
 internal enum class Result {
     /** User may continue using the app. */
     OK,
@@ -130,10 +117,12 @@ internal enum class Result {
     UPDATE_RECOMMENDED
 }
 
-@GsonTypeAdapterFactory internal abstract class ManUpAutoValueTypeAdapterFactory : TypeAdapterFactory {
-    companion object {
-        @JvmStatic fun create(): TypeAdapterFactory = AutoValueGson_ManUpAutoValueTypeAdapterFactory()
-    }
+/** Compares the specified version code again this configuration, returning what to do next. */
+internal fun Config?.check(versionCode: Int) = when {
+    this == null -> Result.OK
+    versionCode in minimumVersion..(currentVersion - 1) -> Result.UPDATE_RECOMMENDED
+    versionCode < minimumVersion -> Result.UPDATE_REQUIRED
+    else -> Result.OK
 }
 
 /** Returns a Gson [Preference.Adapter] for the inferred type [T]. */
@@ -144,17 +133,4 @@ private inline fun <reified T : Any?> Gson.preferenceAdapter() = object : Prefer
 
     override fun get(key: String, preferences: SharedPreferences): T =
             fromJson(preferences.getString(key, null), T::class.java)
-}
-
-internal class HttpUrlTypeAdapter : com.google.gson.TypeAdapter<HttpUrl?>(),
-        com.ryanharter.auto.value.parcel.TypeAdapter<HttpUrl?> {
-    override fun write(writer: JsonWriter, url: HttpUrl?) {
-        writer.value(url.toString())
-    }
-
-    override fun read(reader: JsonReader) = reader.nextString().let { HttpUrl.parse(it) }
-
-    override fun toParcel(url: HttpUrl?, parcel: Parcel) = parcel.writeString(url.toString())
-
-    override fun fromParcel(parcel: Parcel): HttpUrl? = HttpUrl.parse(parcel.readString())
 }
