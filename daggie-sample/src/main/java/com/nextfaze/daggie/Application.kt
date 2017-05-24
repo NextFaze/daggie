@@ -6,7 +6,11 @@ import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.os.Process
-import dagger.*
+import dagger.BindsInstance
+import dagger.Component
+import dagger.Lazy
+import dagger.Module
+import dagger.Provides
 import dagger.multibindings.ElementsIntoSet
 import javax.inject.Singleton
 
