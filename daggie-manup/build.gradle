@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+project.configureLibrary(this)
+
+dependencies {
+    compile project(':daggie')
+    compile rootProject.ext.supportAppCompat
+    compile rootProject.ext.slf4jApi
+    compile rootProject.ext.okhttp
+    compile rootProject.ext.rxJava
+    compile rootProject.ext.rxAndroid
+    compile rootProject.ext.rxPreferences
+    compile rootProject.ext.rxRelay
+    compile rootProject.ext.retrofitAdapterRxJava
+    compile rootProject.ext.retrofitConverterGson
+    kapt rootProject.ext.autoValue
+    provided rootProject.ext.autoValue
+    kapt rootProject.ext.autoValueGson
+    provided rootProject.ext.autoValueGson
+    kapt rootProject.ext.autoValueParcel
+    provided rootProject.ext.autoValueParcel
+    testCompile rootProject.ext.mockito
+    testCompile rootProject.ext.mockitoKotlin
+}
