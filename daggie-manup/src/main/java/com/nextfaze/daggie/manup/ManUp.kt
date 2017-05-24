@@ -41,7 +41,7 @@ internal fun initManUp(
         application: Application,
         httpClient: OkHttpClient,
         foreground: Observable<Boolean>,
-        @ManUpConfigUrl configUrl: String
+        config: ManUpConfig
 ) {
     // Use our own Gson
     val gson = GsonBuilder()
@@ -50,14 +50,13 @@ internal fun initManUp(
             .create()!!
 
     // Parse HTTP URL from caller-supplied URL string
-    val url = HttpUrl.parse(configUrl)!!
 
     // Create Retrofit API
     val api = Retrofit.Builder()
             .callFactory(httpClient)
             .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(io()))
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl("http://beac.onl/") // Dummy value; not actually used
+            .baseUrl("http://example.com") // Dummy value; not actually used
             .build()
             .create(ManUpApi::class.java)!!
 
@@ -66,7 +65,7 @@ internal fun initManUp(
             .getObject("config", null, gson.preferenceAdapter<Config?>())
 
     // Load remote config into prefs
-    val syncConfigWithApi = api.config(url).doOnSuccess { configPref.set(it) }.toCompletable()!!
+    val syncConfigWithApi = api.config(config.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
 
     // Emits config pref values, which are synchronized with the API upon each subscription
     val syncConfig = merge(syncConfigWithApi.toObservable(), configPref.asObservable())!!

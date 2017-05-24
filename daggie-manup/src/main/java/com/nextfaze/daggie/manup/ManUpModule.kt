@@ -12,7 +12,7 @@ import rx.Observable
 @Module class ManUpModule {
     @Provides @IntoSet internal fun initializer(
             httpClient: OkHttpClient,
-            @ManUpConfigUrl url: String,
+            config: ManUpConfig,
             @Foreground foreground: Observable<Boolean>
-    ): Initializer<Application> = { initManUp(it, httpClient, foreground, url) }
+    ): Initializer<Application> = { initManUp(it, httpClient, foreground, config) }
 }
