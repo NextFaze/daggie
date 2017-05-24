@@ -1,0 +1,11 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+project.configureLibrary(this)
+
+dependencies {
+    compile project(':daggie')
+    compile rootProject.ext.slf4jApi
+    testCompile rootProject.ext.mockito
+    testCompile rootProject.ext.mockitoKotlin
+}
