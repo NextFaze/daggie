@@ -23,7 +23,7 @@ private val FRAGMENT_TAG = ManUpDialogFragment::class.java.name
 internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
     /** The ManUp configuration used by this dialog. */
-    internal var config by parcelableArgument<ManUpConfig>(ARG_CONFIG)
+    internal var config by parcelableArgument<Config>(ARG_CONFIG)
 
     /** Evaluates the update [Result] based on the [config] and current app version. */
     private val result get() = config.check(activity.application.versionCode)
@@ -33,8 +33,8 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
         internal fun find(fragmentManager: FragmentManager) =
                 fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
 
-        /** Shows the fragment in [fragmentManager], or updates an existing one, with the specified [ManUpConfig]. */
-        internal fun show(fragmentManager: FragmentManager, config: ManUpConfig) {
+        /** Shows the fragment in [fragmentManager], or updates an existing one, with the specified [Config]. */
+        internal fun show(fragmentManager: FragmentManager, config: Config) {
             val existing = find(fragmentManager)
             if (existing != null) {
                 existing.config = config
@@ -46,8 +46,8 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
             }
         }
 
-        /** Updates an existing fragment, if present, with the specified [ManUpConfig]. */
-        internal fun update(fragmentManager: FragmentManager, config: ManUpConfig) {
+        /** Updates an existing fragment, if present, with the specified [Config]. */
+        internal fun update(fragmentManager: FragmentManager, config: Config) {
             val existing = find(fragmentManager)
             if (existing != null) {
                 existing.config = config

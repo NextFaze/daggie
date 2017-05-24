@@ -10,7 +10,7 @@ import com.ryanharter.auto.value.parcel.ParcelAdapter;
 import okhttp3.HttpUrl;
 
 /** Represents the mandatory update configuration. */
-@AutoValue abstract class ManUpConfig implements Parcelable {
+@AutoValue abstract class Config implements Parcelable {
 
     /** Version code of the current published Play Store app. */
     @SerializedName("manUpAppVersionCurrent")
@@ -28,7 +28,7 @@ import okhttp3.HttpUrl;
 
     @NonNull
     @SuppressWarnings("WeakerAccess")
-    public static TypeAdapter<ManUpConfig> typeAdapter(@NonNull Gson gson) {
-        return new AutoValue_ManUpConfig.GsonTypeAdapter(gson);
+    public static TypeAdapter<Config> typeAdapter(@NonNull Gson gson) {
+        return new AutoValue_Config.GsonTypeAdapter(gson);
     }
 }

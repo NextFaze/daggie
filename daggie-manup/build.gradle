@@ -12,7 +12,6 @@ dependencies {
     compile rootProject.ext.rxJava
     compile rootProject.ext.rxAndroid
     compile rootProject.ext.rxPreferences
-    compile rootProject.ext.rxRelay
     compile rootProject.ext.retrofitAdapterRxJava
     compile rootProject.ext.retrofitConverterGson
     kapt rootProject.ext.autoValue
