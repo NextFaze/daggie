@@ -43,6 +43,10 @@ ext {
     retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
+    logbackVersion = '1.1.1-6'
+    logbackCore = "com.github.tony19:logback-android-core:$logbackVersion"
+    logbackAndroid = "com.github.tony19:logback-android-classic:$logbackVersion"
+
     okhttp = 'com.squareup.okhttp3:okhttp:3.8.0'
     gson = 'com.squareup.okhttp3:okhttp:3.8.0'
     retrofit = 'com.squareup.okhttp3:okhttp:3.8.0'
