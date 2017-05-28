@@ -28,7 +28,10 @@ ext {
 
     daggerVersion = '2.11-rc2'
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+    daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
     dagger = "com.google.dagger:dagger:$daggerVersion"
+    daggerAndroid = "com.google.dagger:dagger-android:$daggerVersion"
+    daggerAndroidSupport = "com.google.dagger:dagger-android-support:$daggerVersion"
     daggerAnnotations = 'org.glassfish:javax.annotation:10.0-b28'
 
     autoValue = 'com.google.auto.value:auto-value:1.4-rc2'
