@@ -5,6 +5,7 @@ include ':daggie-manup'
 include ':daggie-rxjava'
 include ':daggie-slf4j'
 include ':daggie-logback'
+include ':daggie-foreground'
 
 if (System.getenv('TRAVIS') != 'true' && System.getenv('JITPACK') != 'true') {
     include ':daggie-sample'
