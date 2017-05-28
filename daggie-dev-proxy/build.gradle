@@ -8,6 +8,4 @@ dependencies {
     compile rootProject.ext.slf4jApi
     compile rootProject.ext.okhttp
     compile rootProject.ext.rxJava
-    testCompile rootProject.ext.mockito
-    testCompile rootProject.ext.mockitoKotlin
 }

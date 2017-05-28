@@ -9,6 +9,4 @@ dependencies {
     compile rootProject.ext.slf4jApi
     compile rootProject.ext.rxJava
     compile rootProject.ext.rxAndroid
-    testCompile rootProject.ext.mockito
-    testCompile rootProject.ext.mockitoKotlin
 }

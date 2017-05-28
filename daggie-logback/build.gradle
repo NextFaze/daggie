@@ -11,6 +11,4 @@ dependencies {
     compile(rootProject.ext.logbackAndroid) {
         exclude group: 'com.google.android', module: 'android'
     }
-    testCompile rootProject.ext.mockito
-    testCompile rootProject.ext.mockitoKotlin
 }

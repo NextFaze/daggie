@@ -6,6 +6,4 @@ project.configureLibrary(this)
 dependencies {
     compile project(':daggie')
     compile rootProject.ext.slf4jApi
-    testCompile rootProject.ext.mockito
-    testCompile rootProject.ext.mockitoKotlin
 }

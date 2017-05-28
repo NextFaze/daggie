@@ -20,6 +20,4 @@ dependencies {
     provided rootProject.ext.autoValueGson
     kapt rootProject.ext.autoValueParcel
     provided rootProject.ext.autoValueParcel
-    testCompile rootProject.ext.mockito
-    testCompile rootProject.ext.mockitoKotlin
 }
