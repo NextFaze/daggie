@@ -1,5 +1,5 @@
 buildscript {
-    apply from: rootProject.file('configuration.gradle')
+    apply from: 'configuration.gradle'
 
     repositories {
         maven {
@@ -18,7 +18,7 @@ buildscript {
     }
 }
 
-apply from: rootProject.file('configuration.gradle')
+apply from: 'configuration.gradle'
 
 allprojects {
     repositories {
@@ -45,12 +45,12 @@ ext.configureLibrary = { project ->
         defaultConfig {
             minSdkVersion project.minSdkVersion
 
-//            javaCompileOptions {
-//                annotationProcessorOptions {
-//                    // We're using KAPT so ignore annotationProcessor configuration dependencies
-//                    includeCompileClasspath false
-//                }
-//            }
+            javaCompileOptions {
+                annotationProcessorOptions {
+                    // We're using KAPT so ignore annotationProcessor configuration dependencies
+                    includeCompileClasspath false
+                }
+            }
         }
 
         compileOptions {
