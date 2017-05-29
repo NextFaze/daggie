@@ -63,7 +63,7 @@ ext.configureLibrary = { project ->
             test.java.srcDirs += 'src/test/kotlin'
         }
 
-        // resourcePrefix "df_${project.name}_"
+        resourcePrefix "${project.name.replace("-", "_")}_"
     }
 
     apply plugin: 'com.github.dcendents.android-maven'
