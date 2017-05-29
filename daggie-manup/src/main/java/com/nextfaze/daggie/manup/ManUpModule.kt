@@ -9,6 +9,15 @@ import dagger.multibindings.IntoSet
 import okhttp3.OkHttpClient
 import rx.Observable
 
+/**
+ * Provides bindings that configure "mandatory updates" (aka ManUp). This triggers a dialog that can suggest or
+ * force the user to update the app version, based on a remote JSON config file.
+ *
+ * Users of this module must provide the following bindings:
+ * * [OkHttpClient]
+ * * [ManUpConfig]
+ * * [Foreground] `Observable<Boolean>`
+ */
 @Module class ManUpModule {
     @Provides @IntoSet internal fun initializer(
             httpClient: OkHttpClient,
