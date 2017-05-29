@@ -18,4 +18,5 @@ dependencies {
     provided rootProject.ext.autoValueGson
     kapt rootProject.ext.autoValueParcel
     provided rootProject.ext.autoValueParcel
+    compile rootProject.ext.autoValueParcelAdapter
 }
