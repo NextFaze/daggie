@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nextfaze.daggie.devproxy">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:networkSecurityConfig="@xml/daggie_dev_proxy_network_security_config"
         tools:targetApi="n" />
