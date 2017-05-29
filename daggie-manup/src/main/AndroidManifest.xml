@@ -1,1 +1,5 @@
-<manifest package="com.nextfaze.daggie.manup" />
+<manifest package="com.nextfaze.daggie.manup"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>
