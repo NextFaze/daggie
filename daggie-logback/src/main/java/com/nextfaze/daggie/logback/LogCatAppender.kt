@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LogCatAppender @Inject constructor(private val logCatLogger: LogCatLogger) : LogbackAppender() {
+internal class LogCatAppender @Inject constructor(private val logCatLogger: LogCatLogger) : LogbackAppender() {
     private val tagEncoder: PatternLayoutEncoder by lazy {
         PatternLayoutEncoder().apply {
             pattern = "%logger%nopex"

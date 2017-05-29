@@ -32,7 +32,7 @@ private val NEW_LINE_NBS = NEW_LINE + NON_BREAKING_SPACE
 
 /** Ported from `com.nextfaze:slf4j-log4j-android` `com.nextfaze.logging.LogCatAppender` class.  */
 @Singleton
-class LogCatLogger @Inject constructor() {
+internal class LogCatLogger @Inject constructor() {
 
     fun log(tag: String, message: String, levelInt: Int) {
         // add no-break-space to allow proper formatting
