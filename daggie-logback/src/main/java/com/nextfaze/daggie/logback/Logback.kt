@@ -2,6 +2,7 @@ package com.nextfaze.daggie.logback
 
 import android.app.Application
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.util.Log
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
@@ -53,7 +54,7 @@ typealias LogbackAppender = AppenderBase<ILoggingEvent>
             logback: Logback,
             logCatAppender: LogCatAppender
     ): Initializer<Application> = {
-        Thread.setDefaultUncaughtExceptionHandler(debugLoggingUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler()))
+        Thread.setDefaultUncaughtExceptionHandler(debugLoggingUncaughtExceptionHandler(it, Thread.getDefaultUncaughtExceptionHandler()))
         logback.addAppender(logCatAppender.apply {
             context = loggerContext
             start()
@@ -106,19 +107,22 @@ private fun androidLogbackLoggerContext(): LoggerContext {
 
 /**
  * This will allow us to see the full stack track in LogCat.
- * The default LogCat output "E/AndroidRuntime﹕ FATAL EXCEPTION: main ..." gets cut off when > ~4k characters.
- * However we only do this in Debug as calling log.error() may also send the logs to other crash logging services.
- * But as an uncaught exception, this has already been done (thus they will be doubled - but for DEBUG builds only)
+ * The default LogCat output `E/AndroidRuntime﹕ FATAL EXCEPTION: main ...` gets cut off when > ~4k characters.
+ * However we only do this in Debug as calling `log.error()` may also send the logs to other crash logging services.
+ * But as an uncaught exception, this has already been done (thus they will be doubled - but for debuggable builds only)
+ * @see ApplicationInfo.FLAG_DEBUGGABLE
  */
-private fun debugLoggingUncaughtExceptionHandler(wrapped: Thread.UncaughtExceptionHandler) =
+private fun debugLoggingUncaughtExceptionHandler(context: Context, wrapped: Thread.UncaughtExceptionHandler) =
         object : Thread.UncaughtExceptionHandler {
 
             private val log = logger()
 
             override fun uncaughtException(thread: Thread, ex: Throwable) {
-                if (BuildConfig.DEBUG) {
+                if (context.isDebuggable) {
                     log.error("FATAL EXCEPTION", ex)
                 }
                 wrapped.uncaughtException(thread, ex)
             }
         }
+
+private val Context.isDebuggable get() = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
