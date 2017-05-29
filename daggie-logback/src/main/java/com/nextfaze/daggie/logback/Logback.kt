@@ -29,18 +29,19 @@ typealias LogbackAppender = AppenderBase<ILoggingEvent>
 /**
  * Provides bindings that initialize Logback logging.
  *
- * Users are required to provide a binding for `@RootLevel Level`, indicating the default root log level to be used.
- * It's recommended this be based on the debug status of the build:
- *
- *     @Provides @RootLevel fun rootLevel() = if (BuildConfig.DEBUG) Level.TRACE else Level.INFO
+ * Users must provide a `LogbackConfig` binding, to configure properties such as the root log level and config asset
+ * path.
  *
  * By default, a logcat appender is configured. Additional appenders can be configured by providing set bindings for
  * [LogbackAppender].
- * @see RootLevel
  * @see Level
  * @see LogbackAppender
  */
 @Module class LogbackModule {
+    @Provides @Singleton
+    internal fun logback(context: Context, loggerContext: LoggerContext, config: LogbackConfig) =
+            Logback(loggerContext, config.rootLevel ?: defaultRootLevel(context))
+
     @Provides @ElementsIntoSet
     internal fun appenders() = emptySet<LogbackAppender>()
 
@@ -66,15 +67,15 @@ typealias LogbackAppender = AppenderBase<ILoggingEvent>
     internal fun initAppenders(
             app: Application,
             logback: Logback,
+            config: LogbackConfig,
             appenders: @JvmSuppressWildcards Set<LogbackAppender>
     ): Initializer<Application> = {
         appenders.forEach { logback.addAppender(it) }
-        logback.loadConfig(app, "logback.xml")
+        if (config.configAssetPath != null) logback.loadConfig(app, config.configAssetPath)
     }
 }
 
-@Singleton
-internal class Logback @Inject constructor(private val loggerContext: LoggerContext, @RootLevel rootLevel: Level) {
+internal class Logback @Inject constructor(private val loggerContext: LoggerContext, rootLevel: Level) {
     private val rootLogger: Logger =
             (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger).apply { level = rootLevel }
 
@@ -126,3 +127,5 @@ private fun debugLoggingUncaughtExceptionHandler(context: Context, wrapped: Thre
         }
 
 private val Context.isDebuggable get() = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+
+private fun defaultRootLevel(context: Context) = if (context.isDebuggable) Level.TRACE else Level.INFO
