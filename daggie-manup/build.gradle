@@ -4,6 +4,8 @@ apply plugin: 'kotlin-kapt'
 
 project.configureLibrary(this)
 
+android.lintOptions.disable 'InvalidPackage'
+
 dependencies {
     compile project(':daggie')
     compile rootProject.ext.supportAppCompat

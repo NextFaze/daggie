@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 
 project.configureLibrary(this)
 
+android.lintOptions.disable 'InvalidPackage'
+
 dependencies {
     compile project(':daggie')
     compile project(':daggie-slf4j')
