@@ -38,6 +38,10 @@ allprojects {
 ext.configureLibrary = { project ->
     delegate = project
 
+    apply plugin: 'com.android.library'
+    apply plugin: 'kotlin-android'
+    apply plugin: 'kotlin-kapt'
+
     android {
         compileSdkVersion project.compileSdkVersion
         buildToolsVersion project.buildToolsVersion
@@ -59,6 +63,10 @@ ext.configureLibrary = { project ->
         }
 
         resourcePrefix "${project.name.replace("-", "_")}_"
+    }
+
+    dependencies {
+        kapt project.daggerCompiler
     }
 
     apply plugin: 'com.github.dcendents.android-maven'

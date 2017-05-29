@@ -1,7 +1,3 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-
 project.configureLibrary(this)
 
 android.lintOptions.disable 'InvalidPackage'
