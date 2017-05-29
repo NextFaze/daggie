@@ -23,11 +23,7 @@ android {
     lintOptions {
         textReport true
         textOutput 'stdout'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+        disable 'AllowBackup', 'UnusedResources', 'GoogleAppIndexingWarning'
     }
 
     buildTypes {
@@ -44,7 +40,10 @@ dependencies {
 
     // Dagger
     kapt rootProject.ext.daggerCompiler
+    kapt rootProject.ext.daggerAndroidProcessor
     compile rootProject.ext.dagger
+    compile rootProject.ext.daggerAndroid
+    compile rootProject.ext.daggerAndroidSupport
     compile rootProject.ext.daggerAnnotations
 
     // RxLifecycle
