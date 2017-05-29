@@ -25,8 +25,6 @@ import rx.schedulers.Schedulers.io
 import rx.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit.MINUTES
 
-private const val UPDATE_INTERVAL = 10L
-private val UPDATE_UNIT = MINUTES
 private const val RETRY_MAX_DELAY = 10L
 private val RETRY_MAX_DELAY_UNIT = MINUTES
 
@@ -70,7 +68,7 @@ internal fun initManUp(
 
     // Periodically update config and evaluate it, as long as app is foregrounded
     val configSubject: BehaviorSubject<Config> = BehaviorSubject.create<Config>()!!
-    interval(0L, UPDATE_INTERVAL, UPDATE_UNIT)
+    interval(0L, config.pollingInterval, config.pollingIntervalUnit)
             .switchMap { syncConfig }
             .retryWhen { it.exponentialBackoff(maxDelay = RETRY_MAX_DELAY, maxDelayUnit = RETRY_MAX_DELAY_UNIT) }
             .observeOn(mainThread())
