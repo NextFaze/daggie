@@ -64,7 +64,7 @@ internal class DevProxy(private val host: String, private val port: Int) {
 
     private fun onCertError(context: Context) = showToast(context, "Failed to install certificate")
 
-    internal fun asSocketAddress(): SocketAddress = InetSocketAddress(host, port)
+    internal fun asSocketAddress(): SocketAddress = InetSocketAddress.createUnresolved(host, port)
 
     internal fun asProxy() = Proxy(HTTP, asSocketAddress())
 
