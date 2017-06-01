@@ -1,10 +1,8 @@
-package com.nextfaze.daggie
+package com.example.app
 
 import dagger.Module
 
 @Module(includes = arrayOf(ProductionModule::class, DebugModule::class))
 class BuildTypeModule
 
-interface BuildTypeFragmentInjector
-
-interface BuildTypeActivityInjector
+interface BuildTypeInjector
