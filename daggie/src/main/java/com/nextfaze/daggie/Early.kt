@@ -9,4 +9,5 @@ import kotlin.annotation.AnnotationRetention.BINARY
  */
 @Qualifier
 @Retention(BINARY)
+@Deprecated(message = "Use Ordered<T> instead")
 annotation class Early
