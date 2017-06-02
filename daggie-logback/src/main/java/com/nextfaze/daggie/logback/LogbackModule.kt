@@ -11,8 +11,8 @@ import ch.qos.logback.classic.joran.JoranConfigurator
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.Appender
 import ch.qos.logback.core.AppenderBase
-import com.nextfaze.daggie.Early
 import com.nextfaze.daggie.Initializer
+import com.nextfaze.daggie.Ordered
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ElementsIntoSet
@@ -48,17 +48,17 @@ typealias LogbackAppender = AppenderBase<ILoggingEvent>
     internal fun loggerContext() = androidLogbackLoggerContext()
 
     /** Initializes just a logcat appender. Performed early to ensure everything gets logged. */
-    @Provides @IntoSet @Singleton @Early
+    @Provides @IntoSet @Singleton
     internal fun logCatInitializer(
             loggerContext: LoggerContext,
             logback: Logback,
             logCatAppender: LogCatAppender
-    ): Initializer<Application> = {
+    ) = Ordered<Initializer<Application>>(0, {
         logback.addAppender(logCatAppender.apply {
             context = loggerContext
             start()
         })
-    }
+    })
 
     /** Initializes all other appends, and the configuration stored in assets. */
     @Provides @IntoSet @Singleton

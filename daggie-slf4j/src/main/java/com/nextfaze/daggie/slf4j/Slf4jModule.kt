@@ -3,8 +3,8 @@ package com.nextfaze.daggie.slf4j
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import com.nextfaze.daggie.Early
 import com.nextfaze.daggie.Initializer
+import com.nextfaze.daggie.Ordered
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
@@ -12,10 +12,11 @@ import javax.inject.Singleton
 
 /** Provides bindings to initialize SLF4J, including logging uncaught exceptions. */
 @Module class Slf4jModule {
-    @Provides @IntoSet @Singleton @Early internal fun initializer(): Initializer<Application> = {
+    @Provides @IntoSet @Singleton
+    internal fun initializer() = Ordered<Initializer<Application>>(0, {
         Thread.setDefaultUncaughtExceptionHandler(debugLoggingUncaughtExceptionHandler(it,
                 Thread.getDefaultUncaughtExceptionHandler()))
-    }
+    })
 }
 
 /**
