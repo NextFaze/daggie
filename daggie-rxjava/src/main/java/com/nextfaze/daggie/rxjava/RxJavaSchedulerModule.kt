@@ -1,8 +1,13 @@
 package com.nextfaze.daggie.rxjava
 
+import android.app.Application
+import com.nextfaze.daggie.Initializer
+import com.nextfaze.daggie.Ordered
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoSet
 import rx.Scheduler
+import rx.plugins.RxJavaHooks
 import rx.plugins.RxJavaSchedulersHook
 import rx.plugins.RxJavaSchedulersHook.createComputationScheduler
 import rx.plugins.RxJavaSchedulersHook.createIoScheduler
@@ -19,10 +24,18 @@ import javax.inject.Singleton
      * @see [RxJavaSchedulersHook.createIoScheduler]
      * @see [RxJavaSchedulersHook.createComputationScheduler]
      */
-    @Provides @Singleton @Io fun ioScheduler(): Scheduler = createIoScheduler(threadFactory("RxIo-"))
+    @Provides @Singleton @Io
+    internal fun ioScheduler() = createIoScheduler(threadFactory("RxIo-"))!!
 
-    @Provides @Singleton @Computation fun computationScheduler(): Scheduler =
-            createComputationScheduler(threadFactory("RxComp-"))
+    @Provides @Singleton @Computation
+    internal fun computationScheduler() = createComputationScheduler(threadFactory("RxComp-"))!!
+
+    @Provides @Singleton @IntoSet
+    internal fun initializer(@Io ioScheduler: Scheduler, @Computation computationScheduler: Scheduler) =
+            Ordered<Initializer<Application>>(0, {
+                RxJavaHooks.setOnComputationScheduler { computationScheduler }
+                RxJavaHooks.setOnIOScheduler { ioScheduler }
+            })
 }
 
 private fun threadFactory(prefix: String) = object : ThreadFactory {
