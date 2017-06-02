@@ -1,8 +1,8 @@
 package com.nextfaze.daggie.rxjava
 
 import android.app.Application
-import com.nextfaze.daggie.Early
 import com.nextfaze.daggie.Initializer
+import com.nextfaze.daggie.Ordered
 import com.nextfaze.daggie.slf4j.d
 import com.nextfaze.daggie.slf4j.e
 import com.nextfaze.daggie.slf4j.logger
@@ -31,17 +31,15 @@ import javax.inject.Singleton
  * @see RxJavaHooks
  */
 @Module class RxJavaErrorHooksModule {
-    @Provides @IntoSet @Singleton @Early
-    fun initializer(): Initializer<Application> = {
-        RxJavaHooks.clear()
+    @Provides @IntoSet @Singleton
+    internal fun initializer() = Ordered<Initializer<Application>>(0, {
         RxJavaHooks.setOnError(RxErrorHook())
         RxJavaHooks.setOnObservableCreate(::SafeObservableOnSubscribe)
         RxJavaHooks.setOnSingleCreate(::SafeSingleOnSubscribe)
         RxJavaHooks.setOnCompletableCreate(::SafeCompletableOnSubscribe)
         RxJavaHooks.setOnScheduleAction(::SafeAction0)
         RxAndroidPlugins.getInstance().registerSchedulersHook(RxSchedulersHookAndroid())
-        RxJavaHooks.lockdown()
-    }
+    })
 }
 
 private val log = logger("RxJavaErrorHooks")
@@ -53,7 +51,7 @@ private class RxErrorHook : Action1<Throwable> {
      * hence the weak set (using map maker which does identity comparison).
      * *Frequently occurs when using a [Single] with a [Scheduler].*
      */
-    private val logged = newSetFromMap(WeakHashMap<Throwable, Boolean>())!!
+    private val logged: MutableSet<Throwable> = newSetFromMap(WeakHashMap())
 
     override fun call(t: Throwable) {
         if (logged.add(t)) {
