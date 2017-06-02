@@ -9,6 +9,7 @@ import com.nextfaze.daggie.manup.ManUpModule
 import com.nextfaze.daggie.okhttp.OkHttpModule
 import com.nextfaze.daggie.rxjava.RxJavaErrorHooksModule
 import com.nextfaze.daggie.slf4j.Slf4jModule
+import com.nextfaze.daggie.threeten.ThreeTenModule
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
@@ -21,7 +22,8 @@ import okhttp3.HttpUrl
         RxJavaErrorHooksModule::class,
         ManUpModule::class,
         ForegroundModule::class,
-        OkHttpModule::class
+        OkHttpModule::class,
+        ThreeTenModule::class
 ))
 class MainModule {
     @Provides internal fun logbackConfig() = LogbackConfig()
