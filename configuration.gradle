@@ -64,4 +64,5 @@ ext {
     truth = 'com.google.truth:truth:0.32'
     guava = 'com.google.guava:guava:20.0'
     threeTen = 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+    jodaTime = 'net.danlew:android.joda:2.9.9'
 }

@@ -8,6 +8,7 @@ include ':daggie-logback'
 include ':daggie-foreground'
 include ':daggie-okhttp'
 include ':daggie-threeten'
+include ':daggie-jodatime'
 
 if (System.getenv('TRAVIS') != 'true' && System.getenv('JITPACK') != 'true') {
     include ':daggie-sample'

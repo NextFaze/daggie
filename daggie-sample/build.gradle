@@ -48,6 +48,7 @@ dependencies {
     compile project(':daggie-foreground')
     compile project(':daggie-okhttp')
     compile project(':daggie-threeten')
+    compile project(':daggie-jodatime')
     debugCompile project(':daggie-dev-proxy')
     compile rootProject.ext.supportAppCompat
 
