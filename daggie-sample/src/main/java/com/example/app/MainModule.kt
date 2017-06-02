@@ -1,5 +1,6 @@
-package com.nextfaze.daggie
+package com.example.app
 
+import com.nextfaze.daggie.AndroidModule
 import com.nextfaze.daggie.foreground.ForegroundModule
 import com.nextfaze.daggie.logback.LogbackConfig
 import com.nextfaze.daggie.logback.LogbackModule

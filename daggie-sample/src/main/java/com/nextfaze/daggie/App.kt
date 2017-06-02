@@ -3,6 +3,7 @@ package com.nextfaze.daggie
 import com.example.app.BuildTypeInjector
 import com.example.app.BuildTypeModule
 import com.example.app.MainActivity
+import com.example.app.MainModule
 import com.example.app.MyView
 import com.example.app.UserScopeComponent
 import com.example.app.UserScopeManager

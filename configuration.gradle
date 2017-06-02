@@ -62,4 +62,5 @@ ext {
     rxRelay = 'com.jakewharton.rxrelay:rxrelay:1.2.0'
     junit = 'junit:junit:4.12'
     truth = 'com.google.truth:truth:0.32'
+    guava = 'com.google.guava:guava:20.0'
 }
