@@ -53,12 +53,12 @@ typealias LogbackAppender = AppenderBase<ILoggingEvent>
             loggerContext: LoggerContext,
             logback: Logback,
             logCatAppender: LogCatAppender
-    ) = Ordered<Initializer<Application>>(0, {
+    ) = Ordered<Initializer<Application>>(0) {
         logback.addAppender(logCatAppender.apply {
             context = loggerContext
             start()
         })
-    })
+    }
 
     /** Initializes all other appends, and the configuration stored in assets. */
     @Provides @IntoSet @Singleton

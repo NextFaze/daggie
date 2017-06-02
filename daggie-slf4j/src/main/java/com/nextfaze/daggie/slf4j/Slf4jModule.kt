@@ -13,10 +13,10 @@ import javax.inject.Singleton
 /** Provides bindings to initialize SLF4J, including logging uncaught exceptions. */
 @Module class Slf4jModule {
     @Provides @IntoSet @Singleton
-    internal fun initializer() = Ordered<Initializer<Application>>(0, {
+    internal fun initializer() = Ordered<Initializer<Application>>(0) {
         Thread.setDefaultUncaughtExceptionHandler(debugLoggingUncaughtExceptionHandler(it,
                 Thread.getDefaultUncaughtExceptionHandler()))
-    })
+    }
 }
 
 /**

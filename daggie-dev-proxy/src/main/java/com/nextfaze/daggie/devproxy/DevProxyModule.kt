@@ -21,7 +21,7 @@ import javax.inject.Singleton
     internal fun devProxy(config: DevProxyConfig) = DevProxy(config.host, config.port)
 
     @Provides @IntoSet @Singleton
-    internal fun initializer(devProxy: DevProxy) = Ordered<Initializer<Application>>(0, { devProxy.install(it) })
+    internal fun initializer(devProxy: DevProxy) = Ordered<Initializer<Application>>(0) { devProxy.install(it) }
 
     @Provides @Singleton
     internal fun proxy(devProxy: DevProxy) = devProxy.asProxy()

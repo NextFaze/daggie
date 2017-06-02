@@ -32,10 +32,10 @@ import javax.inject.Singleton
 
     @Provides @Singleton @IntoSet
     internal fun initializer(@Io ioScheduler: Scheduler, @Computation computationScheduler: Scheduler) =
-            Ordered<Initializer<Application>>(0, {
+            Ordered<Initializer<Application>>(0) {
                 RxJavaHooks.setOnComputationScheduler { computationScheduler }
                 RxJavaHooks.setOnIOScheduler { ioScheduler }
-            })
+            }
 }
 
 private fun threadFactory(prefix: String) = object : ThreadFactory {

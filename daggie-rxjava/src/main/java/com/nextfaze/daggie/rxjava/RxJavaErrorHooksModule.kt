@@ -32,14 +32,14 @@ import javax.inject.Singleton
  */
 @Module class RxJavaErrorHooksModule {
     @Provides @IntoSet @Singleton
-    internal fun initializer() = Ordered<Initializer<Application>>(0, {
+    internal fun initializer() = Ordered<Initializer<Application>>(0) {
         RxJavaHooks.setOnError(RxErrorHook())
         RxJavaHooks.setOnObservableCreate(::SafeObservableOnSubscribe)
         RxJavaHooks.setOnSingleCreate(::SafeSingleOnSubscribe)
         RxJavaHooks.setOnCompletableCreate(::SafeCompletableOnSubscribe)
         RxJavaHooks.setOnScheduleAction(::SafeAction0)
         RxAndroidPlugins.getInstance().registerSchedulersHook(RxSchedulersHookAndroid())
-    })
+    }
 }
 
 private val log = logger("RxJavaErrorHooks")
