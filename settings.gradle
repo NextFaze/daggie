@@ -1,6 +1,6 @@
 rootProject.name = 'daggie-root'
 include ':daggie'
-include ':daggie-dev-proxy'
+include ':daggie-devproxy'
 include ':daggie-manup'
 include ':daggie-rxjava'
 include ':daggie-slf4j'
