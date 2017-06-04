@@ -10,6 +10,7 @@ include ':daggie-okhttp'
 include ':daggie-threeten'
 include ':daggie-jodatime'
 include ':daggie-leakcanary'
+include ':daggie-stetho'
 
 if (System.getenv('TRAVIS') != 'true' && System.getenv('JITPACK') != 'true') {
     include ':daggie-sample'

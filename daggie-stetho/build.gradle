@@ -1,0 +1,6 @@
+project.configureLibrary(this)
+
+dependencies {
+    compile project(':daggie')
+    compile rootProject.ext.stetho
+}

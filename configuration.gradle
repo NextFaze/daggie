@@ -66,4 +66,5 @@ ext {
     threeTen = 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     jodaTime = 'net.danlew:android.joda:2.9.9'
     leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    stetho = 'com.facebook.stetho:stetho:1.5.0'
 }
