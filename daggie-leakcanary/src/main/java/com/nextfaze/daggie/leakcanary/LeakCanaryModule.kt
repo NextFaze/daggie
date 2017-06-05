@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoSet
 
 @Module class LeakCanaryModule {
-    @Provides @IntoSet fun initializer(): Initializer<Application> = {
+    @Provides @IntoSet internal fun initializer(): Initializer<Application> = {
         LeakCanary.install(it)
     }
 }

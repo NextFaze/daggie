@@ -10,5 +10,5 @@ import net.danlew.android.joda.JodaTimeAndroid
 
 /** Provides bindings that initialize the JodaTime Android library. */
 @Module class JodaTimeModule {
-    @Provides @IntoSet fun initializer() = Ordered<Initializer<Application>>(0) { JodaTimeAndroid.init(it) }
+    @Provides @IntoSet internal fun initializer() = Ordered<Initializer<Application>>(0) { JodaTimeAndroid.init(it) }
 }

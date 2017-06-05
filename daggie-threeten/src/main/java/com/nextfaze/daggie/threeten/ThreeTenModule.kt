@@ -10,5 +10,5 @@ import dagger.multibindings.IntoSet
 
 /** Provides bindings that initialize the ThreeTen Android Backport library. */
 @Module class ThreeTenModule {
-    @Provides @IntoSet fun initializer() = Ordered<Initializer<Application>>(0) { AndroidThreeTen.init(it) }
+    @Provides @IntoSet internal fun initializer() = Ordered<Initializer<Application>>(0) { AndroidThreeTen.init(it) }
 }

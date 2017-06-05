@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoSet
 
 @Module class StethoModule {
-    @Provides @IntoSet fun initializer(): Initializer<Application> = {
+    @Provides @IntoSet internal fun initializer(): Initializer<Application> = {
         Stetho.initializeWithDefaults(it)
     }
 }
