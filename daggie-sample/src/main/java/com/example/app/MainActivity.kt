@@ -3,6 +3,7 @@ package com.example.app
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.nextfaze.daggie.Injector
 import com.nextfaze.daggie.sample.R
 import com.nextfaze.daggie.slf4j.d
@@ -23,6 +24,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.main_activity)
         userScopeManager.user = User("Joe")
         userProfileButton.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        Glide.with(this).load("http://thecatapi.com/api/images/get?format=src&type=png").into(imageView)
         log.d { "Test" }
     }
 

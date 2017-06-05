@@ -1,0 +1,8 @@
+project.configureLibrary(this)
+
+dependencies {
+    compile project(':daggie')
+    compile rootProject.ext.glide
+    compile rootProject.ext.glideOkHttpIntegration
+    compile rootProject.ext.okhttp
+}

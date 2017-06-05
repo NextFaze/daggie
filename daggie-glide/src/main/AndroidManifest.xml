@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.nextfaze.daggie.glide">
+
+    <application>
+        <meta-data
+            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            tools:node="remove" />
+        <meta-data
+            android:name="com.nextfaze.daggie.glide.internal.GlideManifestModule"
+            android:value="GlideModule" />
+    </application>
+</manifest>

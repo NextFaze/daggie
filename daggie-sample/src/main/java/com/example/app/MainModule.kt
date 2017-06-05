@@ -2,6 +2,7 @@ package com.example.app
 
 import com.nextfaze.daggie.AndroidModule
 import com.nextfaze.daggie.foreground.ForegroundModule
+import com.nextfaze.daggie.glide.GlideModule
 import com.nextfaze.daggie.jodatime.JodaTimeModule
 import com.nextfaze.daggie.logback.LogbackConfig
 import com.nextfaze.daggie.logback.LogbackModule
@@ -25,7 +26,8 @@ import okhttp3.HttpUrl
         ForegroundModule::class,
         OkHttpModule::class,
         ThreeTenModule::class,
-        JodaTimeModule::class
+        JodaTimeModule::class,
+        GlideModule::class
 ))
 class MainModule {
     @Provides internal fun logbackConfig() = LogbackConfig()
