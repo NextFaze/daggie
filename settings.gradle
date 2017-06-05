@@ -9,6 +9,7 @@ include ':daggie-foreground'
 include ':daggie-okhttp'
 include ':daggie-threeten'
 include ':daggie-jodatime'
+include ':daggie-gson'
 include ':daggie-leakcanary'
 include ':daggie-stetho'
 
