@@ -1,5 +1,6 @@
 pipeline {
     options {
+        timeout(time: 1, unit: 'HOURS')
         gitLabConnection('gitlab.nextfaze.com')
     }
     triggers {
@@ -8,33 +9,29 @@ pipeline {
 
     agent { label 'android' }
 
+    environment {
+        MAVEN = credentials('jenkins-maven')
+    }
+
     stages {
         stage('Assemble') {
             steps {
-                withCredentials([[
-                    $class: 'UsernamePasswordMultiBinding',
-                    credentialsId: 'jenkins-maven',
-                    usernameVariable: 'USERNAME',
-                    passwordVariable: 'PASSWORD'
-                ]]) {
-                    gitlabCommitStatus(name: 'build') {
-                        sh "./gradlew clean daggie:assemble -PnextfazeArtifactoryUser=$USERNAME -PnextfazeArtifactoryPassword=$PASSWORD"
-                    }
+                gitlabCommitStatus(name: 'build') {
+                    sh """./gradlew clean assemble \
+                        -PnextfazeArtifactoryUser="$MAVEN_USR" \
+                        -PnextfazeArtifactoryPassword="$MAVEN_PSW"
+                    """
                 }
             }
         }
 
         stage('Lint') {
             steps {
-                withCredentials([[
-                    $class: 'UsernamePasswordMultiBinding',
-                    credentialsId: 'jenkins-maven',
-                    usernameVariable: 'USERNAME',
-                    passwordVariable: 'PASSWORD'
-                ]]) {
-                    gitlabCommitStatus(name: 'lint') {
-                        sh "./gradlew daggie:lint -PnextfazeArtifactoryUser=$USERNAME -PnextfazeArtifactoryPassword=$PASSWORD"
-                    }
+                gitlabCommitStatus(name: 'lint') {
+                    sh """./gradlew lint \
+                        -PnextfazeArtifactoryUser="$MAVEN_USR" \
+                        -PnextfazeArtifactoryPassword="$MAVEN_PSW"
+                    """
                 }
             }
             post {
@@ -46,15 +43,12 @@ pipeline {
 
         stage('Test') {
             steps {
-                withCredentials([[
-                    $class: 'UsernamePasswordMultiBinding',
-                    credentialsId: 'jenkins-maven',
-                    usernameVariable: 'USERNAME',
-                    passwordVariable: 'PASSWORD'
-                ]]) {
-                    gitlabCommitStatus(name: "test") {
-                        sh "./gradlew --continue daggie:test -PnextfazeArtifactoryUser=$USERNAME -PnextfazeArtifactoryPassword=$PASSWORD || true"
-                    }
+                gitlabCommitStatus(name: "test") {
+                    sh """./gradlew --continue test \
+                        -PnextfazeArtifactoryUser="$MAVEN_USR" \
+                        -PnextfazeArtifactoryPassword="$MAVEN_PSW" \
+                        || true
+                    """
                 }
             }
             post {
