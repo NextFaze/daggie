@@ -9,6 +9,7 @@ import com.nextfaze.daggie.logback.LogbackConfig
 import com.nextfaze.daggie.logback.LogbackModule
 import com.nextfaze.daggie.manup.ManUpConfig
 import com.nextfaze.daggie.manup.ManUpModule
+import com.nextfaze.daggie.moshi.MoshiModule
 import com.nextfaze.daggie.okhttp.OkHttpModule
 import com.nextfaze.daggie.rxjava.RxJavaErrorHooksModule
 import com.nextfaze.daggie.slf4j.Slf4jModule
@@ -29,7 +30,8 @@ import okhttp3.HttpUrl
         ThreeTenModule::class,
         JodaTimeModule::class,
         GlideModule::class,
-        GsonModule::class
+        GsonModule::class,
+        MoshiModule::class
 ))
 class MainModule {
     @Provides internal fun logbackConfig() = LogbackConfig()

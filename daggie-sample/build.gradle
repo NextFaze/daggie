@@ -51,6 +51,7 @@ dependencies {
     compile project(':daggie-jodatime')
     compile project(':daggie-glide')
     compile project(':daggie-gson')
+    compile project(':daggie-moshi')
     debugCompile project(':daggie-leakcanary')
     debugCompile project(':daggie-stetho')
     debugCompile project(':daggie-devproxy')
