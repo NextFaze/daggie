@@ -18,31 +18,36 @@ private const val MAX_CACHE_SIZE_BYTES: Long = 10 * 1024 * 1024
  * Provides an [OkHttpClient] binding, which is configured with a cache.
  *
  * Users can further configure the client by providing:
- * * `Configurator<OkHttpClient.Builder>` set bindings to append additional configuration to the [OkHttpClient.Builder]
- * * `Ordered<Interceptor>` set bindings to add [interceptors][OkHttpClient.Builder.addInterceptor] in the order defined
- * by [Ordered.order]
- * * `Interceptor` set bindings to add interceptors in an undefined order AFTER the ordered interceptors
- * * `@Network Ordered<Interceptor>` set bindings to add
- * [network interceptors][OkHttpClient.Builder.addNetworkInterceptor] in the order defined by [Ordered.order]
- * * `@Network Interceptor` set bindings to add network interceptors in an undefined order AFTER the ordered network
+ * * [Ordered]<[Configurator]<[OkHttpClient.Builder]>> set bindings to append additional configuration to the
+ * `OkHttpClient.Builder` in the natural ordering of [Ordered]
+ * * [Configurator]<[OkHttpClient.Builder]> set bindings to append additional configuration to the
+ * `OkHttpClient.Builder` in an undefined order AFTER the ordered configurators
+ * * [Ordered]<[Interceptor]> set bindings to [add interceptors][OkHttpClient.Builder.addInterceptor] in the natural
+ * ordering of [Ordered]
+ * * [Interceptor] set bindings to add interceptors in an undefined order AFTER the ordered interceptors
+ * * `@Network` [Ordered]<[Interceptor]> set bindings to
+ * [add network interceptors][OkHttpClient.Builder.addNetworkInterceptor] in the natural order of [Ordered]
+ * * `@Network` [Interceptor] set bindings to add network interceptors in an undefined order AFTER the ordered network
  * interceptors
- * @see OkHttpClient.Builder.addInterceptor
- * @see OkHttpClient.Builder.addNetworkInterceptor
+ * @see OkHttpClient.Builder
  * @see Network
  * @see Ordered
+ * @see Configurator
  */
 @Module class OkHttpModule {
     @Provides @Singleton
     internal fun okHttpClient(
             cache: Cache,
-            configurators: @JvmSuppressWildcards Set<Configurator<OkHttpClient.Builder>>,
+            orderedConfigurators: @JvmSuppressWildcards Set<Ordered<Configurator<OkHttpClient.Builder>>>,
+            unorderedConfigurators: @JvmSuppressWildcards Set<Configurator<OkHttpClient.Builder>>,
             orderedInterceptorEntries: @JvmSuppressWildcards Set<Ordered<Interceptor>>,
             unorderedInterceptorEntries: @JvmSuppressWildcards Set<Interceptor>,
             @Network orderedNetworkInterceptorEntries: @JvmSuppressWildcards Set<Ordered<Interceptor>>,
             @Network unorderedNetworkInterceptorEntries: @JvmSuppressWildcards Set<Interceptor>
     ): OkHttpClient {
         val builder = OkHttpClient.Builder().cache(cache)
-        configurators.forEach { it(builder) }
+        orderedConfigurators.asSequence().sorted().map { it.value }.forEach { it(builder) }
+        unorderedConfigurators.forEach { it(builder) }
         orderedNetworkInterceptorEntries.asSequence().sorted().map { it.value }.forEach { builder.addNetworkInterceptor(it) }
         unorderedNetworkInterceptorEntries.forEach { builder.addNetworkInterceptor(it) }
         orderedInterceptorEntries.asSequence().sorted().map { it.value }.forEach { builder.addInterceptor(it) }
