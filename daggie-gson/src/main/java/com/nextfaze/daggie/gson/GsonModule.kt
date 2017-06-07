@@ -40,5 +40,7 @@ import javax.inject.Singleton
 
     @Provides @ElementsIntoSet internal fun defaultOrderedTypeAdapterFactories() = emptySet<Ordered<TypeAdapterFactory>>()
 
-    @Provides @ElementsIntoSet internal fun defaultGsonBuilderConfigurators() = emptySet<Configurator<GsonBuilder>>()
+    @Provides @ElementsIntoSet internal fun defaultGsonBuilderOrderedConfigurators() = emptySet<Ordered<Configurator<GsonBuilder>>>()
+
+    @Provides @ElementsIntoSet internal fun defaultGsonBuilderUnorderedConfigurators() = emptySet<Configurator<GsonBuilder>>()
 }

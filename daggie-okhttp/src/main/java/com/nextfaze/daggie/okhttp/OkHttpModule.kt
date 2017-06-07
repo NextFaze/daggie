@@ -37,7 +37,7 @@ private const val MAX_CACHE_SIZE_BYTES: Long = 10 * 1024 * 1024
 @Module class OkHttpModule {
     @Provides @Singleton
     internal fun okHttpClient(
-            cache: Cache,
+            context: Context,
             orderedConfigurators: @JvmSuppressWildcards Set<Ordered<Configurator<OkHttpClient.Builder>>>,
             unorderedConfigurators: @JvmSuppressWildcards Set<Configurator<OkHttpClient.Builder>>,
             orderedInterceptorEntries: @JvmSuppressWildcards Set<Ordered<Interceptor>>,
@@ -45,7 +45,8 @@ private const val MAX_CACHE_SIZE_BYTES: Long = 10 * 1024 * 1024
             @Network orderedNetworkInterceptorEntries: @JvmSuppressWildcards Set<Ordered<Interceptor>>,
             @Network unorderedNetworkInterceptorEntries: @JvmSuppressWildcards Set<Interceptor>
     ): OkHttpClient {
-        val builder = OkHttpClient.Builder().cache(cache)
+        val defaultCache = Cache(File(context.cacheDir, "okhttp-cache"), MAX_CACHE_SIZE_BYTES)
+        val builder = OkHttpClient.Builder().cache(defaultCache)
         orderedConfigurators.asSequence().sorted().map { it.value }.forEach { it(builder) }
         unorderedConfigurators.forEach { it(builder) }
         orderedNetworkInterceptorEntries.asSequence().sorted().map { it.value }.forEach { builder.addNetworkInterceptor(it) }
@@ -55,13 +56,14 @@ private const val MAX_CACHE_SIZE_BYTES: Long = 10 * 1024 * 1024
         return builder.build()
     }
 
-    // TODO: Allow external Cache binding using Optional<Cache>
-
     @Provides @Singleton
     internal fun cache(context: Context) = Cache(File(context.cacheDir, "okhttp-cache"), MAX_CACHE_SIZE_BYTES)
 
     @Provides @ElementsIntoSet
-    internal fun defaultOkHttpClientBuilderConfigurators() = emptySet<Configurator<OkHttpClient.Builder>>()
+    internal fun defaultOrderedOkHttpClientBuilderConfigurators() = emptySet<Ordered<Configurator<OkHttpClient.Builder>>>()
+
+    @Provides @ElementsIntoSet
+    internal fun defaultUnorderedOkHttpClientBuilderConfigurators() = emptySet<Configurator<OkHttpClient.Builder>>()
 
     @Provides @ElementsIntoSet
     internal fun defaultOrderedInterceptors() = emptySet<@JvmSuppressWildcards Ordered<Interceptor>>()
