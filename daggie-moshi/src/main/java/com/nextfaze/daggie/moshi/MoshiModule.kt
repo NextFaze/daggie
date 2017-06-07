@@ -13,13 +13,14 @@ import javax.inject.Singleton
  * Provides a [Moshi] binding.
  *
  * Users can further configure Moshi by providing:
- * * [Ordered]<[Configurator]<[Moshi.Builder]>> set bindings to append additional configuration to the `Moshi.Builder` in
- * the natural ordering of [Ordered]
- * * [Configurator]<[Moshi.Builder]> set bindings to append additional configuration to the `Moshi.Builder` AFTER the
- * ordered configurators
+ * * [Ordered]<[Configurator]<[Moshi.Builder]>> set bindings to append additional configuration to the `Moshi.Builder`
+ * in the natural ordering of [Ordered]
+ * * [Configurator]<[Moshi.Builder]> set bindings to append additional configuration to the `Moshi.Builder` in an
+ * undefined order AFTER the ordered configurators
  * * [Ordered]<[JsonAdapter.Factory]> set bindings to register `JsonAdapter.Factory` instances in the natural ordering
  * of [Ordered]
- * * [JsonAdapter.Factory] set bindings to register JSON adapter factories AFTER the ordered factories
+ * * [JsonAdapter.Factory] set bindings to register JSON adapter factories in an undefined order AFTER the ordered
+ * `JsonAdapter.Factory` instances
  */
 @Module class MoshiModule {
     @Provides @Singleton internal fun moshi(
