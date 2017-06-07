@@ -5,6 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:networkSecurityConfig="@xml/daggie_dev_proxy_network_security_config"
+        android:networkSecurityConfig="@xml/daggie_devproxy_network_security_config"
         tools:targetApi="n" />
 </manifest>
