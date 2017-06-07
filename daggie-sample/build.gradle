@@ -29,6 +29,7 @@ android {
         textReport true
         textOutput 'stdout'
         disable 'AllowBackup', 'UnusedResources', 'GoogleAppIndexingWarning', 'InvalidPackage'
+        abortOnError getBoolProperty('lintAbortOnError', false)
     }
 
     buildTypes {
@@ -36,6 +37,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dexOptions {
+        preDexLibraries = getBoolProperty('dexPreDexLibraries', true)
     }
 }
 
@@ -61,7 +66,6 @@ dependencies {
     kapt rootProject.ext.daggerCompiler
     compile rootProject.ext.dagger
     compile rootProject.ext.daggerAnnotations
-    compile rootProject.ext.okhttp
 
     // RxLifecycle
     def rxLifecycleVersion = '1.0'
