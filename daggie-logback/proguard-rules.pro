@@ -1,0 +1,1 @@
+-dontwarn ch.qos.logback.core.net.**
