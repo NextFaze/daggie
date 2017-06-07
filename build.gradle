@@ -71,6 +71,8 @@ ext.configureLibrary = { project ->
         testCompile project.truth
         testCompile project.mockito
         testCompile project.mockitoKotlin
+        testCompile project.kotlinStdlib
+        testCompile project.kotlinReflect
     }
 
     apply plugin: 'com.github.dcendents.android-maven'
