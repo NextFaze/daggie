@@ -28,7 +28,7 @@ android {
     lintOptions {
         textReport true
         textOutput 'stdout'
-        disable 'AllowBackup', 'UnusedResources', 'GoogleAppIndexingWarning'
+        disable 'AllowBackup', 'UnusedResources', 'GoogleAppIndexingWarning', 'InvalidPackage'
     }
 
     buildTypes {
