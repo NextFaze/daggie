@@ -67,6 +67,10 @@ ext.configureLibrary = { project ->
 
     dependencies {
         kapt project.daggerCompiler
+        testCompile project.junit
+        testCompile project.truth
+        testCompile project.mockito
+        testCompile project.mockitoKotlin
     }
 
     apply plugin: 'com.github.dcendents.android-maven'
