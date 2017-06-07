@@ -14,21 +14,26 @@ import javax.inject.Singleton
  * Provides a [Gson] binding.
  *
  * Users can further configure Gson by providing:
- * * `Configurator<GsonBuilder>` set bindings to append additional configuration to the [GsonBuilder]
- * * `Ordered<TypeAdapterFactory>` set bindings to register [type adapter factories][TypeAdapterFactory] in the order
- * defined by [Ordered.order]
- * * `TypeAdapterFactory` set bindings to register type adapter factories in an undefined order AFTER the ordered
- * type adapter factories
+ * * [Ordered]<[Configurator]<[GsonBuilder]>> set bindings to append additional configuration to the `GsonBuilder` in
+ * the natural ordering of [Ordered]
+ * * [Configurator]<[GsonBuilder]> set bindings to append additional configuration to the `GsonBuilder` in an undefined
+ * order AFTER the ordered configurators
+ * * [Ordered]<[TypeAdapterFactory]> set bindings to register `TypeAdapterFactory` instances in the natural ordering of
+ * [Ordered]
+ * * [TypeAdapterFactory] set bindings to register `TypeAdapterFactory` instances in an undefined order AFTER the ordered
+ * `TypeAdapterFactory` instances
  */
 @Module class GsonModule {
     @Provides @Singleton internal fun gson(
             orderedTypeAdapterFactories: Set<@JvmSuppressWildcards Ordered<TypeAdapterFactory>>,
             unorderedTypeAdapterFactories: Set<@JvmSuppressWildcards TypeAdapterFactory>,
-            configurators: Set<@JvmSuppressWildcards Configurator<GsonBuilder>>
+            orderedConfigurators: Set<@JvmSuppressWildcards Ordered<Configurator<GsonBuilder>>>,
+            unorderedConfigurators: Set<@JvmSuppressWildcards Configurator<GsonBuilder>>
     ) = GsonBuilder().apply {
         orderedTypeAdapterFactories.asSequence().sorted().map { it.value }.forEach { registerTypeAdapterFactory(it) }
         unorderedTypeAdapterFactories.forEach { registerTypeAdapterFactory(it) }
-        configurators.forEach { it(this) }
+        orderedConfigurators.asSequence().sorted().map { it.value }.forEach { it(this) }
+        unorderedConfigurators.forEach { it(this) }
     }.create()!!
 
     @Provides @ElementsIntoSet internal fun defaultUnorderedTypeAdapterFactories() = emptySet<TypeAdapterFactory>()
