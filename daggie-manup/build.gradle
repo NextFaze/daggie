@@ -1,6 +1,6 @@
 project.configureLibrary(this)
 
-android.lintOptions.disable 'InvalidPackage'
+android.lintOptions.disable 'InvalidPackage', 'UnusedResources'
 
 dependencies {
     compile project(':daggie')
