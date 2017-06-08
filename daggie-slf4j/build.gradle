@@ -3,6 +3,6 @@ project.configureLibrary(this)
 android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
 
 dependencies {
-    compile project(':daggie')
-    compile rootProject.ext.slf4jApi
+    api project(':daggie')
+    api rootProject.ext.slf4jApi
 }

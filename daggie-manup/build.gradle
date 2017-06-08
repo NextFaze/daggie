@@ -3,20 +3,20 @@ project.configureLibrary(this)
 android.lintOptions.disable 'InvalidPackage', 'UnusedResources'
 
 dependencies {
-    compile project(':daggie')
-    compile rootProject.ext.supportAppCompat
-    compile rootProject.ext.slf4jApi
-    compile rootProject.ext.okhttp
-    compile rootProject.ext.rxJava
-    compile rootProject.ext.rxAndroid
-    compile rootProject.ext.rxPreferences
-    compile rootProject.ext.retrofitAdapterRxJava
-    compile rootProject.ext.retrofitConverterGson
+    api project(':daggie')
+    api rootProject.ext.supportAppCompat
+    api rootProject.ext.slf4jApi
+    api rootProject.ext.okhttp
+    api rootProject.ext.rxJava
+    api rootProject.ext.rxAndroid
+    api rootProject.ext.rxPreferences
+    api rootProject.ext.retrofitAdapterRxJava
+    api rootProject.ext.retrofitConverterGson
     kapt rootProject.ext.autoValue
-    provided rootProject.ext.autoValue
+    compileOnly rootProject.ext.autoValue
     kapt rootProject.ext.autoValueGson
-    provided rootProject.ext.autoValueGson
+    compileOnly rootProject.ext.autoValueGson
     kapt rootProject.ext.autoValueParcel
-    provided rootProject.ext.autoValueParcel
-    compile rootProject.ext.autoValueParcelAdapter
+    compileOnly rootProject.ext.autoValueParcel
+    api rootProject.ext.autoValueParcelAdapter
 }

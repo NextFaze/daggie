@@ -1,6 +1,6 @@
 project.configureLibrary(this)
 
 dependencies {
-    compile project(':daggie')
-    compile rootProject.ext.leakCanary
+    api project(':daggie')
+    api rootProject.ext.leakCanary
 }

@@ -45,40 +45,40 @@ android {
 }
 
 dependencies {
-    compile project(':daggie')
-    compile project(':daggie-slf4j')
-    compile project(':daggie-logback')
-    compile project(':daggie-rxjava')
-    compile project(':daggie-manup')
-    compile project(':daggie-foreground')
-    compile project(':daggie-okhttp')
-    compile project(':daggie-threeten')
-    compile project(':daggie-jodatime')
-    compile project(':daggie-glide')
-    compile project(':daggie-gson')
-    compile project(':daggie-moshi')
-    debugCompile project(':daggie-leakcanary')
-    debugCompile project(':daggie-stetho')
-    debugCompile project(':daggie-devproxy')
-    compile rootProject.ext.supportAppCompat
+    implementation project(':daggie')
+    implementation project(':daggie-slf4j')
+    implementation project(':daggie-logback')
+    implementation project(':daggie-rxjava')
+    implementation project(':daggie-manup')
+    implementation project(':daggie-foreground')
+    implementation project(':daggie-okhttp')
+    implementation project(':daggie-threeten')
+    implementation project(':daggie-jodatime')
+    implementation project(':daggie-glide')
+    implementation project(':daggie-gson')
+    implementation project(':daggie-moshi')
+    debugImplementation project(':daggie-leakcanary')
+    debugImplementation project(':daggie-stetho')
+    debugImplementation project(':daggie-devproxy')
+    implementation rootProject.ext.supportAppCompat
 
     // Dagger
     kapt rootProject.ext.daggerCompiler
-    compile rootProject.ext.dagger
-    compile rootProject.ext.daggerAnnotations
+    implementation rootProject.ext.dagger
+    implementation rootProject.ext.daggerAnnotations
 
     // RxLifecycle
     def rxLifecycleVersion = '1.0'
-    compile "com.trello:rxlifecycle:$rxLifecycleVersion"
-    compile "com.trello:rxlifecycle-kotlin:$rxLifecycleVersion"
-    compile "com.trello:rxlifecycle-components:$rxLifecycleVersion"
+    implementation "com.trello:rxlifecycle:$rxLifecycleVersion"
+    implementation "com.trello:rxlifecycle-kotlin:$rxLifecycleVersion"
+    implementation "com.trello:rxlifecycle-components:$rxLifecycleVersion"
 
     // Conductor
-    compile 'com.bluelinelabs:conductor:2.1.3'
-    compile 'com.bluelinelabs:conductor-rxlifecycle:2.1.3'
+    implementation 'com.bluelinelabs:conductor:2.1.3'
+    implementation 'com.bluelinelabs:conductor-rxlifecycle:2.1.3'
 
     // JUnit
-    testCompile rootProject.ext.junit
+    testImplementation rootProject.ext.junit
 }
 
 def getStringProperty(String name, String defaultValue) {

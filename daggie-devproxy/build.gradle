@@ -3,8 +3,8 @@ project.configureLibrary(this)
 android.lintOptions.disable 'InvalidPackage'
 
 dependencies {
-    compile project(':daggie')
-    compile rootProject.ext.slf4jApi
-    compile rootProject.ext.okhttp
-    compile rootProject.ext.rxJava
+    api project(':daggie')
+    api rootProject.ext.slf4jApi
+    api rootProject.ext.okhttp
+    api rootProject.ext.rxJava
 }

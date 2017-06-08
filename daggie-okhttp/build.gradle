@@ -6,6 +6,6 @@ android {
 }
 
 dependencies {
-    compile project(':daggie')
-    compile rootProject.ext.okhttp
+    api project(':daggie')
+    api rootProject.ext.okhttp
 }
