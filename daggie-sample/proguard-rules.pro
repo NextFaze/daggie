@@ -1,25 +1,38 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /Users/btilbrook/.android-sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
 
-# Add any project specific keep options here:
+-dontobfuscate
+-dontwarn java.awt.**
+-dontwarn java.nio.file.**
+-dontwarn com.google.common.**
+-dontwarn org.codehaus.mojo.animal_sniffer.**
+-dontwarn java.lang.invoke.**
+-dontwarn org.jetbrains.anko.internals.**
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Kotlin
+-dontwarn kotlin.reflect.jvm.internal.**
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Fabric
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Retrofit
+-dontwarn retrofit2.Platform$Java8
+-dontwarn retrofit2.adapter.rxjava.CompletableHelper*
+
+# PrettyTime
+-keep class org.ocpsoft.prettytime.i18n.**
+
+# Brightcove
+-dontwarn com.brightcove.**
+-keep public class com.brightcove.player.** {
+    public *;
+}
+-keepclassmembers public class com.brightcove.player.** {
+    public *;
+}
+-keepclasseswithmembers public class com.brightcove.player.** {
+    public *;
+}
+
+# DevFun
+-keep class com.nextfaze.devfun.**
