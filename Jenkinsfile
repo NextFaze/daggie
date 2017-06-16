@@ -43,7 +43,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                gitlabCommitStatus(name: "test") {
+                gitlabCommitStatus(name: 'test') {
                     sh """./gradlew --continue test \
                         -PnextfazeArtifactoryUser="$MAVEN_USR" \
                         -PnextfazeArtifactoryPassword="$MAVEN_PSW" \
