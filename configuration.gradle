@@ -41,7 +41,7 @@ ext {
     autoValueParcel = "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
     autoValueParcelAdapter = "com.ryanharter.auto.value:auto-value-parcel-adapter:$autoValueParcelVersion"
 
-    retrofitVersion = '2.2.0'
+    retrofitVersion = '2.3.0'
     retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
     retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -50,7 +50,7 @@ ext {
     logbackCore = "com.github.tony19:logback-android-core:$logbackVersion"
     logbackAndroid = "com.github.tony19:logback-android-classic:$logbackVersion"
 
-    okhttp = 'com.squareup.okhttp3:okhttp:3.8.0'
+    okhttp = 'com.squareup.okhttp3:okhttp:3.8.1'
     gson = 'com.google.code.gson:gson:2.8.0'
     moshi = 'com.squareup.moshi:moshi:1.5.0'
     slf4jApi = 'org.slf4j:slf4j-api:1.7.22'
