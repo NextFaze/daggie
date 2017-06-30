@@ -41,7 +41,8 @@ class ErrorHooksTest {
     }
 
     // Can't seem to do anything about this exception slipping through
-    @Ignore @Test fun observable_exceptionInOnSubscribeWithOnErrorNotImplementedIsHooked() {
+    @Ignore("Doesn't appear as if these exceptions can be caught") @Test
+    fun observable_exceptionInOnSubscribeWithOnErrorNotImplementedIsHooked() {
         Observable.unsafeCreate<Any> { throw ErrorHooksException() }.subscribe()
         verifyHooked<OnErrorNotImplementedException>()
     }
@@ -87,7 +88,8 @@ class ErrorHooksTest {
     }
 
     // Just like Observable above, we can't catch OnErrorNotImplementedException in this case
-    @Ignore @Test fun single_exceptionInOnSubscribeWithOnErrorNotImplementedIsHooked() {
+    @Ignore("Doesn't appear as if these exceptions can be caught") @Test
+    fun single_exceptionInOnSubscribeWithOnErrorNotImplementedIsHooked() {
         Single.create<Any> { throw ErrorHooksException() }.subscribe()
         verifyHooked<OnErrorNotImplementedException>()
     }
