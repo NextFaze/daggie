@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 1.0.2
+
+_2017_07_10_
+
+* Refine RxJava error hooks #2
+
 ## Version 1.0.1
 
 _2017_06_26_
