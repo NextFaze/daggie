@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 1.0.3
+
+_2017_07_19_
+
+* Fix ManUp retrying too rapidly after large number of attempts #3
+
 ## Version 1.0.2
 
 _2017_07_10_
