@@ -2,10 +2,10 @@ package com.nextfaze.daggie.rxjava
 
 import rx.Scheduler
 import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationRetention.BINARY
 
 /** Qualifies a [Scheduler] as being intended for performing I/O bound tasks. */
 @Qualifier
 @MustBeDocumented
-@Retention(RUNTIME)
+@Retention(BINARY)
 annotation class Io

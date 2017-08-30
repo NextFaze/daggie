@@ -1,7 +1,7 @@
 package com.nextfaze.daggie
 
 import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationRetention.BINARY
 
 /**
  * Signals a binding relates to the app's primary user story(s).
@@ -9,5 +9,5 @@ import kotlin.annotation.AnnotationRetention.RUNTIME
  */
 @Qualifier
 @MustBeDocumented
-@Retention(RUNTIME)
+@Retention(BINARY)
 annotation class Main

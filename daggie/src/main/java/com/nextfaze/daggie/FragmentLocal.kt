@@ -1,9 +1,9 @@
 package com.nextfaze.daggie
 
 import javax.inject.Qualifier
-import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationRetention.BINARY
 
 @Qualifier
 @MustBeDocumented
-@Retention(RUNTIME)
+@Retention(BINARY)
 annotation class FragmentLocal

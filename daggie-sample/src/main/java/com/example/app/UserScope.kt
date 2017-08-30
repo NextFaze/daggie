@@ -12,7 +12,6 @@ import javax.inject.Qualifier
 import javax.inject.Scope
 import javax.inject.Singleton
 import kotlin.annotation.AnnotationRetention.BINARY
-import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.annotation.AnnotationTarget.FIELD
 import kotlin.annotation.AnnotationTarget.FILE
@@ -29,7 +28,7 @@ annotation class UserScope
 
 @Qualifier
 @MustBeDocumented
-@Retention(RUNTIME)
+@Retention(BINARY)
 annotation class UserLocal
 
 @Subcomponent(modules = arrayOf(UserScopeModule::class))
