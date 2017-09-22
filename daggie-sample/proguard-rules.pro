@@ -36,3 +36,6 @@
 
 # DevFun
 -keep class com.nextfaze.devfun.**
+
+# AutoValue
+-dontwarn com.google.auto.value.**
