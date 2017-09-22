@@ -21,10 +21,11 @@ ext {
     supportCardview = "com.android.support:cardview-v7:$supportVersion"
     supportVectorDrawable = "com.android.support:support-vector-drawable:$supportVersion"
 
-    supportTestRunner = 'com.android.support.test:runner:0.4.1'
-    supportTestRules = 'com.android.support.test:rules:0.4.1'
-    supportTestEspresso = 'com.android.support.test.espresso:espresso-core:2.2.1'
-    supportTestEspressoContrib = 'com.android.support.test.espresso:espresso-contrib:2.2.1'
+    testingSupportVersion = '3.0.1-alpha-1'
+    testingRulesVersion = '1.0.0'
+    supportTestRules = "com.android.support.test:rules:$testingRulesVersion"
+    supportTestRunner = "com.android.support.test:runner:$testingRulesVersion"
+    supportTestEspresso = "com.android.support.test.espresso:espresso-core:$testingSupportVersion"
 
     daggerVersion = '2.11'
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -34,8 +35,8 @@ ext {
     daggerAndroidSupport = "com.google.dagger:dagger-android-support:$daggerVersion"
     daggerAnnotations = 'org.glassfish:javax.annotation:10.0-b28'
 
-    autoValue = 'com.google.auto.value:auto-value:1.4-rc2'
-    autoValueGsonVersion = '0.4.6'
+    autoValue = 'com.google.auto.value:auto-value:1.5'
+    autoValueGsonVersion = '0.5.0'
     autoValueGson = "com.ryanharter.auto.value:auto-value-gson:$autoValueGsonVersion"
     autoValueParcelVersion = '0.2.5'
     autoValueParcel = "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
@@ -50,24 +51,24 @@ ext {
     logbackCore = "com.github.tony19:logback-android-core:$logbackVersion"
     logbackAndroid = "com.github.tony19:logback-android-classic:$logbackVersion"
 
-    okhttp = 'com.squareup.okhttp3:okhttp:3.8.1'
+    okhttp = 'com.squareup.okhttp3:okhttp:3.9.0'
     gson = 'com.google.code.gson:gson:2.8.0'
     moshi = 'com.squareup.moshi:moshi:1.5.0'
-    slf4jApi = 'org.slf4j:slf4j-api:1.7.22'
+    slf4jApi = 'org.slf4j:slf4j-api:1.7.25'
     robolectric = 'org.robolectric:robolectric:3.3.2'
-    mockito = 'org.mockito:mockito-core:2.7.22'
-    mockitoKotlin = 'com.nhaarman:mockito-kotlin:1.4.0'
-    rxJava = 'io.reactivex:rxjava:1.3.0'
+    mockito = 'org.mockito:mockito-core:2.10.0'
+    mockitoKotlin = 'com.nhaarman:mockito-kotlin:1.5.0'
+    rxJava = 'io.reactivex:rxjava:1.3.2'
     rxAndroid = 'io.reactivex:rxandroid:1.2.1'
     rxPreferences = 'com.f2prateek.rx.preferences:rx-preferences:1.0.2'
     rxRelay = 'com.jakewharton.rxrelay:rxrelay:1.2.0'
     junit = 'junit:junit:4.12'
-    truth = 'com.google.truth:truth:0.32'
+    truth = 'com.google.truth:truth:0.36'
     guava = 'com.google.guava:guava:20.0'
     threeTen = 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     jodaTime = 'net.danlew:android.joda:2.9.9'
     glide = 'com.github.bumptech.glide:glide:3.8.0'
     glideOkHttpIntegration = 'com.github.bumptech.glide:okhttp3-integration:1.5.0@aar'
-    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.5.3'
     stetho = 'com.facebook.stetho:stetho:1.5.0'
 }
