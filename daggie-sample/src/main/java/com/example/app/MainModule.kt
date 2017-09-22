@@ -11,7 +11,7 @@ import com.nextfaze.daggie.manup.ManUpConfig
 import com.nextfaze.daggie.manup.ManUpModule
 import com.nextfaze.daggie.moshi.MoshiModule
 import com.nextfaze.daggie.okhttp.OkHttpModule
-import com.nextfaze.daggie.rxjava.RxJavaErrorHooksModule
+import com.nextfaze.daggie.rxjava2.RxJava2ErrorHooksModule
 import com.nextfaze.daggie.slf4j.Slf4jModule
 import com.nextfaze.daggie.threeten.ThreeTenModule
 import dagger.Module
@@ -23,7 +23,7 @@ import okhttp3.HttpUrl
         AndroidModule::class,
         Slf4jModule::class,
         LogbackModule::class,
-        RxJavaErrorHooksModule::class,
+        RxJava2ErrorHooksModule::class,
         ManUpModule::class,
         ForegroundModule::class,
         OkHttpModule::class,

@@ -39,3 +39,6 @@
 
 # AutoValue
 -dontwarn com.google.auto.value.**
+
+# RxLifecycle
+-dontwarn javax.annotation.**
