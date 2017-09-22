@@ -26,7 +26,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     internal var config by parcelableArgument<Config>(ARG_CONFIG)
 
     /** Evaluates the update [Result] based on the [config] and current app version. */
-    private val result get() = config.check(activity.application.versionCode)
+    private val result get() = activity?.application?.versionCode?.let { config.check(it) }
 
     companion object {
         /** Returns an existing instance of the fragment, if present already in [fragmentManager]. */
