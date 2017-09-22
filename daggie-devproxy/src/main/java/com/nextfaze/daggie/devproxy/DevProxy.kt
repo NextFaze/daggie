@@ -7,21 +7,20 @@ import android.os.Looper.getMainLooper
 import android.security.KeyChain
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import io.reactivex.Flowable
+import io.reactivex.Maybe
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers.io
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
 import org.slf4j.LoggerFactory
-import rx.Observable
-import rx.Observable.fromCallable
-import rx.Observable.range
-import rx.schedulers.Schedulers.io
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.net.Proxy.Type.HTTP
-import java.net.SocketAddress
 import java.security.KeyStore
 import java.security.cert.CertificateException
 import java.security.cert.CertificateFactory
@@ -49,27 +48,20 @@ internal class DevProxy(private val host: String, private val port: Int) {
     internal fun install(context: Context) {
         if (installToSystemProperties()) {
             loadCharlesCert()
-                    .filter { it == null || !isCertificateTrusted(it) }
+                    .filter { !isCertificateTrusted(it) }
                     .subscribe({ onCertLoaded(context, it) }, { onCertError(context) })
         }
     }
 
-    private fun onCertLoaded(context: Context, certBytes: ByteArray?) {
-        if (certBytes != null) {
+    internal fun asProxy() = Proxy(HTTP, InetSocketAddress.createUnresolved(host, port))
+
+    private fun onCertLoaded(context: Context, certBytes: ByteArray) =
             installCertWithKeyChainIntent(context, certBytes, alias)
-        } else {
-            showToast(context, "Proxy doesn't appear to be Charles Proxy")
-        }
-    }
 
-    private fun onCertError(context: Context) = showToast(context, "Failed to install certificate")
-
-    internal fun asSocketAddress(): SocketAddress = InetSocketAddress.createUnresolved(host, port)
-
-    internal fun asProxy() = Proxy(HTTP, asSocketAddress())
+    private fun onCertError(context: Context) = context.showToast("Failed to install certificate")
 
     private fun installToSystemProperties(): Boolean {
-        if (host.isNullOrEmpty() || port <= 0) {
+        if (host.isEmpty() || port <= 0) {
             return false
         }
         System.setProperty("proxyHost", host)
@@ -79,14 +71,11 @@ internal class DevProxy(private val host: String, private val port: Int) {
         return true
     }
 
-    private fun loadCharlesCert(): Observable<ByteArray?> = readCertBytes().retryWhen { it.delayedRetry() }
+    private fun loadCharlesCert(): Maybe<ByteArray> = Maybe.fromCallable<ByteArray> { loadCharlesCertBody()?.bytes() }
+            .subscribeOn(io())
+            .retryWhen { it.delayedRetry() }
 
-    private fun readCertBytes(): Observable<ByteArray?> = fromCallable {
-        val body = charlesCertBody() ?: return@fromCallable null
-        body.bytes()
-    }.subscribeOn(io())
-
-    private fun charlesCertBody(): ResponseBody? {
+    private fun loadCharlesCertBody(): ResponseBody? {
         val call = okHttpClient.newCall(Request.Builder().url(CHARLES_CERT_URI).build())
         val response = call.execute()
         if (!response.isSuccessful) {
@@ -102,11 +91,9 @@ internal class DevProxy(private val host: String, private val port: Int) {
 
     private fun isCertificateTrusted(certBytes: ByteArray): Boolean {
         try {
-            val certificate = getX509CertificateFromBytes(certBytes)
-
+            val certificate = certBytes.toX509Certificate()
             val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
             tmf.init(null as KeyStore?)
-
             val tms = tmf.trustManagers
             val tm = tms[0] as X509TrustManager
             tm.checkServerTrusted(arrayOf(certificate), "RSA")
@@ -120,26 +107,26 @@ internal class DevProxy(private val host: String, private val port: Int) {
         }
     }
 
-    private fun getX509CertificateFromBytes(certBytes: ByteArray) =
-            CertificateFactory.getInstance("X.509").generateCertificate(ByteArrayInputStream(certBytes)) as X509Certificate
+    private fun ByteArray.toX509Certificate() =
+            CertificateFactory.getInstance("X.509").generateCertificate(ByteArrayInputStream(this)) as X509Certificate
 
-    private fun showToast(context: Context, message: String, vararg args: Any) {
-        handler.post { Toast.makeText(context, String.format(message, args), LENGTH_SHORT).show() }
+    private fun Context.showToast(message: String, vararg args: Any) {
+        handler.post { Toast.makeText(this, String.format(message, args), LENGTH_SHORT).show() }
     }
 }
 
-private fun installCertWithKeyChainIntent(context: Context,
-                                          certBytes: ByteArray,
-                                          alias: String) {
-    context.startActivity(KeyChain.createInstallIntent()
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            .putExtra(KeyChain.EXTRA_CERTIFICATE, certBytes)
-            .putExtra(KeyChain.EXTRA_NAME, alias))
-}
+private fun installCertWithKeyChainIntent(
+        context: Context,
+        certBytes: ByteArray,
+        alias: String
+) = context.startActivity(KeyChain.createInstallIntent()
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .putExtra(KeyChain.EXTRA_CERTIFICATE, certBytes)
+        .putExtra(KeyChain.EXTRA_NAME, alias))
 
-private fun <T : Throwable> Observable<T>.delayedRetry(): Observable<Long> =
-        zipWith(range(0, MAX_RETRIES - 1)) { e, attempt -> e to attempt }
+private fun <T : Throwable> Flowable<T>.delayedRetry(): Flowable<Long> =
+        zipWith(Flowable.range(0, MAX_RETRIES - 1), BiFunction<Throwable, Int, Pair<Throwable, Int>> { e, attempt -> e to attempt })
                 .flatMap {
-                    if (it is IOException) Observable.timer(3, TimeUnit.SECONDS)
-                    else Observable.error(it.first)
+                    if (it is IOException) Flowable.timer(3, TimeUnit.SECONDS)
+                    else Flowable.error(it.first)
                 }
