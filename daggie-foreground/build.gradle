@@ -2,6 +2,6 @@ project.configureLibrary(this)
 
 dependencies {
     api project(':daggie')
-    api rootProject.ext.rxJava
-    api rootProject.ext.rxAndroid
+    api rootProject.ext.rxJava2
+    api rootProject.ext.rxAndroid2
 }
