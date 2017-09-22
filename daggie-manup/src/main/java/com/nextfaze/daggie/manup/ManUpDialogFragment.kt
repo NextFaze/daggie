@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.StringRes
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
@@ -91,7 +92,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
     private fun finishAffinityIfUpdateRequired() {
         // Finish all activities in task if this is a mandatory update
-        if (result == UPDATE_REQUIRED) activity?.finishAffinity()
+        if (result == UPDATE_REQUIRED) activity?.let { ActivityCompat.finishAffinity(it) }
     }
 
     @StringRes private fun titleResource() = when (result) {
