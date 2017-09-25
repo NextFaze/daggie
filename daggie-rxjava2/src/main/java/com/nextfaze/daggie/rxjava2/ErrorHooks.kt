@@ -11,7 +11,3 @@ private val log = logger("RxJavaErrorHooks")
 internal fun initErrorHooks(onError: ErrorHandler = { log.e(it) { "RxJava Error" } }) {
     RxJavaPlugins.setErrorHandler { onError(it) }
 }
-
-internal fun clearErrorHooks() {
-    RxJavaPlugins.reset()
-}
