@@ -12,7 +12,11 @@ import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Singleton
 
-/** Provides production-suitable RxJava 2 [schedulers][Scheduler]. */
+/**
+ * Provides plain, production-suitable RxJava 2 [Scheduler] bindings.
+ *
+ * This module also uses shorter thread names than the default, to avoid truncation by `systrace`.
+ */
 @Module class RxJava2SchedulerModule {
     @Provides @Singleton @Io
     internal fun ioScheduler() = RxJavaPlugins.createIoScheduler(threadFactory("RxIo-"))
