@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 2.0.0
+
+_2017_09_26_
+
+* Replace `daggie-rxjava` with `daggie-rxjava2`
+* Replace dependencies on RxJava `1.x` with `2.x`
+
 ## Version 1.0.3
 
 _2017_07_19_
