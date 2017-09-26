@@ -6,8 +6,8 @@ import com.nextfaze.daggie.Initializer
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
+import io.reactivex.Observable
 import okhttp3.OkHttpClient
-import rx.Observable
 
 /**
  * Provides bindings that configure "mandatory updates" (aka ManUp). This triggers a dialog that can suggest or

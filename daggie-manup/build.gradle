@@ -7,10 +7,10 @@ dependencies {
     api rootProject.ext.supportAppCompat
     api rootProject.ext.slf4jApi
     api rootProject.ext.okhttp
-    api rootProject.ext.rxJava
-    api rootProject.ext.rxAndroid
-    api rootProject.ext.rxPreferences
-    api rootProject.ext.retrofitAdapterRxJava
+    api rootProject.ext.rxJava2
+    api rootProject.ext.rxAndroid2
+    api rootProject.ext.rxPreferences2
+    api rootProject.ext.retrofitAdapterRxJava2
     api rootProject.ext.retrofitConverterGson
     kapt rootProject.ext.autoValue
     compileOnly rootProject.ext.autoValue

@@ -48,7 +48,7 @@ dependencies {
     implementation project(':daggie')
     implementation project(':daggie-slf4j')
     implementation project(':daggie-logback')
-    implementation project(':daggie-rxjava')
+    implementation project(':daggie-rxjava2')
     implementation project(':daggie-manup')
     implementation project(':daggie-foreground')
     implementation project(':daggie-okhttp')
@@ -67,15 +67,15 @@ dependencies {
     implementation rootProject.ext.dagger
     implementation rootProject.ext.daggerAnnotations
 
-    // RxLifecycle
-    def rxLifecycleVersion = '1.0'
-    implementation "com.trello:rxlifecycle:$rxLifecycleVersion"
-    implementation "com.trello:rxlifecycle-kotlin:$rxLifecycleVersion"
-    implementation "com.trello:rxlifecycle-components:$rxLifecycleVersion"
+    // RxLifecycle 2
+    def rxLifecycle2Version = '2.2.0'
+    implementation "com.trello.rxlifecycle2:rxlifecycle:$rxLifecycle2Version"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-kotlin:$rxLifecycle2Version"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rxLifecycle2Version"
 
     // Conductor
-    implementation 'com.bluelinelabs:conductor:2.1.3'
-    implementation 'com.bluelinelabs:conductor-rxlifecycle:2.1.3'
+    implementation 'com.bluelinelabs:conductor:2.1.4'
+    implementation 'com.bluelinelabs:conductor-rxlifecycle2:2.1.4'
 
     // JUnit
     testImplementation rootProject.ext.junit

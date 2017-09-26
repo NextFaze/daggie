@@ -5,8 +5,8 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper.getMainLooper
-import rx.Observable
-import rx.subjects.PublishSubject
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.properties.Delegates.observable
 

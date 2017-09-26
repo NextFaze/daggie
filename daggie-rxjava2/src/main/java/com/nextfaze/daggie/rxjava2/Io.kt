@@ -1,6 +1,6 @@
-package com.nextfaze.daggie.rxjava
+package com.nextfaze.daggie.rxjava2
 
-import rx.Scheduler
+import io.reactivex.Scheduler
 import javax.inject.Qualifier
 import kotlin.annotation.AnnotationRetention.BINARY
 

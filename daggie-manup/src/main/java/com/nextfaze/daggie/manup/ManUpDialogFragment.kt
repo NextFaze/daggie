@@ -17,7 +17,7 @@ import okhttp3.HttpUrl
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-private const val ARG_CONFIG= "config"
+private const val ARG_CONFIG = "config"
 private val FRAGMENT_TAG = ManUpDialogFragment::class.java.name
 
 /** This dialog is shown when an optional or mandatory update is available. */
@@ -30,10 +30,6 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     private val result get() = activity?.application?.versionCode?.let { config.check(it) }
 
     companion object {
-        /** Returns an existing instance of the fragment, if present already in [fragmentManager]. */
-        internal fun find(fragmentManager: FragmentManager) =
-                fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
-
         /** Shows the fragment in [fragmentManager], or updates an existing one, with the specified [Config]. */
         internal fun show(fragmentManager: FragmentManager, config: Config) {
             val existing = find(fragmentManager)
@@ -58,14 +54,19 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
         /** Dismisses an existing fragment, if present. */
         internal fun dismiss(fragmentManager: FragmentManager) = find(fragmentManager)?.dismissAllowingStateLoss()
+
+        /** Returns an existing instance of the fragment, if present already in [fragmentManager]. */
+        private fun find(fragmentManager: FragmentManager) =
+                fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context)
-            .setTitle(titleResource())
-            .setMessage(messageResource())
-            .setPositiveButton(R.string.daggie_manup_update) { _, _ -> updateApp() }
-            .setNegativeButton(R.string.daggie_manup_cancel) { _, _ -> dismissAllowingStateLoss() }
-            .create()!!
+    override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context).apply {
+        setTitle(titleResource())
+        setMessage(messageResource())
+        val updateUrl = config.updateUrl
+        if (updateUrl != null) setPositiveButton(R.string.daggie_manup_update) { _, _ -> updateApp(updateUrl) }
+        setNegativeButton(R.string.daggie_manup_cancel) { _, _ -> dismissAllowingStateLoss() }
+    }.create()!!
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
@@ -83,7 +84,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     }
 
     /** Opens the update URL. */
-    private fun updateApp() = activity?.startActivity(Intent(Intent.ACTION_VIEW, config.updateUrl.toUri()))
+    private fun updateApp(updateUrl: HttpUrl) = activity?.startActivity(Intent(Intent.ACTION_VIEW, updateUrl.toUri()))
 
     private fun updateDialog() {
         dialog?.setTitle(titleResource())

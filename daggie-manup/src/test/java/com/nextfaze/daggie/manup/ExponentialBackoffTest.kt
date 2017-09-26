@@ -1,10 +1,10 @@
 package com.nextfaze.daggie.manup
 
+import io.reactivex.Flowable
+import io.reactivex.schedulers.TestScheduler
+import io.reactivex.subscribers.TestSubscriber
 import org.junit.Before
 import org.junit.Test
-import rx.Observable.range
-import rx.observers.TestSubscriber
-import rx.schedulers.TestScheduler
 import java.util.concurrent.TimeUnit.SECONDS
 
 class ExponentialBackoffTest {
@@ -16,7 +16,7 @@ class ExponentialBackoffTest {
     }
 
     @Test fun doesNotEmitMoreThanMaxAttempts() {
-        val error = range(0, Integer.MAX_VALUE).map { Exception() }
+        val error = Flowable.range(0, Integer.MAX_VALUE).map { Exception() }
         val subscriber = TestSubscriber<Any>()
         error.exponentialBackoff(
                 maxAttempts = 3,
@@ -29,7 +29,7 @@ class ExponentialBackoffTest {
     }
 
     @Test fun doesNotDelayMoreThanMaxDelay() {
-        val error = range(0, Integer.MAX_VALUE).map { Exception() }
+        val error = Flowable.range(0, Integer.MAX_VALUE).map { Exception() }
         val subscriber = TestSubscriber<Any>()
         error.exponentialBackoff(
                 maxAttempts = 3,
@@ -42,7 +42,7 @@ class ExponentialBackoffTest {
     }
 
     @Test fun largeNumberOfAttempts() {
-        val error = range(0, Integer.MAX_VALUE).map { Exception() }
+        val error = Flowable.range(0, Integer.MAX_VALUE).map { Exception() }
         val subscriber = TestSubscriber<Any>()
         error.exponentialBackoff(
                 maxAttempts = 500,

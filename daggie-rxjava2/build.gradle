@@ -6,6 +6,6 @@ dependencies {
     api project(':daggie')
     api project(':daggie-slf4j')
     api rootProject.ext.slf4jApi
-    api rootProject.ext.rxJava
-    api rootProject.ext.rxAndroid
+    api rootProject.ext.rxJava2
+    api rootProject.ext.rxAndroid2
 }

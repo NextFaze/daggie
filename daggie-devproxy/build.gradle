@@ -6,5 +6,5 @@ dependencies {
     api project(':daggie')
     api rootProject.ext.slf4jApi
     api rootProject.ext.okhttp
-    api rootProject.ext.rxJava
+    api rootProject.ext.rxJava2
 }
