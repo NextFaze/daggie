@@ -33,7 +33,7 @@ internal fun initManUp(
         application: Application,
         httpClient: OkHttpClient,
         foreground: Observable<Boolean>,
-        config: ManUpConfig
+        manUpConfig: ManUpConfig
 ) {
     // Use our own Gson
     val gson = GsonBuilder()
@@ -57,7 +57,7 @@ internal fun initManUp(
             .getObject("config", Config.DEFAULT, gson.preferenceConverter<Config>())
 
     // Load remote config into prefs
-    val syncConfigWithApi = api.config(config.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
+    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
 
     // Emits config pref values, which are synchronized with the API upon each subscription
     val syncConfig = Flowable.merge(
@@ -70,7 +70,7 @@ internal fun initManUp(
 
     // Periodically update config and evaluate it, as long as app is foregrounded
     val configSubject: BehaviorSubject<Config> = BehaviorSubject.create<Config>()
-    Flowable.interval(0L, config.pollingInterval, config.pollingIntervalUnit)
+    Flowable.interval(0L, manUpConfig.pollingInterval, manUpConfig.pollingIntervalUnit)
             .switchMap { syncConfig }
             .retryWhen { it.exponentialBackoff(maxDelay = RETRY_MAX_DELAY, maxDelayUnit = RETRY_MAX_DELAY_UNIT) }
             .observeOn(mainThread())
