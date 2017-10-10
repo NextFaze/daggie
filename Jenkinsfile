@@ -17,10 +17,7 @@ pipeline {
         stage('Assemble') {
             steps {
                 gitlabCommitStatus(name: 'build') {
-                    sh """./gradlew clean assemble \
-                        -PnextfazeArtifactoryUser="$MAVEN_USR" \
-                        -PnextfazeArtifactoryPassword="$MAVEN_PSW"
-                    """
+                    gradlew('clean assemble')
                 }
             }
         }
@@ -28,10 +25,7 @@ pipeline {
         stage('Lint') {
             steps {
                 gitlabCommitStatus(name: 'lint') {
-                    sh """./gradlew lint \
-                        -PnextfazeArtifactoryUser="$MAVEN_USR" \
-                        -PnextfazeArtifactoryPassword="$MAVEN_PSW"
-                    """
+                    gradlew('lint')
                 }
             }
             post {
@@ -44,11 +38,7 @@ pipeline {
         stage('Test') {
             steps {
                 gitlabCommitStatus(name: 'test') {
-                    sh """./gradlew --continue test \
-                        -PnextfazeArtifactoryUser="$MAVEN_USR" \
-                        -PnextfazeArtifactoryPassword="$MAVEN_PSW" \
-                        || true
-                    """
+                    gradlew('--continue test || true')
                 }
             }
             post {
@@ -58,4 +48,17 @@ pipeline {
             }
         }
     }
+}
+
+/** Runs the Gradle wrapper with the specified command and some other common arguments. */
+def gradlew(command) {
+    // Always disable Kotlin daemon and incremental compilation.
+    // The daemon can fails sporadically, and incremental could introduce output errors
+    sh """./gradlew \\
+        -Dkotlin.compiler.execution.strategy='in-process' \\
+        -Pkotlin.incremental=false \\
+        -PnextfazeArtifactoryUser="$MAVEN_USR" \\
+        -PnextfazeArtifactoryPassword="$MAVEN_PSW" \\
+        $command
+    """.trim()
 }
