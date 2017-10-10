@@ -23,8 +23,19 @@ debugImplementation "com.nextfaze.daggie:daggie-stetho:$daggieVersion"
 debugImplementation "com.nextfaze.daggie:daggie-devproxy:$daggieVersion"
 ```
 
-2. Copy the Dagger 2 scaffolding from the sample project
-3. Customize your app by editing `App.kt`
+2. Include Dagger 2 _of the same version_ in your Gradle dependencies:
+
+```groovy
+def daggerVersion = '2.11'
+kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
+implementation "com.google.dagger:dagger:$daggerVersion"
+implementation 'org.glassfish:javax.annotation:10.0-b28'
+```
+
+3. Copy the Dagger 2 scaffolding from the sample project
+4. Customize your app by editing `App.kt`
 
 ## Development Guidelines
 
