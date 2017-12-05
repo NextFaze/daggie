@@ -15,7 +15,7 @@ import dagger.multibindings.ElementsIntoSet
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(InitializerModule::class, AppModule::class))
+@Component(modules = [InitializerModule::class, AppModule::class])
 interface ApplicationComponent : AppMembers, Injector {
     fun initializer(): Initializer<Application>
 

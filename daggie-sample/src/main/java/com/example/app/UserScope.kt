@@ -31,7 +31,7 @@ annotation class UserScope
 @Retention(BINARY)
 annotation class UserLocal
 
-@Subcomponent(modules = arrayOf(UserScopeModule::class))
+@Subcomponent(modules = [UserScopeModule::class])
 @UserScope
 interface UserScopeComponent : UserScopeInjector {
     @Subcomponent.Builder
