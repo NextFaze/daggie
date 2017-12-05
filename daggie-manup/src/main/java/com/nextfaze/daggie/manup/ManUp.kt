@@ -21,6 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Url
 import java.util.concurrent.TimeUnit.MINUTES
 
@@ -40,8 +41,6 @@ internal fun initManUp(
             .registerTypeAdapterFactory(ManUpAutoValueTypeAdapterFactory.create())
             .registerTypeAdapter(HttpUrl::class.java, HttpUrlTypeAdapter())
             .create()!!
-
-    // Parse HTTP URL from caller-supplied URL string
 
     // Create Retrofit API
     val api = Retrofit.Builder()
@@ -103,8 +102,10 @@ internal fun initManUp(
 
 /** Provides access to remote ManUp config URL. */
 internal interface ManUpApi {
-    /** Loads the remote [Config]. */
-    @GET() fun config(@Url url: HttpUrl): Single<Config>
+    /** Loads the remote [Config], ensuring any cached response is validated against the origin server before use. */
+    @GET()
+    @Headers("Cache-Control: max-age=0, public")
+    fun config(@Url url: HttpUrl): Single<Config>
 }
 
 internal enum class Result {
