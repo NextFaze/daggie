@@ -78,6 +78,7 @@ ext.configureLibrary = { project ->
         testImplementation project.kotlinStdlib
         testImplementation project.kotlinReflect
         testImplementation project.wireMock
+        testImplementation project.robolectric
     }
 
     apply plugin: 'com.github.dcendents.android-maven'
