@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 2.0.1
+
+_2017_12_06_
+
+* ManUp now re-validates upon each request
+
 ## Version 2.0.0
 
 _2017_09_26_
