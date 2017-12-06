@@ -8,6 +8,11 @@ import com.f2prateek.rx.preferences2.Preference
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.nextfaze.daggie.Foreground
+import com.nextfaze.daggie.Initializer
+import dagger.Module
+import dagger.Provides
+import dagger.multibindings.IntoSet
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -25,12 +30,29 @@ import retrofit2.http.Headers
 import retrofit2.http.Url
 import java.util.concurrent.TimeUnit.MINUTES
 
+/**
+ * Provides bindings that configure "mandatory updates" (aka ManUp). This triggers a dialog that can suggest or
+ * force the user to update the app version, based on a remote JSON config file.
+ *
+ * Users of this module must provide the following bindings:
+ * * [OkHttpClient]
+ * * [ManUpConfig]
+ * * [Foreground] `Observable<Boolean>`
+ */
+@Module class ManUpModule {
+    @Provides @IntoSet internal fun initializer(
+            httpClient: OkHttpClient,
+            config: ManUpConfig,
+            @Foreground foreground : Observable<Boolean>
+    ): Initializer<Application> = { initManUp(it, httpClient, foreground, config) }
+}
+
 private const val RETRY_MAX_DELAY = 10L
 private val RETRY_MAX_DELAY_UNIT = MINUTES
 
 // TODO: Parse config JSON manually to eliminate Gson, AutoValue, and Retrofit dependencies.
 
-internal fun initManUp(
+private fun initManUp(
         application: Application,
         httpClient: OkHttpClient,
         foreground: Observable<Boolean>,
