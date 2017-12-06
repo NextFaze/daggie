@@ -51,6 +51,9 @@ ext {
     logbackCore = "com.github.tony19:logback-android-core:$logbackVersion"
     logbackAndroid = "com.github.tony19:logback-android-classic:$logbackVersion"
 
+    wireMockVersion = '2.12.0'
+    wireMock = "com.github.tomakehurst:wiremock-standalone:$wireMockVersion"
+
     okhttp = 'com.squareup.okhttp3:okhttp:3.9.1'
     gson = 'com.google.code.gson:gson:2.8.2'
     moshi = 'com.squareup.moshi:moshi:1.5.0'
