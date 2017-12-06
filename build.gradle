@@ -71,6 +71,7 @@ ext.configureLibrary = { project ->
 
     dependencies {
         kapt project.daggerCompiler
+        kaptTest project.daggerCompiler
         testImplementation project.junit
         testImplementation project.truth
         testImplementation project.mockito
