@@ -4,12 +4,9 @@ package com.nextfaze.daggie.manup
 
 import android.app.Application
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.exactly
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
-import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.nextfaze.daggie.Foreground
@@ -65,11 +62,11 @@ class ManUpTest {
 
     @Test(timeout = 10000)
     fun `user agent re-validates every request`() {
-        stubFor(get(PATH).willReturn(manUpResponse1()))
-        stubFor(get(PATH).willReturn(manUpResponse2()))
+        wireMock.stubFor(get(PATH).willReturn(manUpResponse1()))
+        wireMock.stubFor(get(PATH).willReturn(manUpResponse2()))
         startManUp(application, okHttpClient, manUpConfig(1), foreground(true))
         scheduler.advanceTimeBy(1, SECONDS)
-        verify(exactly(2), getRequestedFor(urlEqualTo(PATH)))
+        wireMock.verify(2, getRequestedFor(urlEqualTo(PATH)))
     }
 
     private fun manUpConfig(pollingIntervalSeconds: Long) = ManUpConfig(
