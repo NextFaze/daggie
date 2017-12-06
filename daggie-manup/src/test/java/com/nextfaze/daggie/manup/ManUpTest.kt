@@ -63,7 +63,8 @@ class ManUpTest {
         RxJavaPlugins.reset()
     }
 
-    @Test fun `user agent re-validates every request`() {
+    @Test(timeout = 10000)
+    fun `user agent re-validates every request`() {
         stubFor(get(PATH).willReturn(manUpResponse1()))
         stubFor(get(PATH).willReturn(manUpResponse2()))
         startManUp(application, okHttpClient, manUpConfig(1), foreground(true))
