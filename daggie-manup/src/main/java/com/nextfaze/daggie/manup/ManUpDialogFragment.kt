@@ -60,7 +60,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
                 fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context).apply {
+    override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context!!).apply {
         setTitle(titleResource())
         setMessage(messageResource())
         val updateUrl = config.updateUrl
@@ -114,10 +114,10 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 private fun HttpUrl.toUri() = Uri.parse(toString())!!
 
 internal fun <P : Parcelable> parcelableArgument(key: String) = object : ReadWriteProperty<Fragment, P> {
-    override fun getValue(thisRef: Fragment, property: KProperty<*>): P = thisRef.arguments.getParcelable(key)
+    override fun getValue(thisRef: Fragment, property: KProperty<*>): P = thisRef.arguments!!.getParcelable(key)
 
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: P) {
         if (thisRef.arguments == null) thisRef.arguments = Bundle()
-        thisRef.arguments.putParcelable(key, value)
+        thisRef.arguments!!.putParcelable(key, value)
     }
 }

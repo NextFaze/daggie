@@ -4,7 +4,7 @@ ext {
     minSdkVersion = 15
     compileSdkVersion = 26
     buildToolsVersion = '26.0.2'
-    supportVersion = '26.1.0'
+    supportVersion = '27.0.2'
 
     kotlinVersion = '1.2.0'
     kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
