@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId 'com.nextfaze.daggie.sample'
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName '1.0'
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -61,6 +61,9 @@ dependencies {
     debugImplementation project(':daggie-stetho')
     debugImplementation project(':daggie-devproxy')
     implementation rootProject.ext.supportAppCompat
+
+    // Glide
+    kapt rootProject.ext.glideCompiler
 
     // Dagger
     kapt rootProject.ext.daggerCompiler
