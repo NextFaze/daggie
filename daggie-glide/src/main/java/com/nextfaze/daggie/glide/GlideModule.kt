@@ -18,11 +18,11 @@ import java.io.InputStream
 
 /** Hack to "inject" private GlideBuilder configurator set. */
 @RestrictTo(LIBRARY)
-internal var configureGlideBuilder: ((GlideBuilder) -> Unit)? = null
+lateinit internal var configureGlideBuilder: ((GlideBuilder) -> Unit)
 
 /** Hack to "inject" private Glide configurator set. */
 @RestrictTo(LIBRARY)
-internal var configureRegistry: ((Registry) -> Unit)? = null
+lateinit internal var configureRegistry: ((Registry) -> Unit)
 
 /**
  * Provides bindings that initialize Glide. Requires an [OkHttpClient] binding.

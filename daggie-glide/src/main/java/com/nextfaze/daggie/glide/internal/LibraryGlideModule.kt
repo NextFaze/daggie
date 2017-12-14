@@ -13,7 +13,5 @@ import com.nextfaze.daggie.glide.configureRegistry
 @RestrictTo(LIBRARY)
 @GlideModule
 class LibraryGlideModule : com.bumptech.glide.module.LibraryGlideModule() {
-    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        configureRegistry!!(registry)
-    }
+    override fun registerComponents(context: Context, glide: Glide, registry: Registry) = configureRegistry(registry)
 }

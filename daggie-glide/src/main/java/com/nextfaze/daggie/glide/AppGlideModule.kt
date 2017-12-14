@@ -9,7 +9,5 @@ import com.bumptech.glide.GlideBuilder
  * Apps should extend this when implementing their own [com.bumptech.glide.module.AppGlideModule]s.
  */
 open class AppGlideModule : com.bumptech.glide.module.AppGlideModule() {
-    override fun applyOptions(context: Context, builder: GlideBuilder) {
-        configureGlideBuilder!!(builder)
-    }
+    override fun applyOptions(context: Context, builder: GlideBuilder) = configureGlideBuilder(builder)
 }
