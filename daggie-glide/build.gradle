@@ -1,10 +1,15 @@
 project.configureLibrary(this)
 
-android.lintOptions.disable 'InvalidPackage'
+android {
+    defaultConfig.consumerProguardFiles 'proguard-rules.pro'
+    lintOptions.disable 'InvalidPackage'
+}
 
 dependencies {
     api project(':daggie')
     api rootProject.ext.glide
     api rootProject.ext.glideOkHttpIntegration
     api rootProject.ext.okhttp
+    kapt rootProject.ext.glideCompiler
+    kaptTest rootProject.ext.glideCompiler
 }
