@@ -42,10 +42,10 @@ class RemoteImageView @JvmOverloads constructor(
     var fallbackResource: Int by invalidateGlideIfChanged(0)
 
     /** The `Bitmap` `Transformation`s to be applied in order. */
-    var transformations: List<Transformation<Bitmap>> by invalidateGlideIfChanged(emptyList())
+    var transformations: List<Transformation<Bitmap>> by invalidateGlideIfChanged(emptyList(), clear = true)
 
     /** The URL of the image to be loaded. */
-    var uri: Uri? by invalidateGlideIfChanged(null)
+    var uri: Uri? by invalidateGlideIfChanged(null, clear = true)
 
     /** Controls if a cross fade transition is applied or not. `true` by default. */
     var crossFadeEnabled: Boolean = true
@@ -105,12 +105,12 @@ class RemoteImageView @JvmOverloads constructor(
         if (width != imageWidth || height != imageHeight) {
             imageWidth = width
             imageHeight = height
-            invalidateGlide()
+            invalidateGlide(clear = true)
         }
     }
 
-    private fun invalidateGlide() {
-        Glide.with(this).clear(this)
+    private fun invalidateGlide(clear: Boolean = false) {
+        if (clear) Glide.with(this).clear(this)
         load()
     }
 
@@ -140,6 +140,6 @@ class RemoteImageView @JvmOverloads constructor(
         DrawableTransitionOptions().dontTransition()
     }
 
-    private fun <T> invalidateGlideIfChanged(initialValue: T) =
-            observable(initialValue) { _, old, new -> if (old != new) invalidateGlide() }
+    private fun <T> invalidateGlideIfChanged(initialValue: T, clear: Boolean = false) =
+            observable(initialValue) { _, old, new -> if (old != new) invalidateGlide(clear) }
 }
