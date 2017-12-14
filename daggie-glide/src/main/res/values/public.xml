@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public name="daggie_glide_placeholderDrawable" type="attr"/>
+    <public name="daggie_glide_errorDrawable" type="attr"/>
+    <public name="daggie_glide_fallbackDrawable" type="attr"/>
+    <public name="daggie_glide_crossFadeEnabled" type="attr"/>
+    <public name="daggie_glide_crossFadeDuration" type="attr"/>
+</resources>
