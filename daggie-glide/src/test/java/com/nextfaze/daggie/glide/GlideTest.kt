@@ -55,7 +55,8 @@ class GlideTest {
         okHttpClient = OkHttpClient.Builder().addInterceptor(trackingInterceptor).build()
     }
 
-    @Test fun `bound okhttpclient is used to execute image load`() {
+    @Test(timeout = 10000)
+    fun `bound okhttpclient is used to execute image load`() {
         ShadowLooper.idleMainLooperConstantly(true)
         wireMock.stubFor(get("/img").willReturn(imageResponse()))
         initGlide(okHttpClient, glideBuilderConfigurators = setOf<Configurator<GlideBuilder>> {
