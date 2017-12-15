@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+## Version 3.0.0
+
+_2017_12_15_
+
+* Migrated to Glide 4.x
+    * This may be a breaking change if your app provides `Configurator<GlideBuilder>` set bindings. 
+      If so, you'll need to implement an `AppGlideModule` by extending `com.nextfaze.daggie.glide.AppGlideModule`.
+    * Apps that provided `Configurator<Glide>` set bindings must migrate to provide `Configurator<Registry>` bindings 
+      instead. 
+* `daggie-glide` now transitively exports `com.android.support:appcompat-v7`
+* Added `RemoteImageView` to `daggie-glide`
+
 ## Version 2.0.1
 
 _2017_12_06_
