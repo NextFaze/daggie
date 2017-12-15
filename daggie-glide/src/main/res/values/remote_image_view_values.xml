@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="daggie_glide_RemoteImageView">
+        <attr name="daggie_glide_placeholderDrawable" format="reference"/>
+        <attr name="daggie_glide_errorDrawable" format="reference"/>
+        <attr name="daggie_glide_fallbackDrawable" format="reference"/>
+        <attr name="daggie_glide_crossFadeEnabled" format="boolean"/>
+        <attr name="daggie_glide_crossFadeDuration" format="integer"/>
+    </declare-styleable>
+
+</resources>
