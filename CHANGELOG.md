@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 3.0.1
+
+_2017_12_19_
+
+* Fix layout preview error when using `RemoteImageView`
+
 ## Version 3.0.0
 
 _2017_12_15_
