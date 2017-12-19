@@ -110,7 +110,7 @@ class RemoteImageView @JvmOverloads constructor(
     }
 
     private fun invalidateGlide(clear: Boolean = false) {
-        if (clear) Glide.with(context).clear(this)
+        if (!isInEditMode && clear) Glide.with(context).clear(this)
         load()
     }
 
