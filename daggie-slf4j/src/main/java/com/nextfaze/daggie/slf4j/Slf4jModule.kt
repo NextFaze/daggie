@@ -26,7 +26,7 @@ import javax.inject.Singleton
  * But as an uncaught exception, this has already been done (thus they will be doubled - but for debuggable builds only)
  * @see ApplicationInfo.FLAG_DEBUGGABLE
  */
-private fun debugLoggingUncaughtExceptionHandler(context: Context, wrapped: Thread.UncaughtExceptionHandler) =
+private fun debugLoggingUncaughtExceptionHandler(context: Context, wrapped: Thread.UncaughtExceptionHandler?) =
         object : Thread.UncaughtExceptionHandler {
 
             private val log = logger()
@@ -35,7 +35,7 @@ private fun debugLoggingUncaughtExceptionHandler(context: Context, wrapped: Thre
                 if (context.isDebuggable) {
                     log.error("FATAL EXCEPTION", ex)
                 }
-                wrapped.uncaughtException(thread, ex)
+                wrapped?.uncaughtException(thread, ex)
             }
         }
 
