@@ -9,3 +9,15 @@ import kotlin.annotation.AnnotationRetention.BINARY
 @MustBeDocumented
 @Retention(BINARY)
 annotation class Computation
+
+/** Qualifies a [Scheduler] as being intended for performing I/O bound tasks. */
+@Qualifier
+@MustBeDocumented
+@Retention(BINARY)
+annotation class Io
+
+/** Qualifies a [Scheduler] as the Android main thread scheduler. */
+@Qualifier
+@MustBeDocumented
+@Retention(BINARY)
+annotation class MainThread
