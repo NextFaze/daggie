@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 3.1.0
+
+_2018_01_15_
+
+* Add `@MainThread` qualifying annotation, and a corresponding binding in `RxJava2SchedulerModule`
+
 ## Version 3.0.1
 
 _2017_12_19_
