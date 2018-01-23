@@ -11,6 +11,7 @@ import com.nextfaze.daggie.manup.ManUpConfig
 import com.nextfaze.daggie.manup.ManUpModule
 import com.nextfaze.daggie.moshi.MoshiModule
 import com.nextfaze.daggie.okhttp.OkHttpModule
+import com.nextfaze.daggie.permissions.PermissionsModule
 import com.nextfaze.daggie.rxjava2.RxJava2ErrorHooksModule
 import com.nextfaze.daggie.slf4j.Slf4jModule
 import com.nextfaze.daggie.threeten.ThreeTenModule
@@ -31,7 +32,8 @@ import okhttp3.HttpUrl
         JodaTimeModule::class,
         GlideModule::class,
         GsonModule::class,
-        MoshiModule::class
+        MoshiModule::class,
+        PermissionsModule::class
 ))
 class MainModule {
     @Provides internal fun logbackConfig() = LogbackConfig()
