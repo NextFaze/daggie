@@ -12,6 +12,7 @@ include ':daggie-jodatime'
 include ':daggie-gson'
 include ':daggie-moshi'
 include ':daggie-glide'
+include ':daggie-permissions'
 include ':daggie-leakcanary'
 include ':daggie-stetho'
 
