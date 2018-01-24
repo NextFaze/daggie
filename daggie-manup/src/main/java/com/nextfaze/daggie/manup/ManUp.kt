@@ -107,7 +107,7 @@ private fun initManUp(
                     // Don't show it again if user has already seen an optional update dialog.
                     val fragmentManager = activity.supportFragmentManager!!
                     when (it.check(application.versionCode)) {
-                        Result.UPDATE_REQUIRED -> ManUpDialogFragment.show(fragmentManager, it)
+                        Result.MAINTENANCE_MODE, Result.UPDATE_REQUIRED -> ManUpDialogFragment.show(fragmentManager, it)
                         Result.UPDATE_RECOMMENDED -> if (!updateShown) {
                             updateShown = true
                             ManUpDialogFragment.show(fragmentManager, it)
@@ -133,6 +133,8 @@ internal interface ManUpApi {
 internal enum class Result {
     /** User may continue using the app. */
     OK,
+    /** User is locked out of the app. */
+    MAINTENANCE_MODE,
     /** User is forced to update the app. */
     UPDATE_REQUIRED,
     /** User is recommended to update the app, but may continue using it. */
@@ -142,6 +144,7 @@ internal enum class Result {
 /** Compares the specified version code again this configuration, returning what to do next. */
 internal fun Config?.check(installedVersionCode: Int) = when {
     this == null -> Result.OK
+    maintenanceMode -> Result.MAINTENANCE_MODE
     installedVersionCode in minimumVersion..(currentVersion - 1) -> Result.UPDATE_RECOMMENDED
     installedVersionCode < minimumVersion -> Result.UPDATE_REQUIRED
     else -> Result.OK

@@ -78,6 +78,7 @@ class ManUpTest {
 
 private fun manUpResponse1() = aResponse()
         .withBody("""{
+                "manUpAppMaintenanceMode": false,
                 "manUpAppVersionCurrent": 1,
                 "manUpAppVersionMin": 1,
                 "manUpAppUpdateURLMin": "http://example.com/app"
@@ -86,6 +87,7 @@ private fun manUpResponse1() = aResponse()
 
 private fun manUpResponse2() = aResponse()
         .withBody("""{
+                "manUpAppMaintenanceMode": false,
                 "manUpAppVersionCurrent": 2,
                 "manUpAppVersionMin": 1,
                 "manUpAppUpdateURLMin": "http://example.com/app"
