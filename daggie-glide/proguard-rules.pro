@@ -4,3 +4,5 @@
     **[] $VALUES;
     public *;
 }
+
+-dontwarn android.media.**
