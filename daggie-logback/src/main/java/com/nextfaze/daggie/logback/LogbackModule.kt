@@ -10,7 +10,6 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.joran.JoranConfigurator
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.Appender
-import ch.qos.logback.core.AppenderBase
 import com.nextfaze.daggie.Initializer
 import com.nextfaze.daggie.Ordered
 import dagger.Module
@@ -23,7 +22,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /** Alias for a Logback appender. */
-typealias LogbackAppender = AppenderBase<ILoggingEvent>
+typealias LogbackAppender = Appender<ILoggingEvent>
 
 /**
  * Provides bindings that initialize Logback logging.

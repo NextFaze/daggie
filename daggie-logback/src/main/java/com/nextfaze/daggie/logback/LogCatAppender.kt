@@ -2,11 +2,12 @@ package com.nextfaze.daggie.logback
 
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.AppenderBase
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class LogCatAppender @Inject constructor(private val logCatLogger: LogCatLogger) : LogbackAppender() {
+internal class LogCatAppender @Inject constructor(private val logCatLogger: LogCatLogger) : AppenderBase<ILoggingEvent>() {
     private val tagEncoder: PatternLayoutEncoder by lazy {
         PatternLayoutEncoder().apply {
             pattern = "%logger%nopex"
