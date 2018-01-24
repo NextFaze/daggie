@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatDialogFragment
+import com.nextfaze.daggie.manup.Result.MAINTENANCE_MODE
 import com.nextfaze.daggie.manup.Result.UPDATE_RECOMMENDED
 import com.nextfaze.daggie.manup.Result.UPDATE_REQUIRED
 import okhttp3.HttpUrl
@@ -63,9 +64,13 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context!!).apply {
         setTitle(titleResource())
         setMessage(messageResource())
-        val updateUrl = config.updateUrl
-        if (updateUrl != null) setPositiveButton(R.string.daggie_manup_update) { _, _ -> updateApp(updateUrl) }
-        setNegativeButton(R.string.daggie_manup_cancel) { _, _ -> dismissAllowingStateLoss() }
+        if (config.maintenanceMode) {
+            setPositiveButton(R.string.daggie_manup_ok) { _, _ -> dismissAllowingStateLoss() }
+        } else {
+            val updateUrl = config.updateUrl
+            if (updateUrl != null) setPositiveButton(R.string.daggie_manup_update) { _, _ -> updateApp(updateUrl) }
+            setNegativeButton(R.string.daggie_manup_cancel) { _, _ -> dismissAllowingStateLoss() }
+        }
     }.create()!!
 
     override fun onCancel(dialog: DialogInterface) {
@@ -92,17 +97,19 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     }
 
     private fun finishAffinityIfUpdateRequired() {
-        // Finish all activities in task if this is a mandatory update
-        if (result == UPDATE_REQUIRED) activity?.let { ActivityCompat.finishAffinity(it) }
+        // Finish all activities in task if this is a mandatory update or maintenance mode
+        if (result == UPDATE_REQUIRED || result == MAINTENANCE_MODE) activity?.let { ActivityCompat.finishAffinity(it) }
     }
 
     @StringRes private fun titleResource() = when (result) {
+        MAINTENANCE_MODE -> R.string.daggie_manup_maintenance_mode_title
         UPDATE_REQUIRED -> R.string.daggie_manup_update_required_title
         UPDATE_RECOMMENDED -> R.string.daggie_manup_update_available_title
         else -> R.string.daggie_manup_update_available_title
     }
 
     @StringRes private fun messageResource() = when (result) {
+        MAINTENANCE_MODE -> R.string.daggie_manup_maintenance_mode_message
         UPDATE_REQUIRED -> R.string.daggie_manup_update_required_message
         UPDATE_RECOMMENDED -> R.string.daggie_manup_update_available_message
         else -> R.string.daggie_manup_update_available_message

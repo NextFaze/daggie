@@ -18,7 +18,11 @@ abstract class Config implements Parcelable {
 
     /** Default instance to use before any has been saved from the server. */
     @NonNull
-    static final Config DEFAULT = create(0, 0, null);
+    static final Config DEFAULT = create(false, 0, 0, null);
+
+    /** Whether app is currently down due to maintenance. */
+    @SerializedName("manUpAppMaintenanceMode")
+    abstract boolean getMaintenanceMode();
 
     /** Version code of the current published Play Store app. */
     @SerializedName("manUpAppVersionCurrent")
@@ -35,8 +39,8 @@ abstract class Config implements Parcelable {
     abstract HttpUrl getUpdateUrl();
 
     @NonNull
-    public static Config create(int currentVersion, int minimumVersion, @Nullable HttpUrl updateUrl) {
-        return new AutoValue_Config(currentVersion, minimumVersion, updateUrl);
+    public static Config create(boolean maintenanceMode, int currentVersion, int minimumVersion, @Nullable HttpUrl updateUrl) {
+        return new AutoValue_Config(maintenanceMode, currentVersion, minimumVersion, updateUrl);
     }
 
     @NonNull
