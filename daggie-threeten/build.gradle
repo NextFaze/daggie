@@ -3,4 +3,5 @@ project.configureLibrary(this)
 dependencies {
     api project(':daggie')
     api rootProject.ext.threeTen
+    api rootProject.ext.rxJava2
 }
