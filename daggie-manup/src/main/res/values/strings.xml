@@ -2,8 +2,8 @@
 <resources>
 
     <string name="daggie_manup_update">Update</string>
-    <string name="daggie_manup_cancel">Cancel</string>
-    <string name="daggie_manup_ok">OK</string>
+    <string name="daggie_manup_cancel">@android:string/cancel</string>
+    <string name="daggie_manup_ok">@android:string/ok</string>
     <string name="daggie_manup_update_available_title">Update Available</string>
     <string name="daggie_manup_update_available_message">An update is available. Would you like to update to the latest version?</string>
     <string name="daggie_manup_update_required_title">Update Required</string>
