@@ -13,6 +13,7 @@ import dagger.Provides
 import dagger.multibindings.IntoSet
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Singleton
 
@@ -57,15 +58,17 @@ interface Permissions {
 
 private class RealPermissions(private val application: Application) : Permissions {
 
-    private val activity = application.topResumedActivity().replay(1)
+    private val currentActivity = BehaviorSubject.createDefault<Optional<Activity>>(Optional.None)
 
     private val resultsSubject = PublishSubject.create<Any>()
 
     init {
-        activity.connect()
+        // Subscribe and store in a subject to retain latest value. Use of replay(1) unsuitable due to
+        // https://github.com/ReactiveX/RxJava/issues/5827, which results in leaking the activity.
+        application.topResumedActivity().subscribe(currentActivity)
     }
 
-    override fun requestPermissions(permissions: Iterable<String>): Completable = activity.filterPresent()
+    override fun requestPermissions(permissions: Iterable<String>): Completable = currentActivity.filterPresent()
             .take(1)
             .flatMapCompletable { it.requestPermissions(permissions) }
 
@@ -78,7 +81,7 @@ private class RealPermissions(private val application: Application) : Permission
             .distinctUntilChanged()
 
     override fun shouldShowRequestPermissionRationale(permission: String): Observable<Boolean> =
-            activity.filterPresent()
+            currentActivity.filterPresent()
                     .map { ActivityCompat.shouldShowRequestPermissionRationale(it, permission) }
                     .distinctUntilChanged()
 }
