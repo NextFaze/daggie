@@ -6,3 +6,5 @@
     @com.squareup.moshi.FromJson *;
     @com.squareup.moshi.ToJson *;
 }
+
+-keep @com.squareup.moshi.JsonQualifier interface *
