@@ -1,0 +1,11 @@
+-dontwarn java.awt.**
+-dontwarn java.nio.file.**
+-dontwarn com.google.common.**
+-dontwarn org.codehaus.mojo.animal_sniffer.**
+-dontwarn java.lang.invoke.**
+-dontwarn org.jetbrains.anko.internals.**
+-dontwarn javax.annotation.concurrent.GuardedBy
+
+-dontwarn kotlin.reflect.jvm.internal.**
+-keep class kotlin.Metadata { *; }
+-keep class kotlin.reflect.** { *; }

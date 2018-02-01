@@ -1,5 +1,7 @@
 project.configureLibrary(this)
 
+android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
+
 dependencies {
     api rootProject.ext.dagger
     api rootProject.ext.supportAnnotations
