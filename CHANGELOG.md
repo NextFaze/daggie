@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 4.0.1
+
+_2018_02_02_
+
+* ProGuard rules additions
+
 ## Version 4.0.0
 
 _2018_02_02_
