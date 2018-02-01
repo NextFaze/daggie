@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 4.0.0
+
+_2018_02_02_
+
+* Add `daggie-permissions`, a reactive permissions module
+* Change `daggie-logback` `LogbackAppender` typealias to `Appender<ILoggingEvent>`
+* Add `Observable<Locale>` and `Observable<ZoneId>` (as well as `Flowable`) bindings to `daggie-threeten`
+* Add support for parsing map keys into values to `daggie-moshi`, which is useful for Firebase Realtime Database 
+  applications
+
 ## Version 3.1.0
 
 _2018_01_15_
