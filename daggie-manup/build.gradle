@@ -1,5 +1,6 @@
 project.configureLibrary(this)
 
+android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
 android.lintOptions.disable 'InvalidPackage', 'UnusedResources'
 
 dependencies {
