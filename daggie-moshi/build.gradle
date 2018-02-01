@@ -5,4 +5,6 @@ android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
 dependencies {
     api project(':daggie')
     api rootProject.ext.moshi
+    testImplementation rootProject.ext.moshiKotlin
+    testImplementation rootProject.ext.kotlinReflect
 }
