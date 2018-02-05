@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit.MINUTES
     @Provides @IntoSet internal fun initializer(
             httpClient: OkHttpClient,
             config: ManUpConfig,
-            @Foreground foreground : Observable<Boolean>
+            @Foreground foreground: Observable<Boolean>
     ): Initializer<Application> = { initManUp(it, httpClient, foreground, config) }
 }
 
@@ -78,7 +78,7 @@ private fun initManUp(
             .getObject("config", Config.DEFAULT, gson.preferenceConverter<Config>())
 
     // Load remote config into prefs
-    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
+    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it.config) }.toCompletable()!!
 
     // Emits config pref values, which are synchronized with the API upon each subscription
     val syncConfig = Flowable.merge(
@@ -124,10 +124,10 @@ private fun initManUp(
 
 /** Provides access to remote ManUp config URL. */
 internal interface ManUpApi {
-    /** Loads the remote [Config], ensuring any cached response is validated against the origin server before use. */
+    /** Loads the remote [PlatformUnifiedConfig], ensuring any cached response is validated against the origin server before use. */
     @GET()
     @Headers("Cache-Control: max-age=0, public")
-    fun config(@Url url: HttpUrl): Single<Config>
+    fun config(@Url url: HttpUrl): Single<PlatformUnifiedConfig>
 }
 
 internal enum class Result {
