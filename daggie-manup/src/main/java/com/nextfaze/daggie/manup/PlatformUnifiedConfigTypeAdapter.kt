@@ -10,6 +10,12 @@ import com.google.gson.stream.JsonWriter
 import com.ryanharter.auto.value.gson.GsonTypeAdapterFactory
 import okhttp3.HttpUrl
 
+private const val NAME_ANDROID = "android"
+private const val NAME_MAINTENANCE_MODE = "manUpAppMaintenanceMode"
+private const val NAME_VERSION_CURRENT = "manUpAppVersionCurrent"
+private const val NAME_VERSION_MINIMUM = "manUpAppVersionMin"
+private const val NAME_UPDATE_URL = "manUpAppUpdateURLMin"
+
 /** [TypeAdapter] for [Config] that supports platform unified format as well as legacy. */
 internal class PlatformUnifiedConfigTypeAdapter(gson: Gson) : com.google.gson.TypeAdapter<Config?>() {
 
@@ -22,13 +28,13 @@ internal class PlatformUnifiedConfigTypeAdapter(gson: Gson) : com.google.gson.Ty
         }
 
         writer.beginObject()
-        writer.name("manUpAppMaintenanceMode")
+        writer.name(NAME_MAINTENANCE_MODE)
         writer.value(config.maintenanceMode)
-        writer.name("manUpAppVersionCurrent")
+        writer.name(NAME_VERSION_CURRENT)
         writer.value(config.currentVersion)
-        writer.name("manUpAppVersionMin")
+        writer.name(NAME_VERSION_MINIMUM)
         writer.value(config.minimumVersion)
-        writer.name("manUpAppUpdateURLMin")
+        writer.name(NAME_UPDATE_URL)
         httpUrlAdapter.write(writer, config.updateUrl)
         writer.endObject()
     }
@@ -54,15 +60,15 @@ internal class PlatformUnifiedConfigTypeAdapter(gson: Gson) : com.google.gson.Ty
             }
 
             when (name) {
-                "android" -> {
+                NAME_ANDROID -> {
                     isPlatformUnified = true
                     // Begin platform unified object
                     reader.beginObject()
                 }
-                "manUpAppMaintenanceMode" -> { maintenanceMode = reader.nextBoolean() }
-                "manUpAppVersionCurrent" -> { currentVersion = reader.nextInt() }
-                "manUpAppVersionMin" -> { minimumVersion = reader.nextInt() }
-                "manUpAppUpdateURLMin" -> { updateUrl = httpUrlAdapter.read(reader) }
+                NAME_MAINTENANCE_MODE -> { maintenanceMode = reader.nextBoolean() }
+                NAME_VERSION_CURRENT -> { currentVersion = reader.nextInt() }
+                NAME_VERSION_MINIMUM -> { minimumVersion = reader.nextInt() }
+                NAME_UPDATE_URL -> { updateUrl = httpUrlAdapter.read(reader) }
                 else -> { reader.skipValue() }
             }
         }
