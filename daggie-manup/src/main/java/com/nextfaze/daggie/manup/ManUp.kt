@@ -60,7 +60,7 @@ private fun initManUp(
 ) {
     // Use our own Gson
     val gson = GsonBuilder()
-            .registerTypeAdapterFactory(ManUpAutoValueTypeAdapterFactory.create())
+            .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory.create())
             .registerTypeAdapter(HttpUrl::class.java, HttpUrlTypeAdapter())
             .create()!!
 
@@ -78,7 +78,7 @@ private fun initManUp(
             .getObject("config", Config.DEFAULT, gson.preferenceConverter<Config>())
 
     // Load remote config into prefs
-    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it.config) }.toCompletable()!!
+    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
 
     // Emits config pref values, which are synchronized with the API upon each subscription
     val syncConfig = Flowable.merge(
@@ -124,10 +124,10 @@ private fun initManUp(
 
 /** Provides access to remote ManUp config URL. */
 internal interface ManUpApi {
-    /** Loads the remote [PlatformUnifiedConfig], ensuring any cached response is validated against the origin server before use. */
+    /** Loads the remote [Config], ensuring any cached response is validated against the origin server before use. */
     @GET()
     @Headers("Cache-Control: max-age=0, public")
-    fun config(@Url url: HttpUrl): Single<PlatformUnifiedConfig>
+    fun config(@Url url: HttpUrl): Single<Config>
 }
 
 internal enum class Result {
