@@ -61,7 +61,6 @@ private fun initManUp(
     // Use our own Gson
     val gson = GsonBuilder()
             .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory.create())
-            .registerTypeAdapter(HttpUrl::class.java, HttpUrlTypeAdapter())
             .create()!!
 
     // Create Retrofit API
@@ -75,7 +74,7 @@ private fun initManUp(
 
     // Config will be stored in prefs
     val configPref = RxSharedPreferences.create(application.getSharedPreferences("com.nextfaze.manup", MODE_PRIVATE))
-            .getObject("config", Config.DEFAULT, gson.preferenceConverter<Config>())
+            .getObject("config", Config(), gson.preferenceConverter<Config>())
 
     // Load remote config into prefs
     val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.toCompletable()!!

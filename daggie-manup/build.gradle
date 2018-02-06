@@ -1,7 +1,13 @@
 project.configureLibrary(this)
+apply plugin: 'kotlin-android-extensions'
 
 android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
 android.lintOptions.disable 'InvalidPackage', 'UnusedResources'
+
+androidExtensions {
+    // Currently required for @Parcelize
+    experimental = true
+}
 
 dependencies {
     api project(':daggie')
@@ -13,11 +19,4 @@ dependencies {
     api rootProject.ext.rxPreferences2
     api rootProject.ext.retrofitAdapterRxJava2
     api rootProject.ext.retrofitConverterGson
-    kapt rootProject.ext.autoValue
-    compileOnly rootProject.ext.autoValue
-    kapt rootProject.ext.autoValueGson
-    compileOnly rootProject.ext.autoValueGson
-    kapt rootProject.ext.autoValueParcel
-    compileOnly rootProject.ext.autoValueParcel
-    api rootProject.ext.autoValueParcelAdapter
 }

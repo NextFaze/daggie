@@ -1,100 +1,71 @@
 package com.nextfaze.daggie.manup
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.TypeAdapter
 import com.google.gson.TypeAdapterFactory
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import com.ryanharter.auto.value.gson.GsonTypeAdapterFactory
-import okhttp3.HttpUrl
+import kotlinx.android.parcel.Parcelize
+import kotlin.reflect.KClass
 
-private const val NAME_ANDROID = "android"
-private const val NAME_MAINTENANCE_MODE = "manUpAppMaintenanceMode"
-private const val NAME_VERSION_CURRENT = "manUpAppVersionCurrent"
-private const val NAME_VERSION_MINIMUM = "manUpAppVersionMin"
-private const val NAME_UPDATE_URL = "manUpAppUpdateURLMin"
+@Parcelize
+@SuppressLint("ParcelCreator")
+internal data class Config(
+        @SerializedName("manUpAppMaintenanceMode")
+        val maintenanceMode: Boolean = false,
 
-/** [TypeAdapter] for [Config] that supports platform unified format as well as legacy. */
-internal class PlatformUnifiedConfigTypeAdapter(gson: Gson) : com.google.gson.TypeAdapter<Config?>() {
+        @SerializedName("manUpAppVersionCurrent")
+        val currentVersion: Int = 0,
 
-    private val httpUrlAdapter = gson.getAdapter(HttpUrl::class.java)
+        @SerializedName("manUpAppVersionMin")
+        val minimumVersion: Int = 0,
 
-    override fun write(writer: JsonWriter, config: Config?) {
-        if (config == null) {
-            writer.nullValue()
-            return
-        }
+        @SerializedName("manUpAppUpdateURLMin")
+        val updateUrl: String? = null
+) : Parcelable
 
-        writer.beginObject()
-        writer.name(NAME_MAINTENANCE_MODE)
-        writer.value(config.maintenanceMode)
-        writer.name(NAME_VERSION_CURRENT)
-        writer.value(config.currentVersion)
-        writer.name(NAME_VERSION_MINIMUM)
-        writer.value(config.minimumVersion)
-        writer.name(NAME_UPDATE_URL)
-        httpUrlAdapter.write(writer, config.updateUrl)
-        writer.endObject()
-    }
+private data class UnifiedConfig(
+        @SerializedName("android")
+        val config: Config? = null
+)
 
-    override fun read(reader: JsonReader): Config? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        }
-        reader.beginObject()
-
-        var isPlatformUnified = false
-
-        var maintenanceMode = false
-        var currentVersion = 0
-        var minimumVersion = 0
-        var updateUrl: HttpUrl? = null
-        while (reader.hasNext()) {
-            val name = reader.nextName()
-            if (reader.peek() == JsonToken.NULL) {
-                reader.nextNull()
-                continue
-            }
-
-            when (name) {
-                NAME_ANDROID -> {
-                    isPlatformUnified = true
-                    // Begin platform unified object
-                    reader.beginObject()
-                }
-                NAME_MAINTENANCE_MODE -> { maintenanceMode = reader.nextBoolean() }
-                NAME_VERSION_CURRENT -> { currentVersion = reader.nextInt() }
-                NAME_VERSION_MINIMUM -> { minimumVersion = reader.nextInt() }
-                NAME_UPDATE_URL -> { updateUrl = httpUrlAdapter.read(reader) }
-                else -> { reader.skipValue() }
-            }
-        }
-
-        if (isPlatformUnified) {
-            // End platform unified object
-            reader.endObject()
-        }
-
-        reader.endObject()
-        return AutoValue_Config(maintenanceMode, currentVersion, minimumVersion, updateUrl)
-    }
-}
-
-@GsonTypeAdapterFactory internal abstract class PlatformUnifiedConfigTypeAdapterFactory : TypeAdapterFactory {
+/** [TypeAdapterFactory] for [Config] that supports platform unified format as well as legacy. */
+internal abstract class PlatformUnifiedConfigTypeAdapterFactory : TypeAdapterFactory {
     companion object {
         @JvmStatic fun create() = object : TypeAdapterFactory {
             @Suppress("UNCHECKED_CAST")
             override fun <T> create(gson: Gson, type: TypeToken<T>): TypeAdapter<T>? {
                 val rawType = type.rawType as Class<T>
-                return if (Config::class.java.isAssignableFrom(rawType)) {
-                    PlatformUnifiedConfigTypeAdapter(gson) as TypeAdapter<T>
-                } else {
-                    null
+                if (!Config::class.java.isAssignableFrom(rawType)) {
+                    return null
                 }
+
+                val configAdapter = gson.getDelegateAdapter(this, Config::class.asTypeToken())
+                val unifiedAdapter = gson.getDelegateAdapter(this, UnifiedConfig::class.asTypeToken())
+
+                return object : TypeAdapter<Config>() {
+                    override fun write(writer: JsonWriter, value: Config?) = configAdapter.write(writer, value)
+
+                    override fun read(reader: JsonReader): Config? {
+                        val jsonObject = gson.fromJson<JsonObject>(reader, JsonObject::class.java)
+
+                        if (jsonObject.get("android") != null) {
+                            // Is unified, so extract inner config
+                            return unifiedAdapter.fromJsonTree(jsonObject)?.config
+                        } else {
+                            return configAdapter.fromJsonTree(jsonObject)
+                        }
+                    }
+
+                } as TypeAdapter<T>
             }
         }
     }
 }
+
+fun <T : Any> KClass<T>.asTypeToken(): TypeToken<T> = TypeToken.get(this.java)
