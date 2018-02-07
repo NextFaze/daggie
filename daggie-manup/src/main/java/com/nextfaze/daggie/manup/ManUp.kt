@@ -60,7 +60,7 @@ private fun initManUp(
 ) {
     // Use our own Gson
     val gson = GsonBuilder()
-            .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory.create())
+            .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory())
             .create()!!
 
     // Create Retrofit API

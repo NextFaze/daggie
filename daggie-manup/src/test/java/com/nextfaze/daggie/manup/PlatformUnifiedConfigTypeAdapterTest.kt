@@ -3,6 +3,7 @@ package com.nextfaze.daggie.manup
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.GsonBuilder
 import org.junit.Test
+import org.skyscreamer.jsonassert.JSONAssert
 
 private const val LEGACY_JSON = """{
   "manUpAppMaintenanceMode": false,
@@ -25,8 +26,7 @@ private val TEST_CONFIG = Config(false, 1, 1, "http://example.com/")
 class PlatformUnifiedConfigTypeAdapterTest {
 
     private val gson = GsonBuilder()
-            .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory.create())
-            .setPrettyPrinting()
+            .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory())
             .create()!!
 
     @Test fun readsLegacy() {
@@ -40,6 +40,6 @@ class PlatformUnifiedConfigTypeAdapterTest {
     }
 
     @Test fun writesLegacy() {
-        assertThat(gson.toJson(TEST_CONFIG)).isEqualTo(LEGACY_JSON)
+        JSONAssert.assertEquals(gson.toJson(TEST_CONFIG), LEGACY_JSON, false)
     }
 }

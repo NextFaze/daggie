@@ -19,4 +19,5 @@ dependencies {
     api rootProject.ext.rxPreferences2
     api rootProject.ext.retrofitAdapterRxJava2
     api rootProject.ext.retrofitConverterGson
+    testImplementation rootProject.ext.jsonAssert
 }
