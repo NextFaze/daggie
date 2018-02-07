@@ -11,6 +11,7 @@ _2018_02_02_
 
 _2018_02_02_
 
+* Add support for maintenance mode in ManUp
 * Add `daggie-permissions`, a reactive permissions module
 * Change `daggie-logback` `LogbackAppender` typealias to `Appender<ILoggingEvent>`
 * Add `Observable<Locale>` and `Observable<ZoneId>` (as well as `Flowable`) bindings to `daggie-threeten`
