@@ -5,6 +5,7 @@
 /local.properties
 .DS_Store
 /captures
+.idea/caches
 .externalNativeBuild
 .idea/workspace.xml
 .idea/modules.xml
