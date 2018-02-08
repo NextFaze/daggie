@@ -41,9 +41,9 @@ import java.util.concurrent.TimeUnit.MINUTES
  */
 @Module class ManUpModule {
     @Provides @IntoSet internal fun initializer(
-            httpClient: OkHttpClient,
-            config: ManUpConfig,
-            @Foreground foreground : Observable<Boolean>
+        httpClient: OkHttpClient,
+        config: ManUpConfig,
+        @Foreground foreground: Observable<Boolean>
     ): Initializer<Application> = { initManUp(it, httpClient, foreground, config) }
 }
 
@@ -53,37 +53,36 @@ private val RETRY_MAX_DELAY_UNIT = MINUTES
 // TODO: Parse config JSON manually to eliminate Gson, AutoValue, and Retrofit dependencies.
 
 private fun initManUp(
-        application: Application,
-        httpClient: OkHttpClient,
-        foreground: Observable<Boolean>,
-        manUpConfig: ManUpConfig
+    application: Application,
+    httpClient: OkHttpClient,
+    foreground: Observable<Boolean>,
+    manUpConfig: ManUpConfig
 ) {
     // Use our own Gson
     val gson = GsonBuilder()
-            .registerTypeAdapterFactory(ManUpAutoValueTypeAdapterFactory.create())
-            .registerTypeAdapter(HttpUrl::class.java, HttpUrlTypeAdapter())
-            .create()!!
+        .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory())
+        .create()!!
 
     // Create Retrofit API
     val api = Retrofit.Builder()
-            .callFactory(httpClient)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(io()))
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl("http://example.com") // Dummy value; not actually used
-            .build()
-            .create(ManUpApi::class.java)!!
+        .callFactory(httpClient)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(io()))
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .baseUrl("http://example.com") // Dummy value; not actually used
+        .build()
+        .create(ManUpApi::class.java)!!
 
     // Config will be stored in prefs
     val configPref = RxSharedPreferences.create(application.getSharedPreferences("com.nextfaze.manup", MODE_PRIVATE))
-            .getObject("config", Config.DEFAULT, gson.preferenceConverter<Config>())
+        .getObject("config", Config(), gson.preferenceConverter<Config>())
 
     // Load remote config into prefs
     val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
 
     // Emits config pref values, which are synchronized with the API upon each subscription
     val syncConfig = Flowable.merge(
-            syncConfigWithApi.toFlowable(),
-            configPref.asObservable().toFlowable(BackpressureStrategy.LATEST)
+        syncConfigWithApi.toFlowable(),
+        configPref.asObservable().toFlowable(BackpressureStrategy.LATEST)
     )!!
 
     // Tracks if the user has been shown a recommended update
@@ -92,12 +91,12 @@ private fun initManUp(
     // Periodically update config and evaluate it, as long as app is foregrounded
     val configSubject: BehaviorSubject<Config> = BehaviorSubject.create<Config>()
     Flowable.interval(0L, manUpConfig.pollingInterval, manUpConfig.pollingIntervalUnit)
-            .switchMap { syncConfig }
-            .retryWhen { it.exponentialBackoff(maxDelay = RETRY_MAX_DELAY, maxDelayUnit = RETRY_MAX_DELAY_UNIT) }
-            .observeOn(mainThread())
-            .takeWhile(foreground.toFlowable(BackpressureStrategy.LATEST))
-            .distinctUntilChanged()
-            .subscribe { configSubject.onNext(it) }
+        .switchMap { syncConfig }
+        .retryWhen { it.exponentialBackoff(maxDelay = RETRY_MAX_DELAY, maxDelayUnit = RETRY_MAX_DELAY_UNIT) }
+        .observeOn(mainThread())
+        .takeWhile(foreground.toFlowable(BackpressureStrategy.LATEST))
+        .distinctUntilChanged()
+        .subscribe { configSubject.onNext(it) }
 
     application.registerActivityLifecycleCallbacks(object : SimpleActivityLifecycleCallbacks() {
         override fun onActivityResumed(activity: Activity) {

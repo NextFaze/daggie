@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatDialogFragment
 import com.nextfaze.daggie.manup.Result.MAINTENANCE_MODE
 import com.nextfaze.daggie.manup.Result.UPDATE_RECOMMENDED
 import com.nextfaze.daggie.manup.Result.UPDATE_REQUIRED
-import okhttp3.HttpUrl
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -58,7 +57,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
         /** Returns an existing instance of the fragment, if present already in [fragmentManager]. */
         private fun find(fragmentManager: FragmentManager) =
-                fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
+            fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context!!).apply {
@@ -89,7 +88,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     }
 
     /** Opens the update URL. */
-    private fun updateApp(updateUrl: HttpUrl) = activity?.startActivity(Intent(Intent.ACTION_VIEW, updateUrl.toUri()))
+    private fun updateApp(updateUrl: String) = activity?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl)))
 
     private fun updateDialog() {
         dialog?.setTitle(titleResource())
@@ -117,8 +116,6 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
     override fun getDialog() = super.getDialog() as? AlertDialog
 }
-
-private fun HttpUrl.toUri() = Uri.parse(toString())!!
 
 internal fun <P : Parcelable> parcelableArgument(key: String) = object : ReadWriteProperty<Fragment, P> {
     override fun getValue(thisRef: Fragment, property: KProperty<*>): P = thisRef.arguments!!.getParcelable(key)
