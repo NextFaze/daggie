@@ -57,7 +57,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
         /** Returns an existing instance of the fragment, if present already in [fragmentManager]. */
         private fun find(fragmentManager: FragmentManager) =
-                fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
+            fragmentManager.findFragmentByTag(FRAGMENT_TAG) as? ManUpDialogFragment
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context!!).apply {

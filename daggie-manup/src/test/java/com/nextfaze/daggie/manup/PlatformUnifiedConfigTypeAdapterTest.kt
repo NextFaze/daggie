@@ -26,8 +26,8 @@ private val TEST_CONFIG = Config(false, 1, 1, "http://example.com/")
 class PlatformUnifiedConfigTypeAdapterTest {
 
     private val gson = GsonBuilder()
-            .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory())
-            .create()!!
+        .registerTypeAdapterFactory(PlatformUnifiedConfigTypeAdapterFactory())
+        .create()!!
 
     @Test fun readsLegacy() {
         val config = gson.fromJson(LEGACY_JSON, Config::class.java)

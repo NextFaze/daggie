@@ -15,22 +15,22 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @SuppressLint("ParcelCreator")
 internal data class Config(
-        @SerializedName("manUpAppMaintenanceMode")
-        val maintenanceMode: Boolean = false,
+    @SerializedName("manUpAppMaintenanceMode")
+    val maintenanceMode: Boolean = false,
 
-        @SerializedName("manUpAppVersionCurrent")
-        val currentVersion: Int = 0,
+    @SerializedName("manUpAppVersionCurrent")
+    val currentVersion: Int = 0,
 
-        @SerializedName("manUpAppVersionMin")
-        val minimumVersion: Int = 0,
+    @SerializedName("manUpAppVersionMin")
+    val minimumVersion: Int = 0,
 
-        @SerializedName("manUpAppUpdateURLMin")
-        val updateUrl: String? = null
+    @SerializedName("manUpAppUpdateURLMin")
+    val updateUrl: String? = null
 ) : Parcelable
 
 private data class UnifiedConfig(
-        @SerializedName("android")
-        val config: Config? = null
+    @SerializedName("android")
+    val config: Config? = null
 )
 
 /** [TypeAdapterFactory] for [Config] that supports platform unified format as well as legacy. */
