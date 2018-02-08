@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 5.0.0
+
+_2018_02_09_
+
+* Moshi key supplying functionality now requires `@RequiresKey` on models
+* Add support for modern "platform unified" ManUp JSON format
+
 ## Version 4.0.1
 
 _2018_02_02_

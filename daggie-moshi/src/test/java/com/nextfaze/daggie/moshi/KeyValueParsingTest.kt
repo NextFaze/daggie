@@ -37,6 +37,7 @@ class KeyValueParsingTest {
         assertThat(adapterOfMapOfItem.fromKeyValuePair("5", inputMap)).isEqualTo(outputMap)
     }
 
+    @RequiresKey
     data class Item(
         @Json(name = "_key")
         val id: Any,
