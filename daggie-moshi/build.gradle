@@ -7,4 +7,5 @@ dependencies {
     api rootProject.ext.moshi
     testImplementation rootProject.ext.moshiKotlin
     testImplementation rootProject.ext.kotlinReflect
+    testImplementation rootProject.ext.jsonAssert
 }
