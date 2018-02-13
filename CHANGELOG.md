@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 5.1.0
+
+_2018_02_14_
+
+* Add ability to parse `Map`s into `Collections` using Moshi
+
 ## Version 5.0.0
 
 _2018_02_09_
