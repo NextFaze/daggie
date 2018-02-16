@@ -1,6 +1,7 @@
 package com.nextfaze.daggie.glide
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import kotlin.properties.Delegates.observable
 
 private const val KEY_SUPER_STATE = "superState"
@@ -23,9 +25,9 @@ private const val KEY_URI = "uri"
 /** A Glide-backed image view that can load a URL. */
 @Suppress("MemberVisibilityCanPrivate")
 class RemoteImageView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
 
     /** Drawable resource to display while the image resource is loading. */
@@ -48,10 +50,26 @@ class RemoteImageView @JvmOverloads constructor(
     var uri: Uri? by invalidateGlideIfChanged(null, clear = true)
 
     /** Controls if a cross fade transition is applied or not. `true` by default. */
-    var crossFadeEnabled: Boolean = true
+    @Deprecated("Use fadeType instead")
+    var crossFadeEnabled: Boolean
+        get() = fadeType == FadeType.CROSS
+        set(value) {
+            fadeType = FadeType.CROSS
+        }
 
     /** The duration in milliseconds of the cross fade transition. */
-    var crossFadeDuration: Long = 300L
+    @Deprecated("Use fadeDuration instead", ReplaceWith("fadeDuration"))
+    var crossFadeDuration: Long
+        get() = fadeDuration
+        set(value) {
+            fadeDuration = value
+        }
+
+    /** The duration in milliseconds of the fade transition. */
+    var fadeDuration: Long = 300L
+
+    /** The fade transition type. When images with transparency are expected, use [FadeType.CROSS]. */
+    var fadeType: FadeType = FadeType.ON_TOP
 
     private var imageWidth = 0
 
@@ -60,26 +78,48 @@ class RemoteImageView @JvmOverloads constructor(
     init {
         context.obtainStyledAttributes(attrs, R.styleable.daggie_glide_RemoteImageView, defStyleAttr, 0).apply {
             try {
-                placeholderResource =
-                        getResourceId(R.styleable.daggie_glide_RemoteImageView_daggie_glide_placeholderDrawable,
-                                placeholderResource)
-                errorResource =
-                        getResourceId(R.styleable.daggie_glide_RemoteImageView_daggie_glide_errorDrawable,
-                                errorResource)
-                fallbackResource =
-                        getResourceId(R.styleable.daggie_glide_RemoteImageView_daggie_glide_fallbackDrawable,
-                                fallbackResource)
-                crossFadeEnabled =
-                        getBoolean(R.styleable.daggie_glide_RemoteImageView_daggie_glide_crossFadeEnabled,
-                                crossFadeEnabled)
-                crossFadeDuration =
-                        getInteger(R.styleable.daggie_glide_RemoteImageView_daggie_glide_crossFadeDuration,
-                                crossFadeDuration.toInt()).toLong()
+                placeholderResource = getResourceId(
+                    R.styleable.daggie_glide_RemoteImageView_daggie_glide_placeholderDrawable,
+                    placeholderResource
+                )
+                errorResource = getResourceId(
+                    R.styleable.daggie_glide_RemoteImageView_daggie_glide_errorDrawable,
+                    errorResource
+                )
+                fallbackResource = getResourceId(
+                    R.styleable.daggie_glide_RemoteImageView_daggie_glide_fallbackDrawable,
+                    fallbackResource
+                )
+                fadeDuration = getInteger(
+                    // Read from new attribute
+                    R.styleable.daggie_glide_RemoteImageView_daggie_glide_fadeDuration,
+                    getInteger(
+                        // Fall back to old attribute
+                        R.styleable.daggie_glide_RemoteImageView_daggie_glide_crossFadeDuration,
+                        fadeDuration.toInt()
+                    )
+                ).toLong()
+                fadeType = getFadeType(defaultValue = fadeType)
             } finally {
                 recycle()
             }
         }
         updateDimensions()
+    }
+
+    private fun TypedArray.getFadeType(defaultValue: FadeType): FadeType {
+        // Use new attribute if as first choice
+        val fadeTypeOrdinal = getInt(R.styleable.daggie_glide_RemoteImageView_daggie_glide_fadeType, -1)
+        if (fadeTypeOrdinal != -1) {
+            return FadeType.values()[fadeTypeOrdinal]
+        }
+        // Then fall back to old cross fade attribute
+        if (hasValue(R.styleable.daggie_glide_RemoteImageView_daggie_glide_crossFadeEnabled)) {
+            val crossFadeEnabled =
+                getBoolean(R.styleable.daggie_glide_RemoteImageView_daggie_glide_crossFadeEnabled, false)
+            return if (crossFadeEnabled) FadeType.CROSS else FadeType.NONE
+        }
+        return defaultValue
     }
 
     override fun onSaveInstanceState() = Bundle().apply {
@@ -134,12 +174,28 @@ class RemoteImageView @JvmOverloads constructor(
         return requestOptions.override(imageWidth, imageHeight)
     }
 
-    private fun transitionOptions(): DrawableTransitionOptions = if (crossFadeEnabled) {
-        DrawableTransitionOptions.withCrossFade(crossFadeDuration.toInt())
-    } else {
-        DrawableTransitionOptions().dontTransition()
-    }
+    private fun transitionOptions() = DrawableTransitionOptions().apply { fadeType.apply(this, fadeDuration.toInt()) }
 
     private fun <T> invalidateGlideIfChanged(initialValue: T, clear: Boolean = false) =
-            observable(initialValue) { _, old, new -> if (old != new) invalidateGlide(clear) }
+        observable(initialValue) { _, old, new -> if (old != new) invalidateGlide(clear) }
+
+    /** The type of fade transition that will be used to animate the loaded image. */
+    enum class FadeType {
+        /** Disables any fade transition. */
+        NONE {
+            override fun apply(options: DrawableTransitionOptions, duration: Int) = options.dontTransition()
+        },
+        /** Fade-in the new image over the top of the placeholder. Suitable when only opaque images are expected */
+        ON_TOP {
+            override fun apply(options: DrawableTransitionOptions, duration: Int) =
+                options.crossFade(DrawableCrossFadeFactory.Builder(duration).setCrossFadeEnabled(false))
+        },
+        /** Fade-out the old, and fade-in the new image. Suitable when images with transparency are expected. */
+        CROSS {
+            override fun apply(options: DrawableTransitionOptions, duration: Int) =
+                options.crossFade(DrawableCrossFadeFactory.Builder(duration).setCrossFadeEnabled(true))
+        };
+
+        internal abstract fun apply(options: DrawableTransitionOptions, duration: Int): DrawableTransitionOptions
+    }
 }

@@ -2,11 +2,21 @@
 <resources>
 
     <declare-styleable name="daggie_glide_RemoteImageView">
-        <attr name="daggie_glide_placeholderDrawable" format="reference"/>
-        <attr name="daggie_glide_errorDrawable" format="reference"/>
-        <attr name="daggie_glide_fallbackDrawable" format="reference"/>
-        <attr name="daggie_glide_crossFadeEnabled" format="boolean"/>
-        <attr name="daggie_glide_crossFadeDuration" format="integer"/>
+        <attr name="daggie_glide_placeholderDrawable" format="reference" />
+        <attr name="daggie_glide_errorDrawable" format="reference" />
+        <attr name="daggie_glide_fallbackDrawable" format="reference" />
+        <attr name="daggie_glide_fadeDuration" format="integer" />
+        <attr name="daggie_glide_fadeType" format="enum">
+            <!-- Must match FadeType ordinals -->
+            <enum name="none" value="0" />
+            <enum name="onTop" value="1" />
+            <enum name="cross" value="2" />
+        </attr>
+
+        <!-- {@deprecated Use daggie_glide_fadeType instead.} -->
+        <attr name="daggie_glide_crossFadeEnabled" format="boolean" />
+        <!-- {@deprecated Use daggie_glide_fadeDuration instead.} -->
+        <attr name="daggie_glide_crossFadeDuration" format="integer" />
     </declare-styleable>
 
 </resources>
