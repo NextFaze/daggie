@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 5.2.0
+
+_2018_02_20_
+
+* Add support for proper cross-fading in `RemoteImageView`
+* Fix bug where ManUp dialog buttons did not update in response to changes
+
 ## Version 5.1.0
 
 _2018_02_14_
