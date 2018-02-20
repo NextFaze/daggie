@@ -66,10 +66,10 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context!!).apply {
-        setTitle(titleResource())
-        setMessage(messageResource())
-        positiveButtonClickAction()?.let { setPositiveButton(positiveButtonResource()) { _, _ -> it.invoke() } }
-        negativeButtonClickAction()?.let { setNegativeButton(negativeButtonResource()) { _, _ -> it.invoke() } }
+        setTitle(titleResource)
+        setMessage(messageResource)
+        positiveButtonClickAction?.let { setPositiveButton(positiveButtonResource) { _, _ -> it.invoke() } }
+        negativeButtonClickAction?.let { setNegativeButton(negativeButtonResource) { _, _ -> it.invoke() } }
     }.create()!!
 
     override fun onCancel(dialog: DialogInterface) {
@@ -92,10 +92,10 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 
     private fun updateDialog() {
         dialog?.let {
-            it.setTitle(titleResource())
-            it.setMessage(getString(messageResource()))
-            it.updateButton(BUTTON_POSITIVE, positiveButtonClickAction(), positiveButtonResource())
-            it.updateButton(BUTTON_NEGATIVE, negativeButtonClickAction(), negativeButtonResource())
+            it.setTitle(titleResource)
+            it.setMessage(getString(messageResource))
+            it.updateButton(BUTTON_POSITIVE, positiveButtonClickAction, positiveButtonResource)
+            it.updateButton(BUTTON_NEGATIVE, negativeButtonClickAction, negativeButtonResource)
         }
     }
 
@@ -111,38 +111,50 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
         if (result == UPDATE_REQUIRED || result == MAINTENANCE_MODE) activity?.let { ActivityCompat.finishAffinity(it) }
     }
 
-    @StringRes private fun titleResource() = when (result) {
-        MAINTENANCE_MODE -> R.string.daggie_manup_maintenance_mode_title
-        UPDATE_REQUIRED -> R.string.daggie_manup_update_required_title
-        UPDATE_RECOMMENDED -> R.string.daggie_manup_update_available_title
-        else -> R.string.daggie_manup_update_available_title
-    }
+    private val titleResource: Int
+        @StringRes get() = when (result) {
+            MAINTENANCE_MODE -> R.string.daggie_manup_maintenance_mode_title
+            UPDATE_REQUIRED -> R.string.daggie_manup_update_required_title
+            UPDATE_RECOMMENDED -> R.string.daggie_manup_update_available_title
+            else -> R.string.daggie_manup_update_available_title
+        }
 
-    @StringRes private fun messageResource() = when (result) {
-        MAINTENANCE_MODE -> R.string.daggie_manup_maintenance_mode_message
-        UPDATE_REQUIRED -> R.string.daggie_manup_update_required_message
-        UPDATE_RECOMMENDED -> R.string.daggie_manup_update_available_message
-        else -> R.string.daggie_manup_update_available_message
-    }
+    private val messageResource: Int
+        @StringRes get() = when (result) {
+            MAINTENANCE_MODE -> R.string.daggie_manup_maintenance_mode_message
+            UPDATE_REQUIRED -> R.string.daggie_manup_update_required_message
+            UPDATE_RECOMMENDED -> R.string.daggie_manup_update_available_message
+            else -> R.string.daggie_manup_update_available_message
+        }
 
-    private fun positiveButtonClickAction(): (() -> Unit?)? = when (result) {
-        MAINTENANCE_MODE -> {{ dismissAllowingStateLoss() }}
-        UPDATE_REQUIRED, UPDATE_RECOMMENDED -> { config.updateUrl?.let { { updateApp(it) } } }
-        else -> null
-    }
+    private val positiveButtonClickAction: (() -> Unit?)?
+        get() = when (result) {
+            MAINTENANCE_MODE -> {
+                { dismissAllowingStateLoss() }
+            }
+            UPDATE_REQUIRED, UPDATE_RECOMMENDED -> {
+                config.updateUrl?.let { { updateApp(it) } }
+            }
+            else -> null
+        }
 
-    @StringRes private fun positiveButtonResource() = when (result) {
-        MAINTENANCE_MODE -> R.string.daggie_manup_ok
-        UPDATE_REQUIRED, UPDATE_RECOMMENDED -> R.string.daggie_manup_update
-        else -> R.string.daggie_manup_update
-    }
+    private val positiveButtonResource: Int
+        @StringRes get() = when (result) {
+            MAINTENANCE_MODE -> R.string.daggie_manup_ok
+            UPDATE_REQUIRED, UPDATE_RECOMMENDED -> R.string.daggie_manup_update
+            else -> R.string.daggie_manup_update
+        }
 
-    private fun negativeButtonClickAction(): (() -> Unit)? = when (result) {
-        MAINTENANCE_MODE -> null
-        else -> {{ dismissAllowingStateLoss() }}
-    }
+    private val negativeButtonClickAction: (() -> Unit)?
+        get() = when (result) {
+            MAINTENANCE_MODE -> null
+            else -> {
+                { dismissAllowingStateLoss() }
+            }
+        }
 
-    private fun negativeButtonResource() = R.string.daggie_manup_cancel
+    private val negativeButtonResource: Int
+        @StringRes get() = R.string.daggie_manup_cancel
 
     override fun getDialog() = super.getDialog() as? AlertDialog
 }
