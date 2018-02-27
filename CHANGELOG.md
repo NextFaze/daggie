@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 5.2.1
+
+_2018_02_28_
+
+* Don't initialize LeakCanary when app was built with JRebel
+
 ## Version 5.2.0
 
 _2018_02_20_
