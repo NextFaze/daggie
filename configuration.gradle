@@ -3,10 +3,10 @@ ext {
     androidMavenGradlePlugin = 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     minSdkVersion = 15
     compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
-    supportVersion = '27.0.2'
+    buildToolsVersion = '27.0.2'
+    supportVersion = '27.1.0'
 
-    kotlinVersion = '1.2.21'
+    kotlinVersion = '1.2.30'
     kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
