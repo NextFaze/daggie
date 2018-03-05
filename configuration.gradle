@@ -66,7 +66,7 @@ ext {
     okhttp = 'com.squareup.okhttp3:okhttp:3.10.0'
     gson = 'com.google.code.gson:gson:2.8.2'
     slf4jApi = 'org.slf4j:slf4j-api:1.7.25'
-    robolectric = 'org.robolectric:robolectric:3.5.1'
+    robolectric = 'org.robolectric:robolectric:3.7.1'
     mockito = 'org.mockito:mockito-inline:2.12.0'
     mockitoKotlin = 'com.nhaarman:mockito-kotlin:1.5.0'
     rxJava2 = 'io.reactivex.rxjava2:rxjava:2.1.10'
