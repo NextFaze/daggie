@@ -22,81 +22,117 @@ import kotlin.annotation.AnnotationTarget.CLASS
  */
 class KeySupplyingJsonAdapterFactory : JsonAdapter.Factory {
     override fun create(type: Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
-        // The only types we handle are parameterized
-        if (type !is ParameterizedType) return null
-
         val rawType = getRawType(type)
 
-        // Adapter for maps of plain java objects
-        val valueMapAdapter = moshi.nextAdapter<Map<*, *>>(this, MAP_OF_ANY_TO_ANY, annotations)
+        // Adapters used to convert to and from Java value objects.
+        // Required because we need to preprocess supported model classes in Map form.
+        fun nextValueMapAdapter() =
+            moshi.nextAdapter<Map<String, *>>(this, MAP_OF_STRING_TO_ANY, annotations)!!
+
+        fun nextValueMapOfMapsAdapter() =
+            moshi.nextAdapter<Map<String, Map<String, *>>>(this, MAP_OF_STRING_TO_MAP_OF_STRING_TO_ANY, annotations)!!
 
         when {
             Collection::class.java.isAssignableFrom(rawType) -> {
                 val elementType = collectionElementType(type, rawType)
                 if (!elementType.isEligibleForKeyInsertion) return null
 
-                // Reads a collection of the desired element type
+                // Adapter for reading a collection of the desired element type.
                 val collectionType = newParameterizedType(rawType, elementType)
                 val collectionAdapter = moshi.nextAdapter<Collection<*>>(this, collectionType, annotations)
+                val elementAdapter = moshi.nextAdapter<Any>(this, elementType, annotations)
+
+                val valueMapAdapter = nextValueMapAdapter()
+                val valueMapOfMapsAdapter = nextValueMapOfMapsAdapter()
 
                 return object : JsonAdapter<Collection<*>>() {
+                    /** Reads a collection, adding keys from the enclosing JSON object. */
                     override fun fromJson(reader: JsonReader): Collection<*>? {
                         reader.expectObjectToRead(elementType)
                         // Read as a java map
-                        val mapOfMapsWithoutKeys = valueMapAdapter.fromJson(reader)
+                        val mapOfMapsWithoutKeys = valueMapOfMapsAdapter.fromJson(reader)!!
                         // Add keys
-                        val listOfMapsWithKeys =
-                            mapOfMapsWithoutKeys?.let { map -> map.entries.map { it.addKey(reader.path) } }
+                        val listOfMapsWithKeys = mapOfMapsWithoutKeys.entries.map { it.plusKey(reader.path) }
                         // Parse list of maps
                         return collectionAdapter.fromJsonValue(listOfMapsWithKeys)
                     }
 
+                    /** Writes a collection as a map, associating the values with their key. */
                     override fun toJson(writer: JsonWriter, collection: Collection<*>?) {
-                        // Write collection as list of maps.
-                        // Safe to assume elements are all maps, since we only support parsing models annotated
-                        // with our annotation, so therefore they are expected to all be represented as JSON
-                        // objects.
-                        @Suppress("UNCHECKED_CAST")
-                        val listOfMapsWithKeys =
-                            collection?.let { collectionAdapter.toJsonValue(collection) as List<Map<*, *>> }
-                        // Convert to map
-                        val mapOfMapsWithKeys = listOfMapsWithKeys?.associateBy { it[KEY] }
-                        // Remove keys
-                        val mapOfMapsWithoutKeys = mapOfMapsWithKeys?.mapValues { it.value.withoutKey() }
-                        // Write map of maps
-                        valueMapAdapter.toJson(writer, mapOfMapsWithoutKeys)
+                        writer.beginObject()
+                        for (element in collection!!) {
+                            // Safe to assume elements are all maps, since we only support parsing custom classes
+                            // annotated with our annotation, so therefore they are expected to all be represented as
+                            // JSON objects.
+                            @Suppress("UNCHECKED_CAST")
+                            val mapWithKey = elementAdapter.toJsonValue(element) as Map<String, *>
+                            // Key string always expected to be present.
+                            // If absent, it either indicates an error in this factory, or the model class
+                            // allows null key values. Neither scenario is recoverable.
+                            val name = mapWithKey[KEY] as? String
+                                    ?: throw JsonDataException("Expected String value for $KEY property at ${writer.path}")
+                            writer.name(name)
+                            // Remove key
+                            val mapWithoutKey = mapWithKey.minusKey()
+                            // Write map
+                            valueMapAdapter.toJson(writer, mapWithoutKey)
+                        }
+                        writer.endObject()
                     }
+
+                    override fun toString() = "$collectionAdapter.keySupplying()"
                 }.nullSafe()
             }
-            Map::class.java.isAssignableFrom(rawType) -> {
+            Map::class.java.isAssignableFrom(rawType) && type is ParameterizedType -> {
                 val valueType = type.actualTypeArguments[1]
                 if (!valueType.isEligibleForKeyInsertion) return null
 
                 // Reads a map of the desired element type
-                val mapType = newParameterizedType(rawType, Any::class.java, valueType)
-                val mapAdapter = moshi.nextAdapter<Map<*, *>>(this, mapType, annotations)
+                val mapType = newParameterizedType(rawType, String::class.java, valueType)
+                // This is expected to delegate back to our single element adapter, which will remove the keys
+                val mapAdapter = moshi.nextAdapter<Map<String, *>>(this, mapType, annotations)
 
-                return object : JsonAdapter<Map<*, *>>() {
-                    override fun fromJson(reader: JsonReader): Map<*, *>? {
+                val valueMapOfMapsAdapter = nextValueMapOfMapsAdapter()
+
+                return object : JsonAdapter<Map<String, *>>() {
+                    /** Reads a map, adding keys from the enclosing JSON object. */
+                    override fun fromJson(reader: JsonReader): Map<String, *>? {
                         reader.expectObjectToRead(valueType)
                         // Read as java map
-                        val mapOfMapsWithoutKeys = valueMapAdapter.fromJson(reader)
+                        val mapOfMapsWithoutKeys = valueMapOfMapsAdapter.fromJson(reader)!!
                         // Add keys
-                        val mapOfMapsWithKeys = mapOfMapsWithoutKeys?.mapValues { it.addKey(reader.path) }
+                        val mapOfMapsWithKeys = mapOfMapsWithoutKeys.mapValues { it.plusKey(reader.path) }
                         // Parse map of maps
                         return mapAdapter.fromJsonValue(mapOfMapsWithKeys)
                     }
 
-                    override fun toJson(writer: JsonWriter, map: Map<*, *>?) {
-                        // Write map as map of maps
+                    /** Writes a map, omitting keys from the values. */
+                    override fun toJson(writer: JsonWriter, map: Map<String, *>?) = mapAdapter.toJson(writer, map)
+
+                    override fun toString() = "$mapAdapter.keySupplying()"
+                }.nullSafe()
+            }
+            type.isEligibleForKeyInsertion -> {
+                val delegatedAdapter = moshi.nextAdapter<Any>(this, type, annotations)
+                val valueMapAdapter = nextValueMapAdapter()
+                return object : JsonAdapter<Any?>() {
+                    /** Reads an object. Doesn't require special treatment because the key will be available by this time. */
+                    override fun fromJson(reader: JsonReader): Any? = delegatedAdapter.fromJson(reader)
+
+                    /** Writes an object as a map, omitting the key. */
+                    override fun toJson(writer: JsonWriter, value: Any?) {
+                        // Safe to assume single objects are represented as maps, since we only support parsing custom
+                        // classes annotated with our annotation, so therefore they are expected to all be represented
+                        // as JSON objects.
                         @Suppress("UNCHECKED_CAST")
-                        val mapOfMapsWithKeys =
-                            map?.let { mapAdapter.toJsonValue(map) as Map<*, Map<*, *>> }
-                        // Remove keys
-                        val mapOfMapsWithoutKeys = mapOfMapsWithKeys?.mapValues { it.value.withoutKey() }
-                        // Write map of maps
-                        valueMapAdapter.toJson(writer, mapOfMapsWithoutKeys)
+                        val mapWithKey = delegatedAdapter.toJsonValue(value) as Map<String, *>
+                        // Remove key
+                        val mapWithoutKey = mapWithKey.minusKey()
+                        // Write map
+                        valueMapAdapter.toJson(writer, mapWithoutKey)
                     }
+
+                    override fun toString() = "$delegatedAdapter.keySupplying()"
                 }.nullSafe()
             }
             else -> return null
@@ -104,25 +140,13 @@ class KeySupplyingJsonAdapterFactory : JsonAdapter.Factory {
     }
 
     /** Adds [KEY], which points to the [Map.Entry.key], to this entry's map. */
-    private fun Map.Entry<Any?, Any?>.addKey(readerPath: String): Any? {
-        @Suppress("UNCHECKED_CAST")
-        val entryValue = value
-        return when (entryValue) {
-            is Map<*, *> -> {
-                // Copy source map from entry value, then add the entry's key into it as a special key
-                entryValue.toMutableMap().apply {
-                    if (put(KEY, key) != null) {
-                        throw JsonDataException("$KEY already exists and would be overridden at $readerPath")
-                    }
-                }
-
-            }
-            else -> entryValue
+    private fun Map.Entry<String, Map<String, *>>.plusKey(readerPath: String): Map<String, *> =
+        value.toMutableMap().apply {
+            if (put(KEY, key) != null) throw JsonDataException("$KEY already exists and would be overridden at $readerPath")
         }
-    }
 
     /** Returns a copy of this map without the [KEY] entry. */
-    private fun Map<*, *>.withoutKey(): Map<*, *> = toMutableMap().apply { remove(KEY) }
+    private fun Map<String, *>.minusKey(): Map<String, *> = filterKeys { it != KEY }
 
     companion object {
         /** Defines the special key we insert into maps based its key in the parent map. */
@@ -153,9 +177,9 @@ private val Type.isEligibleForKeyInsertion
  *
  * ```
  * val moshi = Moshi.Builder()
- *     // Kotlin adapter factory must come first
- *     .add(KotlinJsonAdapterFactory())
  *     .add(KeySupplyingJsonAdapterFactory())
+ *     // Kotlin adapter factory must come last
+ *     .add(KotlinJsonAdapterFactory())
  *     .build()
  *
  * @RequiresKey
@@ -177,4 +201,6 @@ private val Type.isEligibleForKeyInsertion
 @Target(CLASS)
 annotation class RequiresKey
 
-private val MAP_OF_ANY_TO_ANY = newParameterizedType(Map::class.java, Any::class.java, Any::class.java)
+private val MAP_OF_STRING_TO_ANY = newParameterizedType(Map::class.java, String::class.java, Any::class.java)
+private val MAP_OF_STRING_TO_MAP_OF_STRING_TO_ANY =
+    newParameterizedType(Map::class.java, String::class.java, Map::class.java, String::class.java, Any::class.java)

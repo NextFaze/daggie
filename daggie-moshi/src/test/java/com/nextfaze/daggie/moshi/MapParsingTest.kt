@@ -25,8 +25,8 @@ class MapParsingTest {
     @Before fun setUp() {
         factory = MapParsingJsonAdapterFactory()
         moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .add(factory)
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 

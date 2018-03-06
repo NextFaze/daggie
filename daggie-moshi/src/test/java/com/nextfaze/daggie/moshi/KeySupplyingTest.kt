@@ -17,6 +17,7 @@ class KeySupplyingTest {
 
     private lateinit var moshi: Moshi
 
+    private val adapterOfItem get() = moshi.adapter<Item>(Item::class.java)
     private val adapterOfListOfItem
         get() = moshi.adapter<List<Item>>(
             newParameterizedType(List::class.java, Item::class.java)
@@ -33,8 +34,8 @@ class KeySupplyingTest {
     @Before fun setUp() {
         factory = KeySupplyingJsonAdapterFactory()
         moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .add(factory)
+            .add(KotlinJsonAdapterFactory())
             .build()
     }
 
@@ -124,8 +125,10 @@ class KeySupplyingTest {
     }
 
     @Test fun `reads and writes are null-safe`() {
+        assertThat(adapterOfItem.toJsonValue(null)).isNull()
         assertThat(adapterOfListOfItem.toJsonValue(null)).isNull()
         assertThat(adapterOfMapOfItem.toJsonValue(null)).isNull()
+        assertThat(adapterOfItem.fromJsonValue(null)).isNull()
         assertThat(adapterOfListOfItem.fromJsonValue(null)).isNull()
         assertThat(adapterOfMapOfItem.fromJsonValue(null)).isNull()
     }
@@ -133,7 +136,7 @@ class KeySupplyingTest {
     @RequiresKey
     data class Item(
         @Json(name = "_key")
-        val id: Any,
+        val id: String,
         @Json(name = "name")
         val name: String
     )

@@ -19,11 +19,11 @@ import java.lang.reflect.Type
  *
  * ```
  * val moshi = Moshi.Builder()
- *     // Kotlin adapter factory must come first
- *     .add(KotlinJsonAdapterFactory())
- *     // If using, KeySupplyingJsonAdapterFactory must come before MapParsingJsonAdapterFactory
+ *     // If using, KeySupplyingJsonAdapterFactory must come first
  *     .add(KeySupplyingJsonAdapterFactory())
  *     .add(MapParsingJsonAdapterFactory())
+ *     // Kotlin adapter factory must come last
+ *     .add(KotlinJsonAdapterFactory())
  *     .build()
  *
  * val adapter = moshi.adapter<List<String>>(Types.newParameterizedType(List::class.java, String::class.java))
