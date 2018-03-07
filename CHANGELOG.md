@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 5.2.2
+
+_2018_03_07_
+
+* Fix bug where Moshi key supplying included the key in serialized single objects
+
 ## Version 5.2.1
 
 _2018_02_28_
