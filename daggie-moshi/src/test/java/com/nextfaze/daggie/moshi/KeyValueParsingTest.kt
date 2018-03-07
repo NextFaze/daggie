@@ -12,8 +12,8 @@ import org.junit.Test
 class KeyValueParsingTest {
 
     private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
         .add(KeySupplyingJsonAdapterFactory())
+        .add(KotlinJsonAdapterFactory())
         .build()
 
     private val adapterOfItem
@@ -37,10 +37,14 @@ class KeyValueParsingTest {
         assertThat(adapterOfMapOfItem.fromKeyValuePair("5", inputMap)).isEqualTo(outputMap)
     }
 
+    @Test fun `key is absent when serialized`() {
+        assertThat(adapterOfItem.toJsonValue(Item("2", "B"))).isEqualTo(mapOf("name" to "B"))
+    }
+
     @RequiresKey
     data class Item(
         @Json(name = "_key")
-        val id: Any,
+        val id: String,
         @Json(name = "name")
         val name: String
     )
