@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 5.2.3
+
+_2018_05_30_
+
+* Don't install invalid proxy to `OkHttpClient.Builder`
+
 ## Version 5.2.2
 
 _2018_03_07_
