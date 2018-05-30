@@ -9,6 +9,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
 import okhttp3.OkHttpClient
+import java.net.InetSocketAddress
+import java.net.Proxy
 import javax.inject.Singleton
 
 /**
@@ -28,6 +30,14 @@ import javax.inject.Singleton
 
     @Provides @IntoSet
     internal fun okHttpClientBuilderConfigurator(devProxy: DevProxy): Configurator<OkHttpClient.Builder> = {
-        proxy(devProxy.asProxy())
+        val proxy = devProxy.asProxy()
+        if (proxy.hasValidSocketAddress()) {
+            proxy(proxy)
+        }
     }
+}
+
+private fun Proxy.hasValidSocketAddress(): Boolean {
+    val address = (address() as InetSocketAddress?)
+    return address != null && !address.hostName.isNullOrEmpty() && address.port > 0
 }
