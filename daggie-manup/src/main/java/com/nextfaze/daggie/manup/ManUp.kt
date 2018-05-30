@@ -77,7 +77,7 @@ private fun initManUp(
         .getObject("config", Config(), gson.preferenceConverter<Config>())
 
     // Load remote config into prefs
-    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.toCompletable()!!
+    val syncConfigWithApi = api.config(manUpConfig.url).doOnSuccess { configPref.set(it) }.ignoreElement()!!
 
     // Emits config pref values, which are synchronized with the API upon each subscription
     val syncConfig = Flowable.merge(
