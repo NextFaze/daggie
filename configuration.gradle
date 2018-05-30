@@ -42,7 +42,7 @@ ext {
     autoValueParcel = "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
     autoValueParcelAdapter = "com.ryanharter.auto.value:auto-value-parcel-adapter:$autoValueParcelVersion"
 
-    retrofitVersion = '2.3.0'
+    retrofitVersion = '2.4.0'
     retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     retrofitAdapterRxJava2 = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
