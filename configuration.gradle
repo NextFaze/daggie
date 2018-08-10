@@ -71,7 +71,7 @@ ext {
     mockitoKotlin = 'com.nhaarman:mockito-kotlin:1.5.0'
     rxJava2 = 'io.reactivex.rxjava2:rxjava:2.2.0'
     rxAndroid2 = 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    rxPreferences2 = 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
+    rxPreferences2 = 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     rxRelay2 = 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     junit = 'junit:junit:4.12'
     truth = 'com.google.truth:truth:0.40'
