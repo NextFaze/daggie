@@ -20,7 +20,7 @@ import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import kotlin.properties.Delegates.observable
 
 private const val KEY_SUPER_STATE = "superState"
-private const val KEY_URI = "uri"
+private const val KEY_MODEL = "uri"
 
 /** A Glide-backed image view that can load a URL. */
 @Suppress("MemberVisibilityCanPrivate")
@@ -37,7 +37,7 @@ class RemoteImageView @JvmOverloads constructor(
     var errorResource: Int by invalidateGlideIfChanged(0)
 
     /**
-     * Drawable resource to display if [uri] is `null`.
+     * Drawable resource to display if [model] is `null`.
      * If a fallback is not set, `null` URLs will cause [errorResource] to be displayed. If the error drawable is not
      * set, [placeholderResource] will be displayed.
      */
@@ -46,8 +46,15 @@ class RemoteImageView @JvmOverloads constructor(
     /** The `Bitmap` `Transformation`s to be applied in order. */
     var transformations: List<Transformation<Bitmap>> by invalidateGlideIfChanged(emptyList(), clear = true)
 
-    /** The URL of the image to be loaded. */
-    var uri: Uri? by invalidateGlideIfChanged(null, clear = true)
+    /** The model representing the image to be loaded. */
+    var model: Any? by invalidateGlideIfChanged(null, clear = true)
+
+    /** The [Uri] of the image to be loaded. */
+    var uri: Uri?
+        get() = model as? Uri
+        set(value) {
+            model = value
+        }
 
     /** Controls if a cross fade transition is applied or not. `true` by default. */
     @Deprecated("Use fadeType instead")
@@ -124,13 +131,13 @@ class RemoteImageView @JvmOverloads constructor(
 
     override fun onSaveInstanceState() = Bundle().apply {
         putParcelable(KEY_SUPER_STATE, super.onSaveInstanceState())
-        putParcelable(KEY_URI, uri)
+        (model as? Parcelable)?.let { putParcelable(KEY_MODEL, it) }
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
         if (state is Bundle) {
             super.onRestoreInstanceState(state.getParcelable(KEY_SUPER_STATE))
-            uri = state.getParcelable(KEY_URI)
+            model = state.getParcelable(KEY_MODEL)
         }
     }
 
@@ -156,7 +163,7 @@ class RemoteImageView @JvmOverloads constructor(
 
     private fun load() {
         if (!isInEditMode && imageWidth > 0 && imageHeight > 0) {
-            Glide.with(context).load(uri).apply(requestOptions()).transition(transitionOptions()).into(this)
+            Glide.with(context).load(model).apply(requestOptions()).transition(transitionOptions()).into(this)
         }
     }
 
@@ -176,8 +183,13 @@ class RemoteImageView @JvmOverloads constructor(
 
     private fun transitionOptions() = DrawableTransitionOptions().apply { fadeType.apply(this, fadeDuration.toInt()) }
 
-    private fun <T> invalidateGlideIfChanged(initialValue: T, clear: Boolean = false) =
-        observable(initialValue) { _, old, new -> if (old != new) invalidateGlide(clear) }
+    private fun <T> invalidateGlideIfChanged(initialValue: T, clear: Boolean = false, onChange: () -> Unit = {}) =
+        observable(initialValue) { _, old, new ->
+            if (old != new) {
+                invalidateGlide(clear)
+                onChange()
+            }
+        }
 
     /** The type of fade transition that will be used to animate the loaded image. */
     enum class FadeType {
