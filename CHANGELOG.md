@@ -1,53 +1,60 @@
 Change Log
 ==========
 
+## Version 5.2.4
+
+_2018-08-13_
+
+* Add support for arbitrary Glide models to `RemoteImageView`
+* Improve exception when Glide module not configured properly
+
 ## Version 5.2.3
 
-_2018_05_30_
+_2018-05-30_
 
 * Don't install invalid proxy to `OkHttpClient.Builder`
 
 ## Version 5.2.2
 
-_2018_03_07_
+_2018-03-07_
 
 * Fix bug where Moshi key supplying included the key in serialized single objects
 
 ## Version 5.2.1
 
-_2018_02_28_
+_2018-02-28_
 
 * Don't initialize LeakCanary when app was built with JRebel
 
 ## Version 5.2.0
 
-_2018_02_20_
+_2018-02-20_
 
 * Add support for proper cross-fading in `RemoteImageView`
 * Fix bug where ManUp dialog buttons did not update in response to changes
 
 ## Version 5.1.0
 
-_2018_02_14_
+_2018-02-14_
 
 * Add ability to parse `Map`s into `Collections` using Moshi
 
 ## Version 5.0.0
 
-_2018_02_09_
+_2018-02-09_
 
 * Moshi key supplying functionality now requires `@RequiresKey` on models
 * Add support for modern "platform unified" ManUp JSON format
 
 ## Version 4.0.1
 
-_2018_02_02_
+_2018-02-02_
 
 * ProGuard rules additions
 
 ## Version 4.0.0
 
-_2018_02_02_
+_2018-02-02_
 
 * Add support for maintenance mode in ManUp
 * Add `daggie-permissions`, a reactive permissions module
@@ -58,19 +65,19 @@ _2018_02_02_
 
 ## Version 3.1.0
 
-_2018_01_15_
+_2018-01-15_
 
 * Add `@MainThread` qualifying annotation, and a corresponding binding in `RxJava2SchedulerModule`
 
 ## Version 3.0.1
 
-_2017_12_19_
+_2017-12-19_
 
 * Fix layout preview error when using `RemoteImageView`
 
 ## Version 3.0.0
 
-_2017_12_15_
+_2017-12-15_
 
 * Migrated to Glide 4.x
     * This may be a breaking change if your app provides `Configurator<GlideBuilder>` set bindings. 
@@ -82,32 +89,32 @@ _2017_12_15_
 
 ## Version 2.0.1
 
-_2017_12_06_
+_2017-12-06_
 
 * ManUp now re-validates upon each request
 
 ## Version 2.0.0
 
-_2017_09_26_
+_2017-09-26_
 
 * Replace `daggie-rxjava` with `daggie-rxjava2`
 * Replace dependencies on RxJava `1.x` with `2.x`
 
 ## Version 1.0.3
 
-_2017_07_19_
+_2017-07-19_
 
 * Fix ManUp retrying too rapidly after large number of attempts #3
 
 ## Version 1.0.2
 
-_2017_07_10_
+_2017-07-10_
 
 * Refine RxJava error hooks #2
 
 ## Version 1.0.1
 
-_2017_06_26_
+_2017-06-26_
 
 * Update to Kotlin 1.1.3
 
