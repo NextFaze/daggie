@@ -27,7 +27,7 @@ ext {
     supportTestRunner = "com.android.support.test:runner:$testingRulesVersion"
     supportTestEspresso = "com.android.support.test.espresso:espresso-core:$testingSupportVersion"
 
-    daggerVersion = '2.13'
+    daggerVersion = '2.17'
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
     daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
     dagger = "com.google.dagger:dagger:$daggerVersion"
