@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 6.0.0
+
+_2018-09-03_
+
+* Enable RxAndroid's async mode
+* Update to Dagger 2.17
+
 ## Version 5.2.4
 
 _2018-08-13_
