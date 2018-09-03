@@ -28,7 +28,7 @@ import javax.inject.Singleton
     internal fun computationScheduler() = RxJavaPlugins.createComputationScheduler(threadFactory("RxComp-"))
 
     @Provides @Singleton @MainThread
-    internal fun mainThreadScheduler() = AndroidSchedulers.from(Looper.getMainLooper())
+    internal fun mainThreadScheduler() = AndroidSchedulers.from(Looper.getMainLooper(), true)
 
     @Provides @Singleton @IntoSet
     internal fun initializer(
