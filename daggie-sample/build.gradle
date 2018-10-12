@@ -72,10 +72,6 @@ dependencies {
     implementation rootProject.ext.dagger
     implementation rootProject.ext.daggerAnnotations
 
-    // Conductor
-    implementation 'com.bluelinelabs:conductor:2.1.4'
-    implementation 'com.bluelinelabs:conductor-autodispose:2.1.4'
-
     // JUnit
     testImplementation rootProject.ext.junit
 }
