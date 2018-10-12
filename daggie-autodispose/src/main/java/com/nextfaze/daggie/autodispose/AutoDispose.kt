@@ -20,7 +20,6 @@ import dagger.multibindings.IntoSet
 import io.reactivex.CompletableSource
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import java.lang.IllegalStateException
 
 @Module
 class AutoDisposeModule {
@@ -67,7 +66,7 @@ private val DEFAULT_FRAGMENT_CORRESPONDING_EVENTS = CorrespondingEventsFunction<
     }
 }
 
-private class LifecycleProvider<T> (
+private class LifecycleProvider<T>(
     private val lifecycleEvents: BehaviorSubject<T>,
     private val untilEvent: T? = null,
     private val defaultCorrespondingEvents: CorrespondingEventsFunction<T>
@@ -92,15 +91,41 @@ private object LifecycleManager {
             fragments[f] = BehaviorSubject.createDefault(FragmentEvent.ON_ATTACH)
         }
 
-        override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) { fragments[f]?.onNext(FragmentEvent.ON_CREATE) }
-        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View?, savedInstanceState: Bundle?) { fragments[f]?.onNext(FragmentEvent.ON_CREATE_VIEW) }
-        override fun onFragmentStarted(fm: FragmentManager, f: Fragment) { fragments[f]?.onNext(FragmentEvent.ON_START) }
-        override fun onFragmentResumed(fm: FragmentManager, f: Fragment) { fragments[f]?.onNext(FragmentEvent.ON_RESUME) }
-        override fun onFragmentPaused(fm: FragmentManager, f: Fragment) { fragments[f]?.onNext(FragmentEvent.ON_PAUSE) }
-        override fun onFragmentStopped(fm: FragmentManager, f: Fragment) { fragments[f]?.onNext(FragmentEvent.ON_STOP) }
-        override fun onFragmentViewDestroyed(fm: FragmentManager, f: Fragment) { fragments[f]?.onNext(FragmentEvent.ON_DESTROY_VIEW) }
-        override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) { fragments[f]?.onNext(FragmentEvent.ON_DESTROY) }
-        override fun onFragmentDetached(fm: FragmentManager, f: Fragment) { fragments.remove(f)?.onNext(FragmentEvent.ON_DETACH) }
+        override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
+            fragments[f]?.onNext(FragmentEvent.ON_CREATE)
+        }
+
+        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View?, savedInstanceState: Bundle?) {
+            fragments[f]?.onNext(FragmentEvent.ON_CREATE_VIEW)
+        }
+
+        override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+            fragments[f]?.onNext(FragmentEvent.ON_START)
+        }
+
+        override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+            fragments[f]?.onNext(FragmentEvent.ON_RESUME)
+        }
+
+        override fun onFragmentPaused(fm: FragmentManager, f: Fragment) {
+            fragments[f]?.onNext(FragmentEvent.ON_PAUSE)
+        }
+
+        override fun onFragmentStopped(fm: FragmentManager, f: Fragment) {
+            fragments[f]?.onNext(FragmentEvent.ON_STOP)
+        }
+
+        override fun onFragmentViewDestroyed(fm: FragmentManager, f: Fragment) {
+            fragments[f]?.onNext(FragmentEvent.ON_DESTROY_VIEW)
+        }
+
+        override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
+            fragments[f]?.onNext(FragmentEvent.ON_DESTROY)
+        }
+
+        override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
+            fragments.remove(f)?.onNext(FragmentEvent.ON_DETACH)
+        }
     }
 
     private val activityCallbacks = object : Application.ActivityLifecycleCallbacks {
@@ -109,20 +134,39 @@ private object LifecycleManager {
             (a as? AppCompatActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(fragmentCallbacks, true)
         }
 
-        override fun onActivityStarted(a: Activity) { activities[a]?.onNext(ActivityEvent.ON_START) }
-        override fun onActivityResumed(a: Activity) { activities[a]?.onNext(ActivityEvent.ON_RESUME) }
-        override fun onActivityPaused(a: Activity) { activities[a]?.onNext(ActivityEvent.ON_PAUSE) }
-        override fun onActivityStopped(a: Activity) { activities[a]?.onNext(ActivityEvent.ON_STOP) }
-        override fun onActivityDestroyed(activity: Activity) { activities.remove(activity)?.onNext(ActivityEvent.ON_DESTROY) }
+        override fun onActivityStarted(a: Activity) {
+            activities[a]?.onNext(ActivityEvent.ON_START)
+        }
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) { /** Ignored */ }
+        override fun onActivityResumed(a: Activity) {
+            activities[a]?.onNext(ActivityEvent.ON_RESUME)
+        }
+
+        override fun onActivityPaused(a: Activity) {
+            activities[a]?.onNext(ActivityEvent.ON_PAUSE)
+        }
+
+        override fun onActivityStopped(a: Activity) {
+            activities[a]?.onNext(ActivityEvent.ON_STOP)
+        }
+
+        override fun onActivityDestroyed(a: Activity) {
+            activities.remove(a)?.onNext(ActivityEvent.ON_DESTROY)
+        }
+
+        override fun onActivitySaveInstanceState(a: Activity, outState: Bundle?) {
+            /** Ignored */
+        }
     }
 
-    internal fun registerCallbacks(application: Application) = application.registerActivityLifecycleCallbacks(activityCallbacks)
+    internal fun registerCallbacks(application: Application) =
+        application.registerActivityLifecycleCallbacks(activityCallbacks)
 
     internal fun lifecycle(fragment: Fragment) =
-        fragments[fragment] ?: throw IllegalStateException("Attempting to bind to lifecycle for $fragment when no lifecycle is available")
+        fragments[fragment]
+                ?: throw IllegalStateException("Attempting to bind to lifecycle for $fragment when no lifecycle is available")
 
     internal fun lifecycle(activity: Activity) =
-        activities[activity] ?: throw IllegalStateException("Attempting to bind to lifecycle for $activity when no lifecycle is available")
+        activities[activity]
+                ?: throw IllegalStateException("Attempting to bind to lifecycle for $activity when no lifecycle is available")
 }
