@@ -2,10 +2,9 @@ package com.nextfaze.daggie
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.trello.rxlifecycle2.components.support.RxAppCompatDialogFragment
-import com.trello.rxlifecycle2.components.support.RxFragment
+import android.support.v7.app.AppCompatDialogFragment
 
-abstract class DaggerFragment<I> : RxFragment() {
+abstract class DaggerFragment<I> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         inject(injector)
         super.onCreate(savedInstanceState)
@@ -16,7 +15,7 @@ abstract class DaggerFragment<I> : RxFragment() {
     protected abstract fun inject(injector: I)
 }
 
-abstract class DaggerDialogFragment<I> : RxAppCompatDialogFragment() {
+abstract class DaggerDialogFragment<I> : AppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         inject(injector)
         super.onCreate(savedInstanceState)

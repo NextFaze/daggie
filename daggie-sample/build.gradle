@@ -58,6 +58,7 @@ dependencies {
     implementation project(':daggie-permissions')
     implementation project(':daggie-gson')
     implementation project(':daggie-moshi')
+    implementation project(':daggie-autodispose')
     debugImplementation project(':daggie-leakcanary')
     debugImplementation project(':daggie-stetho')
     debugImplementation project(':daggie-devproxy')
@@ -71,15 +72,9 @@ dependencies {
     implementation rootProject.ext.dagger
     implementation rootProject.ext.daggerAnnotations
 
-    // RxLifecycle 2
-    def rxLifecycle2Version = '2.2.0'
-    implementation "com.trello.rxlifecycle2:rxlifecycle:$rxLifecycle2Version"
-    implementation "com.trello.rxlifecycle2:rxlifecycle-kotlin:$rxLifecycle2Version"
-    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rxLifecycle2Version"
-
     // Conductor
     implementation 'com.bluelinelabs:conductor:2.1.4'
-    implementation 'com.bluelinelabs:conductor-rxlifecycle2:2.1.4'
+    implementation 'com.bluelinelabs:conductor-autodispose:2.1.4'
 
     // JUnit
     testImplementation rootProject.ext.junit

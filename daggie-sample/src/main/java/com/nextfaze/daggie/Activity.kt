@@ -1,9 +1,9 @@
 package com.nextfaze.daggie
 
 import android.os.Bundle
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import android.support.v7.app.AppCompatActivity
 
-abstract class DaggerActivity<I> : RxAppCompatActivity() {
+abstract class DaggerActivity<I> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         inject(injector)
         super.onCreate(savedInstanceState)
