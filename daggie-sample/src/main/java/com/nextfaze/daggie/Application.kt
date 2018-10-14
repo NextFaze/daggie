@@ -27,18 +27,16 @@ interface ApplicationComponent : AppMembers, Injector {
 }
 
 @Module internal class InitializerModule {
-    @Provides @ElementsIntoSet @Early internal fun defaultEarlyInitializers() = emptySet<Initializer<Application>>()
+    @Provides @ElementsIntoSet internal fun defaultEarlyInitializers() = emptySet<Initializer<Application>>()
     @Provides @ElementsIntoSet internal fun defaultUnorderedInitializers() = emptySet<Initializer<Application>>()
     @Provides @ElementsIntoSet internal fun defaultOrderedInitializers() = emptySet<Ordered<Initializer<Application>>>()
     @Provides @ElementsIntoSet internal fun defaultActivityLifecycleCallbacks() = emptySet<ActivityLifecycleCallbacks>()
 
     @Provides internal fun initializer(
-            @Early earlyInitializers: Lazy<Set<Initializer<Application>>>,
-            unorderedInitializers: Lazy<Set<Initializer<Application>>>,
-            orderedInitializers: Lazy<Set<Ordered<Initializer<Application>>>>,
-            activityLifecycleCallbacks: Lazy<Set<ActivityLifecycleCallbacks>>
+        unorderedInitializers: Lazy<Set<Initializer<Application>>>,
+        orderedInitializers: Lazy<Set<Ordered<Initializer<Application>>>>,
+        activityLifecycleCallbacks: Lazy<Set<ActivityLifecycleCallbacks>>
     ): Initializer<Application> = { application ->
-        earlyInitializers.get().forEach { it(application) }
         orderedInitializers.get().asSequence().sorted().map { it.value }.forEach { it(application) }
         unorderedInitializers.get().forEach { it(application) }
         activityLifecycleCallbacks.get().forEach { application.registerActivityLifecycleCallbacks(it) }
@@ -69,7 +67,7 @@ open class DaggerApplication : Application() {
      * @return An application component.
      */
     protected open fun createComponent(): ApplicationComponent =
-            DaggerApplicationComponent.builder().application(this).build()
+        DaggerApplicationComponent.builder().application(this).build()
 }
 
 /** Returns the [ApplicationComponent] for the running app. */
