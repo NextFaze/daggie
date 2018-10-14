@@ -1,6 +1,7 @@
 package com.example.app
 
 import com.nextfaze.daggie.AndroidModule
+import com.nextfaze.daggie.autodispose.AutoDisposeModule
 import com.nextfaze.daggie.foreground.ForegroundModule
 import com.nextfaze.daggie.glide.GlideModule
 import com.nextfaze.daggie.gson.GsonModule
@@ -33,7 +34,8 @@ import okhttp3.HttpUrl
         GlideModule::class,
         GsonModule::class,
         MoshiModule::class,
-        PermissionsModule::class
+        PermissionsModule::class,
+        AutoDisposeModule::class
 ))
 class MainModule {
     @Provides internal fun logbackConfig() = LogbackConfig()
