@@ -1,9 +1,9 @@
 ext {
-    androidPlugin = 'com.android.tools.build:gradle:3.1.4'
+    androidPlugin = 'com.android.tools.build:gradle:3.2.1'
     androidMavenGradlePlugin = 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     minSdkVersion = 15
     compileSdkVersion = 27
-    buildToolsVersion = '27.0.3'
+    buildToolsVersion = '28.0.3'
     supportVersion = '27.1.1'
 
     kotlinVersion = '1.2.60'
