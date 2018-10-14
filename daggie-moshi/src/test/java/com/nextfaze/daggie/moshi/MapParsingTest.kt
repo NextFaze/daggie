@@ -3,9 +3,9 @@
 package com.nextfaze.daggie.moshi
 
 import com.google.common.truth.Truth.assertThat
-import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types.newParameterizedType
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.intellij.lang.annotations.Language
 import org.junit.Before
 import org.junit.Test
