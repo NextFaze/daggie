@@ -8,7 +8,7 @@ ext {
 
     kotlinVersion = '1.2.71'
     kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
     supportAnnotations = "com.android.support:support-annotations:$supportVersion"
