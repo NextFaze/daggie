@@ -9,9 +9,7 @@ import android.os.Parcelable
 import android.support.annotation.AttrRes
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
-import android.widget.ImageView.ScaleType.CENTER_CROP
-import android.widget.ImageView.ScaleType.CENTER_INSIDE
-import android.widget.ImageView.ScaleType.FIT_CENTER
+import android.widget.ImageView.ScaleType.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -54,22 +52,6 @@ class RemoteImageView @JvmOverloads constructor(
         get() = model as? Uri
         set(value) {
             model = value
-        }
-
-    /** Controls if a cross fade transition is applied or not. `true` by default. */
-    @Deprecated("Use fadeType instead")
-    var crossFadeEnabled: Boolean
-        get() = fadeType == FadeType.CROSS
-        set(value) {
-            fadeType = FadeType.CROSS
-        }
-
-    /** The duration in milliseconds of the cross fade transition. */
-    @Deprecated("Use fadeDuration instead", ReplaceWith("fadeDuration"))
-    var crossFadeDuration: Long
-        get() = fadeDuration
-        set(value) {
-            fadeDuration = value
         }
 
     /** The duration in milliseconds of the fade transition. */
