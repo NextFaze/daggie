@@ -69,7 +69,7 @@ ext {
     autoDisposeLifecycle = "com.uber.autodispose:autodispose-lifecycle:$autoDisposeVersion"
 
     okhttp = 'com.squareup.okhttp3:okhttp:3.11.0'
-    gson = 'com.google.code.gson:gson:2.8.2'
+    gson = 'com.google.code.gson:gson:2.8.5'
     slf4jApi = 'org.slf4j:slf4j-api:1.7.25'
     robolectric = 'org.robolectric:robolectric:4.0-alpha-2'
     mockito = 'org.mockito:mockito-inline:2.18.3'
