@@ -51,7 +51,7 @@ ext {
     logbackCore = "com.github.tony19:logback-android-core:$logbackVersion"
     logbackAndroid = "com.github.tony19:logback-android-classic:$logbackVersion"
 
-    wireMockVersion = '2.18.0'
+    wireMockVersion = '2.19.0'
     wireMock = "com.github.tomakehurst:wiremock-standalone:$wireMockVersion"
 
     glideVersion = '4.7.1'
