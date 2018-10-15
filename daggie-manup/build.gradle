@@ -11,13 +11,13 @@ androidExtensions {
 
 dependencies {
     api project(':daggie')
-    api rootProject.ext.supportAppCompat
-    api rootProject.ext.slf4jApi
     api rootProject.ext.okhttp
-    api rootProject.ext.rxJava2
-    api rootProject.ext.rxAndroid2
-    api rootProject.ext.rxPreferences2
-    api rootProject.ext.retrofitAdapterRxJava2
-    api rootProject.ext.retrofitConverterGson
+    implementation rootProject.ext.supportAppCompat
+    implementation rootProject.ext.slf4jApi
+    implementation rootProject.ext.rxJava2
+    implementation rootProject.ext.rxAndroid2
+    implementation rootProject.ext.rxPreferences2
+    implementation rootProject.ext.retrofitAdapterRxJava2
+    implementation rootProject.ext.retrofitConverterGson
     testImplementation rootProject.ext.jsonAssert
 }
