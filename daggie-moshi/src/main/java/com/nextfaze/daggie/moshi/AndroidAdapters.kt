@@ -2,6 +2,7 @@ package com.nextfaze.daggie.moshi
 
 import android.net.Uri
 import com.nextfaze.daggie.Configurator
+import com.nextfaze.daggie.Ordered
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
@@ -16,9 +17,7 @@ import dagger.multibindings.IntoSet
 @Module
 class AndroidAdaptersModule {
     @Provides @IntoSet
-    internal fun configurator(): Configurator<Moshi.Builder> = {
-        add(UriAdapter)
-    }
+    internal fun configurator() = Ordered<Configurator<Moshi.Builder>>(0) { add(UriAdapter) }
 }
 
 private object UriAdapter {
