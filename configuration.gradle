@@ -79,7 +79,7 @@ ext {
     rxPreferences2 = 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     rxRelay2 = 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     junit = 'junit:junit:4.12'
-    truth = 'com.google.truth:truth:0.40'
+    truth = 'com.google.truth:truth:0.42'
     guava = 'com.google.guava:guava:20.0'
     threeTen = 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     jodaTime = 'net.danlew:android.joda:2.9.9'
