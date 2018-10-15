@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+## Version 7.0.0
+
+_2018-10-16_
+
+* Add `daggie-autodispose` module, which provides an alternative to `autodispose-android-archcomponents` that implements
+  a `Fragment` view scope
+* Add `AndroidAdaptersModule` to `daggie-moshi`, which provides JSON adapters for commonly used Android types
+* Eliminate delay from `daggie-foreground` implementation
+* Stop exporting Gson, Retrofit, etc from `daggie-manup`
+* Remove all deprecated `RemoteImageView` properties
+* Remove deprecated `@Early` annotation
+
 ## Version 6.0.0
 
 _2018-09-03_
