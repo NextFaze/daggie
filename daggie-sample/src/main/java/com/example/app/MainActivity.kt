@@ -1,6 +1,6 @@
 package com.example.app
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.NotificationManager
 import android.content.Intent
 import android.net.Uri
@@ -9,8 +9,7 @@ import com.nextfaze.daggie.Injector
 import com.nextfaze.daggie.autodispose.scope
 import com.nextfaze.daggie.permissions.Permissions
 import com.nextfaze.daggie.sample.R
-import com.nextfaze.daggie.slf4j.d
-import com.nextfaze.daggie.slf4j.logger
+import com.nextfaze.daggie.slf4j.*
 import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.main_activity.*
 import javax.inject.Inject
@@ -30,9 +29,11 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.main_activity)
         userScopeManager.user = User("Joe")
         userProfileButton.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
+        requestPermissionButton.setOnClickListener {
+            permissions.requestPermissions(ACCESS_FINE_LOCATION).autoDisposable(scope()).subscribe()
+        }
         imageView.uri = Uri.parse("http://thecatapi.com/api/images/get?format=src&type=png")
         log.d { "Test" }
-        permissions.requestPermissions(Manifest.permission.ACCESS_FINE_LOCATION).autoDisposable(scope()).subscribe()
     }
 
     override fun inject(injector: Injector) = injector.inject(this)
