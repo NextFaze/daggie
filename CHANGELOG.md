@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 7.1.0
+
+_2018-10-26_
+
+* Add API for querying permission state in `daggie-permissions`
+
 ## Version 7.0.0
 
 _2018-10-16_
