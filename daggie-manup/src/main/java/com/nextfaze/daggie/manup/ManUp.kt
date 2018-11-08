@@ -143,7 +143,7 @@ internal enum class Result {
 /** Compares the specified version code again this configuration, returning what to do next. */
 internal fun Config?.check(installedVersionCode: Int) = when {
     this == null -> Result.OK
-    maintenanceMode -> Result.MAINTENANCE_MODE
+    !enabled -> Result.MAINTENANCE_MODE
     installedVersionCode in minimumVersion..(currentVersion - 1) -> Result.UPDATE_RECOMMENDED
     installedVersionCode < minimumVersion -> Result.UPDATE_REQUIRED
     else -> Result.OK
