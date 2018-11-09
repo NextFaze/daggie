@@ -1,6 +1,5 @@
 package com.nextfaze.daggie.manup
 
-import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -12,9 +11,8 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-@SuppressLint("ParcelCreator")
-internal data class Config(
+/** These keys should not be used for future projects, here for maintaining backwards compatibility */
+internal data class LegacyConfig(
     @SerializedName("manUpAppMaintenanceMode")
     val maintenanceMode: Boolean = false,
 
@@ -26,12 +24,23 @@ internal data class Config(
 
     @SerializedName("manUpAppUpdateURLMin")
     val updateUrl: String? = null
-) : Parcelable
-
-private data class UnifiedConfig(
-    @SerializedName("android")
-    val config: Config? = null
 )
+
+/** New shorter, concise keys to be used for new configurations */
+@Parcelize
+internal data class Config(
+    @SerializedName("enabled")
+    val enabled: Boolean = true,
+
+    @SerializedName("current")
+    val currentVersion: Int = 0,
+
+    @SerializedName("minimum")
+    val minimumVersion: Int = 0,
+
+    @SerializedName("url")
+    val updateUrl: String? = null
+) : Parcelable
 
 /** [TypeAdapterFactory] for [Config] that supports platform unified format as well as legacy. */
 internal class PlatformUnifiedConfigTypeAdapterFactory : TypeAdapterFactory {
@@ -41,22 +50,49 @@ internal class PlatformUnifiedConfigTypeAdapterFactory : TypeAdapterFactory {
             return null
         }
 
-        val payloadAdapter = gson.getDelegateAdapter(this, type)
-        val unifiedAdapter = gson.getDelegateAdapter(this, typeToken<UnifiedConfig>())
+        val legacyConfigAdapter = gson.getDelegateAdapter(this, typeToken<LegacyConfig>())
+        val configAdapter = gson.getDelegateAdapter(this, type)
 
+        @Suppress("UNCHECKED_CAST")
         return object : TypeAdapter<T>() {
-            override fun write(writer: JsonWriter, value: T?) = payloadAdapter.write(writer, value)
+            override fun write(writer: JsonWriter, value: T?) = legacyConfigAdapter.write(writer, value?.toLegacyConfig())
 
             override fun read(reader: JsonReader): T? {
                 val jsonObject = gson.fromJson<JsonObject>(reader, JsonObject::class.java)
 
-                return if (jsonObject["android"] != null) {
+                val configModel = jsonObject["android"]
+                return if (configModel != null) {
                     // Is unified, so extract inner config
-                    @Suppress("UNCHECKED_CAST")
-                    unifiedAdapter.fromJsonTree(jsonObject)?.config as T?
+                    val config = configAdapter.fromJsonTree(configModel)
+
+                    if (config != Config()) {
+                        // Using the new config keys
+                        config
+                    } else {
+                        // No new config found so default to legacy
+                        legacyConfigAdapter.fromJsonTree(configModel).toConfig()
+                    }
                 } else {
-                    payloadAdapter.fromJsonTree(jsonObject)
+                    // Legacy, non-unified model
+                    legacyConfigAdapter.fromJsonTree(jsonObject).toConfig()
                 }
+            }
+
+            private fun LegacyConfig.toConfig() = Config(
+                enabled = !maintenanceMode,
+                currentVersion = currentVersion,
+                minimumVersion = minimumVersion,
+                updateUrl = updateUrl
+            ) as T?
+
+            private fun T.toLegacyConfig(): LegacyConfig {
+                val config = this as Config
+                return LegacyConfig(
+                    maintenanceMode = !config.enabled,
+                    currentVersion = config.currentVersion,
+                    minimumVersion = config.minimumVersion,
+                    updateUrl = config.updateUrl
+                )
             }
         }
     }
