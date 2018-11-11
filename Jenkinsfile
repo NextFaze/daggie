@@ -44,6 +44,11 @@ pipeline {
             post {
                 always {
                     junit '**/test-results/**/*.xml'
+                    script {
+                        if (currentBuild.result == 'UNSTABLE') {
+                            updateGitlabCommitStatus name: "Test", state: 'failed'
+                        }
+                    }
                 }
             }
         }
