@@ -1,0 +1,11 @@
+project.configureLibrary(this)
+
+android {
+    lintOptions.disable 'InvalidPackage'
+    defaultConfig.consumerProguardFiles 'proguard-rules.pro'
+}
+
+dependencies {
+    api project(':daggie')
+    api rootProject.ext.rxJava2
+}
