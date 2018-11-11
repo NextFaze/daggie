@@ -2,21 +2,23 @@
 
 package com.nextfaze.daggie.threeten
 
+import android.app.Application
 import android.content.Intent
+import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.threeten.bp.ZoneId
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 
 @Config(application = RobolectricApplication::class)
 @RunWith(RobolectricTestRunner::class)
 class ThreeTenTest {
 
-    private val context = RuntimeEnvironment.application
+    private val context = ApplicationProvider.getApplicationContext<Application>()
 
     @Test fun `zone id emits initial device zone id`() {
         setTimeZone("GMT+0:00")

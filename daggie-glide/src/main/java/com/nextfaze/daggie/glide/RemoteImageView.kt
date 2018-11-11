@@ -6,10 +6,10 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.AttrRes
-import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.widget.ImageView.ScaleType.*
+import androidx.annotation.AttrRes
+import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions

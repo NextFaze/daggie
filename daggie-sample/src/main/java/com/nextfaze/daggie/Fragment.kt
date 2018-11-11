@@ -1,8 +1,8 @@
 package com.nextfaze.daggie
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatDialogFragment
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.Fragment
 
 abstract class DaggerFragment<I> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

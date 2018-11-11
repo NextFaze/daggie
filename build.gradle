@@ -58,8 +58,8 @@ ext.configureLibrary = { project ->
         }
 
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
         }
 
         lintOptions {
@@ -69,10 +69,15 @@ ext.configureLibrary = { project ->
         resourcePrefix "${project.name.replace("-", "_")}_"
     }
 
+    kapt {
+        correctErrorTypes = true
+    }
+
     dependencies {
         kapt project.daggerCompiler
         kaptTest project.daggerCompiler
         testImplementation project.junit
+        testImplementation project.androidXTest
         testImplementation project.truth
         testImplementation project.mockito
         testImplementation project.mockitoKotlin

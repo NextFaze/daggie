@@ -4,16 +4,14 @@ package com.nextfaze.daggie.glide
 
 import android.app.Application
 import android.util.Log
+import androidx.test.core.app.ApplicationProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.Excludes
 import com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule
 import com.bumptech.glide.load.ImageHeaderParser
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.nextfaze.daggie.Configurator
@@ -33,7 +31,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLooper
 import javax.inject.Singleton
@@ -48,7 +45,7 @@ class GlideTest {
 
     private lateinit var trackingInterceptor: TrackingInterceptor
     private lateinit var okHttpClient: OkHttpClient
-    private val application = RuntimeEnvironment.application
+    private val application = ApplicationProvider.getApplicationContext<Application>()
 
     @Before fun setUp() {
         trackingInterceptor = TrackingInterceptor()

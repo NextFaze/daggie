@@ -1,6 +1,6 @@
 package com.nextfaze.daggie
 
-import android.support.v4.view.ActionProvider
+import androidx.core.view.ActionProvider
 
 val ActionProvider.applicationComponent get() = context.applicationComponent
 

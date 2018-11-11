@@ -3,10 +3,8 @@
 package com.nextfaze.daggie.manup
 
 import android.app.Application
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import androidx.test.core.app.ApplicationProvider
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.nextfaze.daggie.Foreground
@@ -25,7 +23,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import java.io.File
 import java.util.concurrent.TimeUnit.SECONDS
@@ -41,7 +38,7 @@ class ManUpTest {
     @Rule @JvmField
     val wireMock = WireMockRule(wireMockConfig().dynamicPort())
 
-    private val application = RuntimeEnvironment.application
+    private val application = ApplicationProvider.getApplicationContext<Application>()
     private lateinit var scheduler: TestScheduler
     private lateinit var cache: Cache
     private lateinit var okHttpClient: OkHttpClient

@@ -1,8 +1,8 @@
 package com.nextfaze.daggie.glide
 
 import android.app.Application
-import android.support.annotation.RestrictTo
-import android.support.annotation.RestrictTo.Scope.LIBRARY
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
@@ -18,11 +18,11 @@ import java.io.InputStream
 
 /** Hack to "inject" private GlideBuilder configurator set. */
 @RestrictTo(LIBRARY)
-lateinit internal var configureGlideBuilder: ((GlideBuilder) -> Unit)
+internal lateinit var configureGlideBuilder: ((GlideBuilder) -> Unit)
 
 /** Hack to "inject" private Glide configurator set. */
 @RestrictTo(LIBRARY)
-lateinit internal var configureRegistry: ((Registry) -> Unit)
+internal lateinit var configureRegistry: ((Registry) -> Unit)
 
 /**
  * Provides bindings that initialize Glide. Requires an [OkHttpClient] binding.

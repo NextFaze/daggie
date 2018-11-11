@@ -10,7 +10,7 @@ dependencies {
     api rootProject.ext.glide
     api rootProject.ext.glideOkHttpIntegration
     api rootProject.ext.okhttp
-    api rootProject.ext.supportAppCompat
+    api rootProject.ext.androidXAppCompat
     kapt rootProject.ext.glideCompiler
     kaptTest rootProject.ext.glideCompiler
 }

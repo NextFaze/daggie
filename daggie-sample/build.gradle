@@ -10,10 +10,9 @@ android {
     defaultConfig {
         applicationId 'com.nextfaze.daggie.sample'
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName '1.0'
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
         // Dev proxy settings
         buildConfigField('String', 'DEV_PROXY_HOST', "\"${getStringProperty('androidDevProxyHost', '')}\"")
@@ -21,8 +20,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 
     lintOptions {
@@ -41,6 +40,10 @@ android {
 
     dexOptions {
         preDexLibraries = getBoolProperty('dexPreDexLibraries', true)
+    }
+
+    kapt {
+        correctErrorTypes = true
     }
 }
 
@@ -62,7 +65,7 @@ dependencies {
     debugImplementation project(':daggie-leakcanary')
     debugImplementation project(':daggie-stetho')
     debugImplementation project(':daggie-devproxy')
-    implementation rootProject.ext.supportAppCompat
+    implementation rootProject.ext.androidXAppCompat
 
     // Glide
     kapt rootProject.ext.glideCompiler

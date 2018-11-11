@@ -3,7 +3,7 @@ package com.nextfaze.daggie.manup
 import android.app.Activity
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import com.f2prateek.rx.preferences2.Preference
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.gson.Gson

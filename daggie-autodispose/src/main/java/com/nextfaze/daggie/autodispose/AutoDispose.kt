@@ -4,10 +4,10 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.nextfaze.daggie.Initializer
 import com.uber.autodispose.ScopeProvider
 import com.uber.autodispose.lifecycle.CorrespondingEventsFunction
@@ -87,7 +87,7 @@ private object LifecycleManager {
     private val activities = mutableMapOf<Activity, BehaviorSubject<ActivityEvent>>()
 
     private val fragmentCallbacks = object : FragmentManager.FragmentLifecycleCallbacks() {
-        override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context?) {
+        override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
             fragments[f] = BehaviorSubject.createDefault(FragmentEvent.ON_ATTACH)
         }
 
@@ -95,7 +95,7 @@ private object LifecycleManager {
             fragments[f]?.onNext(FragmentEvent.ON_CREATE)
         }
 
-        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View?, savedInstanceState: Bundle?) {
+        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
             fragments[f]?.onNext(FragmentEvent.ON_CREATE_VIEW)
         }
 
@@ -164,9 +164,9 @@ private object LifecycleManager {
 
     internal fun lifecycle(fragment: Fragment) =
         fragments[fragment]
-                ?: throw IllegalStateException("Attempting to bind to lifecycle for $fragment when no lifecycle is available")
+            ?: throw IllegalStateException("Attempting to bind to lifecycle for $fragment when no lifecycle is available")
 
     internal fun lifecycle(activity: Activity) =
         activities[activity]
-                ?: throw IllegalStateException("Attempting to bind to lifecycle for $activity when no lifecycle is available")
+            ?: throw IllegalStateException("Attempting to bind to lifecycle for $activity when no lifecycle is available")
 }

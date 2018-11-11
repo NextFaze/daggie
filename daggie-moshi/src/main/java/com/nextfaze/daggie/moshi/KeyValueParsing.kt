@@ -23,7 +23,7 @@ import com.squareup.moshi.JsonAdapter
  */
 inline fun <reified T : Any> JsonAdapter<T>.fromKeyValuePair(key: String, value: Any?): T? {
     if (value == null) return null
-    val isSystemClass = T::class.java.canonicalName.startsWith("java.")
+    val isSystemClass = T::class.java.canonicalName?.startsWith("java.") ?: false
     // Insert key if the value is a map, so it can be parsed into T.
     // Don't if we're parsing a system class like a collection. That causes an error due to mixing the element type.
     val valueWithKey = if (!isSystemClass && value is Map<*, *>) {

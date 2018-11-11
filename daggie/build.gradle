@@ -4,6 +4,6 @@ android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
 
 dependencies {
     api rootProject.ext.dagger
-    api rootProject.ext.supportAnnotations
+    api rootProject.ext.androidXAnnotations
     api rootProject.ext.kotlinStdlib
 }

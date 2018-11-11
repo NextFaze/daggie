@@ -7,17 +7,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.StringRes
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDialogFragment
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import com.nextfaze.daggie.manup.Result.MAINTENANCE_MODE
-import com.nextfaze.daggie.manup.Result.UPDATE_RECOMMENDED
-import com.nextfaze.daggie.manup.Result.UPDATE_REQUIRED
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.nextfaze.daggie.manup.Result.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -159,7 +157,7 @@ internal class ManUpDialogFragment : AppCompatDialogFragment() {
 }
 
 internal fun <P : Parcelable> parcelableArgument(key: String) = object : ReadWriteProperty<Fragment, P> {
-    override fun getValue(thisRef: Fragment, property: KProperty<*>): P = thisRef.arguments!!.getParcelable(key)
+    override fun getValue(thisRef: Fragment, property: KProperty<*>): P = thisRef.arguments!!.getParcelable(key)!!
 
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: P) {
         if (thisRef.arguments == null) thisRef.arguments = Bundle()

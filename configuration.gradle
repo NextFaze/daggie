@@ -2,30 +2,23 @@ ext {
     androidPlugin = 'com.android.tools.build:gradle:3.2.1'
     androidMavenGradlePlugin = 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     minSdkVersion = 15
-    compileSdkVersion = 27
+    compileSdkVersion = 28
     buildToolsVersion = '28.0.3'
-    supportVersion = '27.1.1'
 
     kotlinVersion = '1.3.0'
     kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-    supportAnnotations = "com.android.support:support-annotations:$supportVersion"
-    supportRecyclerView = "com.android.support:recyclerview-v7:$supportVersion"
-    supportAppCompat = "com.android.support:appcompat-v7:$supportVersion"
-    supportV4 = "com.android.support:support-v4:$supportVersion"
-    supportCoreUtils = "com.android.support:support-core-utils:$supportVersion"
-    supportCoreUi = "com.android.support:support-core-ui:$supportVersion"
-    supportDesign = "com.android.support:design:$supportVersion"
-    supportCardview = "com.android.support:cardview-v7:$supportVersion"
-    supportVectorDrawable = "com.android.support:support-vector-drawable:$supportVersion"
+    androidXAnnotations = "androidx.annotation:annotation:1.0.0"
+    androidXAppCompat = "androidx.appcompat:appcompat:1.0.0"
 
-    testingSupportVersion = '3.0.2'
-    testingRulesVersion = '1.0.2'
-    supportTestRules = "com.android.support.test:rules:$testingRulesVersion"
-    supportTestRunner = "com.android.support.test:runner:$testingRulesVersion"
-    supportTestEspresso = "com.android.support.test.espresso:espresso-core:$testingSupportVersion"
+    androidXTestRules = 'androidx.test:rules:1.1.0'
+    androidXTestRunner = 'androidx.test:runner:1.1.0'
+    androidXTestEspressoCore = "androidx.test.espresso:espresso-core:3.1.0"
+    androidXTestEspressoIntents = "androidx.test.espresso:espresso-intents:3.1.0"
+    androidXUIAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
+    androidXTest = "androidx.test:core:1.0.0"
 
     daggerVersion = '2.17'
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -63,7 +56,7 @@ ext {
     moshi = "com.squareup.moshi:moshi:$moshiVersion"
     moshiKotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
 
-    autoDisposeVersion = '1.0.0-RC2'
+    autoDisposeVersion = '1.0.0'
     autoDispose = "com.uber.autodispose:autodispose-ktx:$autoDisposeVersion"
     autoDisposeAndroid = "com.uber.autodispose:autodispose-android-ktx:$autoDisposeVersion"
     autoDisposeLifecycle = "com.uber.autodispose:autodispose-lifecycle:$autoDisposeVersion"

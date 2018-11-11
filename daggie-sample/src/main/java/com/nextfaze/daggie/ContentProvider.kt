@@ -1,7 +1,7 @@
 package com.nextfaze.daggie
 
 import android.content.ContentProvider
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 
 abstract class DaggerContentProvider : ContentProvider() {
     @CallSuper override fun onCreate(): Boolean {
@@ -12,4 +12,4 @@ abstract class DaggerContentProvider : ContentProvider() {
     protected abstract fun inject(injector: Injector)
 }
 
-val ContentProvider.applicationComponent get() = context.applicationComponent
+val ContentProvider.applicationComponent get() = context!!.applicationComponent

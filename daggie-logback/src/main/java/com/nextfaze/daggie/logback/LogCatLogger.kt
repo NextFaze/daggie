@@ -2,11 +2,11 @@ package com.nextfaze.daggie.logback
 
 import android.util.Log
 import ch.qos.logback.classic.Level
-import java.util.*
+import java.util.ArrayList
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val NEW_LINE = System.getProperty("line.separator")
+private val NEW_LINE = System.getProperty("line.separator")!!
 private val NON_BREAKING_SPACE = '\u00A0'
 
 /**
