@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 8.0.0
+
+_2018-11-13_
+
+* Migrate to AndroidX
+* Upgrade to Dagger `2.19`
+* Support modern ManUp protocol (the one with shorter, more concise keys)
+
 ## Version 7.1.0
 
 _2018-10-26_
