@@ -1,0 +1,5 @@
+project.configureLibrary(this)
+
+dependencies {
+    api project(':daggie-foreground')
+}
