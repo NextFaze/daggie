@@ -1,0 +1,9 @@
+project.configureLibrary(this)
+
+android.defaultConfig.consumerProguardFiles 'proguard-rules.pro'
+
+dependencies {
+    api project(':daggie')
+    api project(':daggie-optional')
+    api rootProject.ext.rxRelay2
+}
