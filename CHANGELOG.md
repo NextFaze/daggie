@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+## Version 8.1.0
+
+_2018-11-28_
+
+* Add `daggie-optional` module, which contains provides an `Optional<T>` class suitable for use with RxJava 2
+* Add a variety of RxJava extensions and utilities to `daggie-rxjava2`
+* Add `daggie-rxrelay` module, which contains factories, extensions, and property delegates for `Relay`s
+* Add `daggie-rxpreferences` module, which contains extensions for use with `Optional<T>`
+* Add `daggie-permissions-testing` module, which contains test implementations of classes in `daggie-permissions`
+* Add `daggie-foreground-testing` module, which contains a test foreground manager
+* Add Moshi `Moshi.adapter<T>()` reified type overload
+
 ## Version 8.0.0
 
 _2018-11-13_
