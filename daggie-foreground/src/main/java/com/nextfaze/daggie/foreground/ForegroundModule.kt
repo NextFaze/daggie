@@ -11,7 +11,6 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import java.util.WeakHashMap
 import javax.inject.Singleton
 
 /**
@@ -50,22 +49,20 @@ class ForegroundModule {
             .replay(1)
             .refCount()
 
-        /** Stores whether an activity was recreated after a config change. */
-        private val activityToDidChangeConfiguration = WeakHashMap<Activity, Boolean>()
-
-        private var Activity.didChangeConfiguration
-            get() = activityToDidChangeConfiguration[this]!!
-            set(value) {
-                activityToDidChangeConfiguration[this] = value
-            }
+        /** Stores which activities were recreated after a config change. */
+        private val activitiesThatDidChangeConfiguration = mutableSetOf<Activity>()
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            // Weakly store the fact that this activity is being recreated after a config change.
+            // Store the fact that this activity is being recreated after a config change.
             // We'll need to know later, and the SDK provides no way to tell after this point
-            activity.didChangeConfiguration = savedInstanceState?.getBoolean(KEY_CHANGING_CONFIGURATIONS, false) == true
+            if (savedInstanceState?.getBoolean(KEY_CHANGING_CONFIGURATIONS, false) == true) {
+                activitiesThatDidChangeConfiguration += activity
+            }
         }
 
         override fun onActivityDestroyed(activity: Activity) {
+            // Remove activity here in case onStart() is never called, which is when we usually remove it
+            activitiesThatDidChangeConfiguration -= activity
         }
 
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {
@@ -74,10 +71,11 @@ class ForegroundModule {
         }
 
         override fun onActivityStarted(activity: Activity) {
-            if (!activity.didChangeConfiguration) startCount++
-            // Clear this flag here, otherwise when the activity is backgrounded then foregrounded, it won't count
-            // towards started because the flag was still on.
-            activity.didChangeConfiguration = false
+            // Remove activity here, otherwise when it's backgrounded then foregrounded, it won't
+            // count towards started because it will still be present in the set.
+            if (!activitiesThatDidChangeConfiguration.remove(activity)) {
+                startCount++
+            }
         }
 
         override fun onActivityStopped(activity: Activity) {
