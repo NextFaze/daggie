@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 7.1.1
+
+_2018-12-03_
+
+* Fix NPE thrown from `daggie-foreground` module
+
 ## Version 7.1.0
 
 _2018-10-26_

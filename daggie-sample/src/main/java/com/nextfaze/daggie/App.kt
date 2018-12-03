@@ -2,6 +2,7 @@ package com.nextfaze.daggie
 
 import com.example.app.BuildTypeInjector
 import com.example.app.BuildTypeModule
+import com.example.app.ExampleApplication
 import com.example.app.MainActivity
 import com.example.app.MainModule
 import com.example.app.MyView
@@ -13,6 +14,7 @@ import dagger.Module
 interface Injector : BuildTypeInjector {
     fun inject(activity: MainActivity)
     fun inject(v: MyView)
+    fun inject(application: ExampleApplication)
 }
 
 /** Contributes app-specific member functions to the [ApplicationComponent]. */

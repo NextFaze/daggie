@@ -9,12 +9,11 @@ import com.nextfaze.daggie.jodatime.JodaTimeModule
 import com.nextfaze.daggie.logback.LogbackConfig
 import com.nextfaze.daggie.logback.LogbackModule
 import com.nextfaze.daggie.manup.ManUpConfig
-import com.nextfaze.daggie.manup.ManUpModule
 import com.nextfaze.daggie.moshi.MoshiModule
 import com.nextfaze.daggie.okhttp.OkHttpModule
 import com.nextfaze.daggie.permissions.PermissionsModule
 import com.nextfaze.daggie.rxjava2.RxJava2ErrorHooksModule
-import com.nextfaze.daggie.slf4j.Slf4jModule
+import com.nextfaze.daggie.slf4j.*
 import com.nextfaze.daggie.threeten.ThreeTenModule
 import dagger.Module
 import dagger.Provides
@@ -26,7 +25,7 @@ import okhttp3.HttpUrl
         Slf4jModule::class,
         LogbackModule::class,
         RxJava2ErrorHooksModule::class,
-        ManUpModule::class,
+//        ManUpModule::class,
         ForegroundModule::class,
         OkHttpModule::class,
         ThreeTenModule::class,
