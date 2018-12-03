@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+## Unreleased
+
+* Fix NPE thrown from `daggie-foreground` module
+
 ## Version 8.1.0
 
 _2018-11-28_
