@@ -3,7 +3,14 @@ Change Log
 
 ## Unreleased
 
+No unreleased changes.
+
+## Version 8.1.1
+
+_2019-01-09_
+
 * Fix NPE thrown from `daggie-foreground` module
+* Upgrade to Dagger `2.20`
 
 ## Version 8.1.0
 
