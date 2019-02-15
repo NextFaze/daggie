@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
         requestPermissionButton.setOnClickListener {
             permissions.requestPermissions(ACCESS_FINE_LOCATION).autoDisposable(scope()).subscribe()
         }
-        imageView.uri = Uri.parse("http://thecatapi.com/api/images/get?format=src&type=png")
+        imageView.uri = Uri.parse("https://thecatapi.com/api/images/get?format=src&type=png")
         log.d { "Test" }
     }
 
