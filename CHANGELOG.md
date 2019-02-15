@@ -5,6 +5,12 @@ Change Log
 
 No unreleased changes.
 
+## Version 8.1.3
+
+_2019-02-15_
+
+* Fix dev proxy asking to install every time on API 28 and some devices
+
 ## Version 8.1.2
 
 _2019-02-15_
