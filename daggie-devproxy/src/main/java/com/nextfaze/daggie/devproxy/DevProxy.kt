@@ -49,7 +49,7 @@ internal class DevProxy(private val host: String, private val port: Int) {
         if (installToSystemProperties()) {
             loadCharlesCert()
                     .filter { !isCertificateTrusted(it) }
-                    .subscribe({ onCertLoaded(context, it) }, { onCertError(context) })
+                    .subscribe({ onCertLoaded(context, it) }, { onCertError(context, it) })
         }
     }
 
@@ -58,7 +58,10 @@ internal class DevProxy(private val host: String, private val port: Int) {
     private fun onCertLoaded(context: Context, certBytes: ByteArray) =
             installCertWithKeyChainIntent(context, certBytes, alias)
 
-    private fun onCertError(context: Context) = context.showToast("Failed to install certificate")
+    private fun onCertError(context: Context, e: Throwable) {
+        log.warn("Error installing dev proxy certificate", e)
+        context.showToast("Failed to install dev proxy certificate")
+    }
 
     private fun installToSystemProperties(): Boolean {
         if (host.isEmpty() || port <= 0) {
