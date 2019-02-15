@@ -30,7 +30,7 @@ pipeline {
             }
             post {
                 always {
-                    androidLint canRunOnFailed: true, defaultEncoding: '', healthy: '0', pattern: '**/lint-results*.xml', unHealthy: '10'
+                    recordIssues enabledForFailure: true, tool: androidLintParser(pattern: '**/lint-results*.xml')
                 }
             }
         }
