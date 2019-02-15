@@ -2,6 +2,8 @@ package com.nextfaze.daggie.devproxy
 
 import android.content.Context
 import android.content.Intent
+import android.net.http.X509TrustManagerExtensions
+import android.os.Build.VERSION.SDK_INT
 import android.os.Handler
 import android.os.Looper.getMainLooper
 import android.security.KeyChain
@@ -30,7 +32,8 @@ import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
 private val CERT_MEDIA_TYPE = MediaType.parse("application/x-x509-ca-cert")!!
-private const val CHARLES_CERT_URI = "http://www.charlesproxy.com/getssl/"
+private const val CHARLES_HOST = "www.charlesproxy.com"
+private const val CHARLES_CERT_URI = "http://$CHARLES_HOST/getssl/"
 private const val NON_PROXY_HOSTS = "127.0.0.1|localhost"
 private const val MAX_RETRIES = 10
 
@@ -98,8 +101,12 @@ internal class DevProxy(private val host: String, private val port: Int) {
             val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
             tmf.init(null as KeyStore?)
             val tms = tmf.trustManagers
-            val tm = tms[0] as X509TrustManager
-            tm.checkServerTrusted(arrayOf(certificate), "RSA")
+            val trustManager = tms.firstOrNull() as? X509TrustManager ?: throw RuntimeException("No usable TrustManager")
+            when {
+                SDK_INT >= 17 -> X509TrustManagerExtensions(trustManager)
+                    .checkServerTrusted(arrayOf(certificate), "RSA", CHARLES_HOST)
+                else -> trustManager.checkServerTrusted(arrayOf(certificate), "RSA")
+            }
             return true
         } catch (e: CertificateException) {
             log.debug("Cert not trusted")
