@@ -5,6 +5,13 @@ Change Log
 
 No unreleased changes.
 
+## Version 8.1.4
+
+_2019-02-18_
+
+* Update Dagger to `2.21`
+* Update ThreeTenABP, which includes an updated time zone database `2018g`
+
 ## Version 8.1.3
 
 _2019-02-15_
