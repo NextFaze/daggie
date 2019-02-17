@@ -159,7 +159,7 @@ class RemoteImageView @JvmOverloads constructor(
         if (placeholderResource > 0) requestOptions = requestOptions.placeholder(placeholderResource)
         if (errorResource > 0) requestOptions = requestOptions.error(errorResource)
         if (fallbackResource > 0) requestOptions = requestOptions.fallback(fallbackResource)
-        if (!transformations.isEmpty()) requestOptions = requestOptions.transforms(*transformations.toTypedArray())
+        if (!transformations.isEmpty()) requestOptions = requestOptions.transform(*transformations.toTypedArray())
         return requestOptions.override(imageWidth, imageHeight)
     }
 
