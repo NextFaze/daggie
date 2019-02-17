@@ -3,6 +3,11 @@ project.configureLibrary(this)
 android {
     defaultConfig.consumerProguardFiles 'proguard-rules.pro'
     lintOptions.disable 'InvalidPackage'
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

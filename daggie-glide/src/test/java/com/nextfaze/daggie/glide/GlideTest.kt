@@ -29,15 +29,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import org.robolectric.shadows.ShadowLooper
 import javax.inject.Singleton
 import kotlin.concurrent.thread
 
-@Config(manifest = Config.NONE, sdk = [23])
 @RunWith(RobolectricTestRunner::class)
+@Config(application = RobolectricApplication::class, sdk = [27])
 class GlideTest {
 
     @Rule @JvmField
@@ -54,15 +52,11 @@ class GlideTest {
 
     @Test(timeout = 10000)
     fun `bound okhttpclient is used to execute image load`() {
-        ShadowLooper.idleMainLooperConstantly(true)
         wireMock.stubFor(get("/img").willReturn(imageResponse()))
         initGlide(okHttpClient, glideBuilderConfigurators = setOf<Configurator<GlideBuilder>> {
             setLogLevel(Log.VERBOSE)
         })
         val future = Glide.with(application).asBitmap().load(wireMock.url("/img")).submit()
-        // Spin until Glide's worker thread eventually posts a callback with the image result
-        while (!Robolectric.getForegroundThreadScheduler().advanceToLastPostedRunnable()) {
-        }
         thread { future.get() }.join()
         wireMock.verify(1, getRequestedFor(urlEqualTo("/img")))
         trackingInterceptor.assertContainsUrlWithSuffix("/img")
