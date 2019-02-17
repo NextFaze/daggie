@@ -83,7 +83,7 @@ private fun initManUp(
     val syncConfig = Flowable.merge(
         syncConfigWithApi.toFlowable(),
         configPref.asObservable().toFlowable(BackpressureStrategy.LATEST)
-    )!!
+    )
 
     // Tracks if the user has been shown a recommended update
     var updateShown = false
