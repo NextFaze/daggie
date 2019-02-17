@@ -52,7 +52,7 @@ ext {
     glideCompiler = "com.github.bumptech.glide:compiler:$glideVersion"
     glideOkHttpIntegration = "com.github.bumptech.glide:okhttp3-integration:$glideVersion@aar"
 
-    moshiVersion = '1.7.0'
+    moshiVersion = '1.8.0'
     moshi = "com.squareup.moshi:moshi:$moshiVersion"
     moshiKotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
 
