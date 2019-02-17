@@ -56,7 +56,7 @@ ext {
     moshi = "com.squareup.moshi:moshi:$moshiVersion"
     moshiKotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
 
-    autoDisposeVersion = '1.0.0'
+    autoDisposeVersion = '1.1.0'
     autoDispose = "com.uber.autodispose:autodispose-ktx:$autoDisposeVersion"
     autoDisposeAndroid = "com.uber.autodispose:autodispose-android-ktx:$autoDisposeVersion"
     autoDisposeLifecycle = "com.uber.autodispose:autodispose-lifecycle:$autoDisposeVersion"
