@@ -5,6 +5,13 @@ Change Log
 
 No unreleased changes.
 
+## Version 8.1.5
+
+_2019-03-01_
+
+* Fix typo in slf4j `AndroidManifest` package declaration
+* Add RxJava `filter(Not)Empty()` overloads for `Single` and `Maybe`
+
 ## Version 8.1.4
 
 _2019-02-18_

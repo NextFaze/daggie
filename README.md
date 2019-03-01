@@ -7,7 +7,7 @@ This library defines a lightweight modular architecture by leveraging [Dagger 2]
 1. Include Daggie and any desired addon modules in your Gradle dependencies:
 
 ```groovy
-def daggieVersion = '8.1.4'
+def daggieVersion = '8.1.5'
 implementation "com.nextfaze.daggie:daggie:$daggieVersion"
 implementation "com.nextfaze.daggie:daggie-okhttp:$daggieVersion"
 implementation "com.nextfaze.daggie:daggie-slf4j:$daggieVersion"
