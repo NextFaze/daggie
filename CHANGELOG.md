@@ -5,6 +5,14 @@ Change Log
 
 No unreleased changes.
 
+## Version 8.2.0
+
+_2019-03-04_
+
+* Add `Single.onErrorComplete()` overload
+* Deprecate `backoff()`
+* Add `backoffRetry()` and `backoffRepeat()`
+
 ## Version 8.1.5
 
 _2019-03-01_
