@@ -66,8 +66,7 @@ class ExponentialBackoffTest {
     @Test fun `given predicate, should emit if exception passes predicate`() {
         val exception = RuntimeException()
         val observer = Flowable.just(exception)
-            .backoff(
-                strategy = singleRetryStrategy,
+            .backoffRetry(strategy = singleRetryStrategy,
                 scheduler = scheduler,
                 predicate = { it is RuntimeException }
             )
@@ -79,8 +78,7 @@ class ExponentialBackoffTest {
     @Test fun `given predicate, should not emit if exception fails predicate`() {
         val exception = Exception()
         Flowable.just(exception)
-            .backoff(
-                strategy = singleRetryStrategy,
+            .backoffRetry(strategy = singleRetryStrategy,
                 scheduler = scheduler,
                 predicate = { it !is RuntimeException }
             )
@@ -92,7 +90,7 @@ class ExponentialBackoffTest {
         strategy: BackoffStrategy,
         errors: Flowable<Throwable> = neverEndingErrors(),
         apply: TestSubscriber<Any>.() -> Unit
-    ) = errors.backoff(strategy = strategy, scheduler = scheduler).test().apply(apply)
+    ) = errors.backoffRetry(strategy = strategy, scheduler = scheduler).test().apply(apply)
 
     private fun neverEndingErrors() = Flowable.range(0, Int.MAX_VALUE).map { Throwable() }
 }
