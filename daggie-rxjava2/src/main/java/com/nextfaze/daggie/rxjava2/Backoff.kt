@@ -18,6 +18,8 @@ import java.util.concurrent.TimeUnit.SECONDS
  * @param scheduler The scheduler used to schedule delayed retry attempts.
  * @param predicate An optional predicate function that is executed to determine if an error should be retried at all.
  */
+@Suppress("DEPRECATION")
+@Deprecated("Use backoffRetry()", ReplaceWith("backoffRetry(strategy, scheduler, predicate)"))
 fun <T : Throwable> Observable<T>.backoff(
     strategy: BackoffStrategy,
     scheduler: Scheduler = Schedulers.computation(),
@@ -30,6 +32,7 @@ fun <T : Throwable> Observable<T>.backoff(
  * @param scheduler The scheduler used to schedule delayed retry attempts.
  * @param predicate An optional predicate function that is executed to determine if an error should be retried at all.
  */
+@Deprecated("Use backoffRetry()", ReplaceWith("backoffRetry(strategy, scheduler, predicate)"))
 fun <T : Throwable> Flowable<T>.backoff(
     strategy: BackoffStrategy,
     scheduler: Scheduler = Schedulers.computation(),
@@ -41,6 +44,58 @@ fun <T : Throwable> Flowable<T>.backoff(
     ).flatMap { (e, attemptNumber) ->
         if (predicate(e)) strategy.retry(attemptNumber, scheduler).andThen(Flowable.just(Unit)) else Flowable.error(e)
     }
+
+/**
+ * An operator suitable for use with [Observable.retryWhen], that uses [strategy] to determine when to retry.
+ * @param strategy The strategy that dictates how often, or how many, attempts are made.
+ * @param scheduler The scheduler used to schedule delayed retry attempts.
+ * @param predicate An optional predicate function that is executed to determine if an error should be retried at all.
+ */
+@Suppress("DEPRECATION")
+fun <T : Throwable> Observable<T>.backoffRetry(
+    strategy: BackoffStrategy,
+    scheduler: Scheduler = Schedulers.computation(),
+    predicate: (Throwable) -> Boolean = { true }
+): Observable<Any> = backoff(strategy, scheduler, predicate)
+
+/**
+ * An operator suitable for use with [Flowable.retryWhen], that uses [strategy] to determine when to retry.
+ * @param strategy The strategy that dictates how often, or how many, attempts are made.
+ * @param scheduler The scheduler used to schedule delayed retry attempts.
+ * @param predicate An optional predicate function that is executed to determine if an error should be retried at all.
+ */
+@Suppress("DEPRECATION")
+fun <T : Throwable> Flowable<T>.backoffRetry(
+    strategy: BackoffStrategy,
+    scheduler: Scheduler = Schedulers.computation(),
+    predicate: (Throwable) -> Boolean = { true }
+): Flowable<Any> = backoff(strategy, scheduler, predicate)
+
+/**
+ * An operator suitable for use with [Flowable.repeatWhen], that uses [strategy] to determine when to repeat.
+ * @param strategy The strategy that dictates how often, or how many, repeats are made.
+ * @param scheduler The scheduler used to schedule delayed repeat attempts.
+ */
+fun Flowable<Any>.backoffRepeat(
+    strategy: BackoffStrategy,
+    scheduler: Scheduler = Schedulers.computation()
+): Flowable<Any> =
+    zipWith<Int, Pair<Any, Int>>(
+        Flowable.range(0, strategy.maxAttempts.coerceAtLeast(1)),
+        BiFunction<Any, Int, Pair<Any, Int>> { void, attempt -> void to attempt }
+    ).flatMap { (void, attemptNumber) ->
+        strategy.retry(attemptNumber, scheduler).andThen(Flowable.just(void))
+    }
+
+/**
+ * An operator suitable for use with [Observable.repeatWhen], that uses [strategy] to determine when to repeat.
+ * @param strategy The strategy that dictates how often, or how many, repeats are made.
+ * @param scheduler The scheduler used to schedule delayed repeat attempts.
+ */
+fun Observable<Any>.backoffRepeat(
+    strategy: BackoffStrategy,
+    scheduler: Scheduler = Schedulers.computation()
+): Observable<Any> = toFlowable(BackpressureStrategy.BUFFER).backoffRepeat(strategy, scheduler).toObservable()
 
 /** Specifies a strategy for use with [backoff], which determines how often or many retry attempts are made. */
 interface BackoffStrategy {
