@@ -42,7 +42,7 @@ internal class DevProxy(private val host: String, private val port: Int) {
 
     private val log = LoggerFactory.getLogger(DevProxy::class.java)!!
 
-    private val okHttpClient = OkHttpClient.Builder().build()!!
+    private val okHttpClient = OkHttpClient.Builder().build()
 
     private val alias = "Charles on $host"
 

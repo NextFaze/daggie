@@ -70,7 +70,7 @@ private fun initManUp(
         .addConverterFactory(GsonConverterFactory.create(gson))
         .baseUrl("http://example.com") // Dummy value; not actually used
         .build()
-        .create(ManUpApi::class.java)!!
+        .create(ManUpApi::class.java)
 
     // Config will be stored in prefs
     val configPref = RxSharedPreferences.create(application.getSharedPreferences("com.nextfaze.manup", MODE_PRIVATE))

@@ -1,16 +1,16 @@
 ext {
-    androidPlugin = 'com.android.tools.build:gradle:3.3.1'
+    androidPlugin = 'com.android.tools.build:gradle:3.3.2'
     androidMavenGradlePlugin = 'com.github.dcendents:android-maven-gradle-plugin:2.0'
     minSdkVersion = 15
     compileSdkVersion = 28
 
-    kotlinVersion = '1.3.21'
+    kotlinVersion = '1.3.31'
     kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-    androidXAnnotations = "androidx.annotation:annotation:1.0.0"
-    androidXAppCompat = "androidx.appcompat:appcompat:1.0.0"
+    androidXAnnotations = "androidx.annotation:annotation:1.0.2"
+    androidXAppCompat = "androidx.appcompat:appcompat:1.0.2"
 
     androidXTestRules = 'androidx.test:rules:1.1.0'
     androidXTestRunner = 'androidx.test:runner:1.1.0'
@@ -19,7 +19,7 @@ ext {
     androidXUIAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
     androidXTest = "androidx.test:core:1.0.0"
 
-    daggerVersion = '2.21'
+    daggerVersion = '2.22.1'
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
     daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
     dagger = "com.google.dagger:dagger:$daggerVersion"
@@ -34,7 +34,7 @@ ext {
     autoValueParcel = "com.ryanharter.auto.value:auto-value-parcel:$autoValueParcelVersion"
     autoValueParcelAdapter = "com.ryanharter.auto.value:auto-value-parcel-adapter:$autoValueParcelVersion"
 
-    retrofitVersion = '2.4.0'
+    retrofitVersion = '2.5.0'
     retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
     retrofitAdapterRxJava2 = "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     retrofitConverterGson = "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -43,7 +43,7 @@ ext {
     logbackCore = "com.github.tony19:logback-android-core:$logbackVersion"
     logbackAndroid = "com.github.tony19:logback-android-classic:$logbackVersion"
 
-    wireMockVersion = '2.21.0'
+    wireMockVersion = '2.23.2'
     wireMock = "com.github.tomakehurst:wiremock-standalone:$wireMockVersion"
 
     glideVersion = '4.9.0'
@@ -55,27 +55,27 @@ ext {
     moshi = "com.squareup.moshi:moshi:$moshiVersion"
     moshiKotlin = "com.squareup.moshi:moshi-kotlin:$moshiVersion"
 
-    autoDisposeVersion = '1.1.0'
+    autoDisposeVersion = '1.2.0'
     autoDispose = "com.uber.autodispose:autodispose-ktx:$autoDisposeVersion"
     autoDisposeAndroid = "com.uber.autodispose:autodispose-android-ktx:$autoDisposeVersion"
     autoDisposeLifecycle = "com.uber.autodispose:autodispose-lifecycle:$autoDisposeVersion"
 
-    okhttp = 'com.squareup.okhttp3:okhttp:3.11.0'
+    okhttp = 'com.squareup.okhttp3:okhttp:3.14.1'
     gson = 'com.google.code.gson:gson:2.8.5'
     slf4jApi = 'org.slf4j:slf4j-api:1.7.25'
     robolectric = 'org.robolectric:robolectric:4.1'
     mockito = 'org.mockito:mockito-inline:2.23.0'
     mockitoKotlin = 'com.nhaarman:mockito-kotlin:1.6.0'
-    rxJava2 = 'io.reactivex.rxjava2:rxjava:2.2.6'
+    rxJava2 = 'io.reactivex.rxjava2:rxjava:2.2.8'
     rxAndroid2 = 'io.reactivex.rxjava2:rxandroid:2.1.1'
     rxPreferences2 = 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     rxRelay2 = 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
     junit = 'junit:junit:4.12'
     truth = 'com.google.truth:truth:0.42'
     guava = 'com.google.guava:guava:20.0'
-    threeTen = 'com.jakewharton.threetenabp:threetenabp:1.1.2'
+    threeTen = 'com.jakewharton.threetenabp:threetenabp:1.2.0'
     jodaTime = 'net.danlew:android.joda:2.9.9.4'
-    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    stetho = 'com.facebook.stetho:stetho:1.5.0'
+    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    stetho = 'com.facebook.stetho:stetho:1.5.1'
     jsonAssert = 'org.skyscreamer:jsonassert:1.5.0'
 }
