@@ -7,6 +7,8 @@ No unreleased changes.
 
 ## Version 8.2.1
 
+_2019-05-02_
+
 * Update Dagger to `2.22.1`
 
 ## Version 8.2.0
