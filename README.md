@@ -28,7 +28,7 @@ debugImplementation "com.nextfaze.daggie:daggie-devproxy:$daggieVersion"
 2. Include Dagger 2 _of the same version_ in your Gradle dependencies:
 
 ```groovy
-def daggerVersion = '2.21'
+def daggerVersion = '2.22.1'
 kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
