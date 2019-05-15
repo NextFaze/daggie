@@ -5,6 +5,13 @@ Change Log
 
 No unreleased changes.
 
+## Version 8.3.0
+
+_2019-05-16_
+
+* Fix bug where `Permissions.state()` never emitted a result unless an `Activity` started, making it unusable inside a
+  service.
+
 ## Version 8.2.1
 
 _2019-05-02_
