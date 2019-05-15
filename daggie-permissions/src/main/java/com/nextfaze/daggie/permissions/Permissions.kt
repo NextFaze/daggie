@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.nextfaze.daggie.Initializer
+import com.nextfaze.daggie.optional.filterPresent
+import com.nextfaze.daggie.optional.toOptional
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet

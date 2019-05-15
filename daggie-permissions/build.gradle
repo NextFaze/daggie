@@ -2,6 +2,7 @@ project.configureLibrary(this)
 
 dependencies {
     api project(':daggie')
+    implementation project(':daggie-optional')
     api rootProject.ext.rxJava2
     api rootProject.ext.androidXAppCompat
 }
