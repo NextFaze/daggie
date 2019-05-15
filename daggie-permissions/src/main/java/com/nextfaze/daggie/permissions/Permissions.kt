@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentActivity
 import com.nextfaze.daggie.Initializer
 import com.nextfaze.daggie.optional.filterPresent
 import com.nextfaze.daggie.optional.toOptional
+import com.nextfaze.daggie.optional.value
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
@@ -171,13 +172,13 @@ internal class RealPermissions @Inject constructor(private val application: Appl
         .startWith(Unit)
         .switchMap {
             topStartedActivity
-                .filterPresent()
                 .take(1)
                 .map { activity ->
                     state(
+                        permission = permission,
                         hasResult = receivedResultsPrefs.contains(permission),
                         isGranted = ContextCompat.checkSelfPermission(application, permission) == PackageManager.PERMISSION_GRANTED,
-                        shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+                        activity = activity.value
                     )
                 }
         }
@@ -190,9 +191,16 @@ internal class RealPermissions @Inject constructor(private val application: Appl
     // 1. If we call this method very first time before asking permission.
     // 2. If user selects "Don't ask again" and deny permission.
     // 3. If the device policy prohibits the app from having that permission
-    private fun state(hasResult: Boolean, isGranted: Boolean, shouldShowRationale: Boolean) = when {
+    private fun state(
+        permission: String,
+        hasResult: Boolean,
+        isGranted: Boolean,
+        activity: Activity?
+    ) = when {
         isGranted -> PermissionState.GRANTED
-        hasResult && !shouldShowRationale -> PermissionState.DENIED_PERMANENTLY
+        activity == null -> PermissionState.DENIED
+        hasResult && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) ->
+            PermissionState.DENIED_PERMANENTLY
         else -> PermissionState.DENIED
     }
 }
