@@ -19,7 +19,7 @@ ext {
     androidXUIAutomator = "androidx.test.uiautomator:uiautomator:2.2.0"
     androidXTest = "androidx.test:core:1.0.0"
 
-    daggerVersion = '2.22.1'
+    daggerVersion = '2.23.1'
     daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
     daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:$daggerVersion"
     dagger = "com.google.dagger:dagger:$daggerVersion"
