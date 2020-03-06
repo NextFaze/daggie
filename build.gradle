@@ -2,13 +2,8 @@ buildscript {
     apply from: 'configuration.gradle'
 
     repositories {
-        maven {
-            url 'http://maven.nextfaze.com/libs-release'
-            credentials {
-                username nextfazeArtifactoryUser
-                password nextfazeArtifactoryPassword
-            }
-        }
+        jcenter()
+        google()
     }
 
     dependencies {
@@ -22,13 +17,8 @@ apply from: 'configuration.gradle'
 
 allprojects {
     repositories {
-        maven {
-            url 'http://maven.nextfaze.com/libs-release'
-            credentials {
-                username nextfazeArtifactoryUser
-                password nextfazeArtifactoryPassword
-            }
-        }
+        jcenter()
+        google()
     }
 
     group = GROUP
